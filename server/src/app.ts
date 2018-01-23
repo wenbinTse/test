@@ -4,8 +4,22 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as path from 'path';
+import Config from './shared/config';
+import * as mongoose from 'mongoose';
+import { MongoError } from 'mongodb';
 
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const dbUrl = Config.dbUrl;
+
+(<any>mongoose).Promise = global.Promise;
+mongoose.connect(dbUrl, (err: MongoError) => {
+  if (err) {
+    console.error('DB CONNECTION FAILED: ' + err);
+  } else {
+    console.log('DB CONNECTION SUCCESS: ' + dbUrl);
+  }
+});
 
 const app = express();
 const api = require('./route/api');
@@ -14,6 +28,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: '_secret_',
+  cookie: {maxAge: Config.sessionMaxAge},
+  saveUninitialized: false,
+  resave: true,
+  rolling: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
 
 const ALLOW_ORIGIN: string = 'http://localhost';
 

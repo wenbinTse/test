@@ -1,7 +1,9 @@
 import * as http from 'http';
+
+import Config from './shared/config';
 const app = require('./app');
 
-const PORT: number = 5000;
+const PORT = process.env.PORT || Config.port;
 
 app.set('port', PORT);
 

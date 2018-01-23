@@ -1,0 +1,7 @@
+export enum ResponseCode {
+  SUCCESS,
+  ACCESS_DENIED,
+  INVALID_INPUT,
+  INCOMPLETE_INPUT,
+  ERROR
+}
