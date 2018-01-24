@@ -53,6 +53,7 @@
     "no-trailing-whitespace": false,
     "no-unused-expression": true,
     "no-use-before-declare": true,
+    "object-literal-sort-keys": false,
     "one-line": [
       true,
       "check-catch",
@@ -60,6 +61,7 @@
       "check-open-brace",
       "check-whitespace"
     ],
+    "ordered-imports": false,
     "prefer-for-of": false,
     "quotemark": [true, "single", "jsx-double"],
     "radix": true,

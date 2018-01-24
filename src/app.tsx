@@ -3,8 +3,9 @@
  */
 
 import * as React from 'react';
-import { browserHistory, Route, Router } from 'react-router';
+import { browserHistory, IndexRoute, Route, Router } from 'react-router';
 import Home = require('./components/home');
+import Layout from './components/shared/layout';
 
 class App extends React.Component<{}, {}> {
   public render() {
@@ -12,7 +13,9 @@ class App extends React.Component<{}, {}> {
     <Router
       history={browserHistory}
     >
-      <Route path="/" component={Home} />
+      <Route path="/" component={Layout}>
+        <IndexRoute component={Home}/>
+      </Route>
     </Router>
   );
   }

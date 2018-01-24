@@ -1,13 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { ResponseCode } from '../../shared/response';
+import { ResponseCode } from '../../shared/interface';
+import { errHandler } from '../../shared/util';
+
 const Meeting = require('../../models/meeting');
 
 const router = Router();
 
-const errHandler = (err: any, res: Response) => {
-  console.error(err);
-  res.json({code: ResponseCode.ERROR});
-};
 
 router.post('/add', (req: Request, res: Response) => {
   const name = req.body.name;
@@ -29,7 +27,7 @@ router.post('/add', (req: Request, res: Response) => {
   meeting.save()
     .then((data: any) => res.json({
       code: ResponseCode.SUCCESS,
-      meeting: data
+      item: data
     }))
     .catch((err: any) => errHandler(err, res));
 });

@@ -1,13 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { ResponseCode } from '../../shared/response';
+import { ResponseCode } from '../../shared/interface';
+import { errHandler} from '../../shared/util';
+
 const Meeting = require('../../models/meeting');
-
 const router = Router();
-
-const errHandler = (err: any, res: Response) => {
-  console.error(err);
-  res.json({code: ResponseCode.ERROR});
-};
 
 router.get('/list', (req: Request, res: Response) => {
   Meeting.find({})

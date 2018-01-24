@@ -9,6 +9,38 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <style>
+      @media (min-width: 1470px) {
+        .container-large {
+          max-width: 1440px;
+        }
+      }
+      @media (max-width: 767px) {
+        .container {
+          width: 100%;
+        }
+      }
+      @media (max-width: 576px) {
+        .container-mobile-no-padding {
+          padding-right: 0;
+          padding-left: 0;
+        }
+      }
+
+      ul.control-dots {
+        height: auto !important;
+      }
+
+      .interval-s {
+        display: block;
+        height: 15px;
+      }
+
+      .interval-m {
+        display: block;
+        height: 30px;
+      }
+    </style>
     <div id="root"></div>
   </body>
 </html>
