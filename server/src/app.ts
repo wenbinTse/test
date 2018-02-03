@@ -37,7 +37,7 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-const ALLOW_ORIGIN: string = 'http://localhost';
+const ALLOW_ORIGIN: string = Config.domain;
 
 // Allow all requests that reaches express to make API calls.
 app.use((req: Request, res: Response, next: NextFunction) => {

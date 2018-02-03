@@ -1,31 +1,35 @@
 import { Router, Request, Response } from 'express';
-import { Gender, Location, ResponseCode} from '../../shared/interface';
+import { Gender, Location, ResponseCode } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Pattern from '../../shared/pattern';
 import Config from '../../shared/config';
 import Session = Express.Session;
-import {verifyPassword} from "../../shared/password";
+import { createHashAndSalt, verifyPassword } from '../../shared/password';
 
 const router = Router();
 const User = require('../../models/user');
 
-router.get('/:id', (req: Request, res: Response) => {
-  User.findOne({_id: req.params.id}, ['name', 'createdDate']).exec()
-    .then((data: any) => res.json({
-      code: ResponseCode.SUCCESS,
-      item: data
-    }))
-    .catch((err: any) => errHandler(err, res));
+const corporations = require('../../../data/corporation.json');
+const titles = require('../../../data/title.json');
+
+router.get('/dateForRegister', (req: Request, res: Response) => {
+  res.json({
+    code: ResponseCode.SUCCESS,
+    corporations,
+    titles
+  });
 });
 
 router.post('/register', (req: Request, res: Response) => {
   const name = req.body.name;
-  const location = req.body.location as Location;
   const gender = req.body.gender as Gender;
   const password = req.body.password;
   const email = req.body.email;
-  if (!name || !location.address || !location.city || !location.province || !gender
-   || !password || !email) {
+  const corporation = req.body.corporation;
+  const title = req.body.title;
+  const job = req.body.job;
+  if (!name || !gender || !corporation
+   || !password || !email || !title) {
     res.json({code: ResponseCode.INCOMPLETE_INPUT});
     return;
   }
@@ -45,8 +49,11 @@ router.post('/register', (req: Request, res: Response) => {
   }
   const user = new User({
     name,
-    location,
-    gender
+    gender,
+    password: createHashAndSalt(password),
+    email,
+    title,
+    job
   });
   user.save()
     .then((data: any) => {
@@ -77,7 +84,7 @@ router.post('/login', (req: Request, res: Response) => {
     res.json({code: ResponseCode.INCOMPLETE_INPUT});
     return;
   }
-  User.findOne({email}).exec()
+  User.findOne({email}, ['_id', 'email', 'userType', 'profileImage', 'password', 'name']).exec()
     .then((doc: any) => {
       if (!doc || !verifyPassword(password, doc.password.salt, doc.password.hash)) {
         res.json({
@@ -92,11 +99,56 @@ router.post('/login', (req: Request, res: Response) => {
         } else {
           res.json({
             code: ResponseCode.SUCCESS,
-            item: doc
+            item: {
+              _id: doc._id,
+              email: doc.email,
+              userType: doc.userType,
+              profileImage: doc.profileImage
+            }
           });
         }
       });
     })
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/logout', (req: Request, res: Response) => {
+  if (req.session) {
+    req.session.destroy((err: Error) => {
+      if (err) {
+        errHandler(err, res);
+        return;
+      }
+      res.clearCookie('connect.sid', { path: '/' });
+      res.json({code: ResponseCode.SUCCESS});
+    });
+  }
+});
+
+router.get('/currentUserInfo', (req: Request, res: Response) => {
+  const session = req.session as Session;
+  if (!session || !session.user) {
+    res.json({code: ResponseCode.UNLOGIN});
+    return;
+  }
+  const user = session.user;
+  res.json({
+    code: ResponseCode.SUCCESS,
+    item: {
+      name: user.name,
+      profileImage: user.profileImage,
+      email: user.email,
+      _id: user._id
+    }
+  });
+});
+
+router.get('/:id', (req: Request, res: Response) => {
+  User.findOne({_id: req.params.id}, ['name', 'createdDate']).exec()
+    .then((data: any) => res.json({
+      code: ResponseCode.SUCCESS,
+      item: data
+    }))
     .catch((err: any) => errHandler(err, res));
 });
 

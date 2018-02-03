@@ -1,5 +1,6 @@
 export enum ResponseCode {
   SUCCESS,
+  UNLOGIN,
   ACCESS_DENIED,
   INVALID_INPUT,
   INCOMPLETE_INPUT,
@@ -25,4 +26,9 @@ export interface User {
   profileImageSrc: string;
   email: string;
   userType: UserType;
+}
+
+export enum UserMode {
+  LOGIN,
+  REGISTER
 }

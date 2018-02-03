@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { IndexLink } from 'react-router';
+import { Dropdown } from 'antd';
 import { User } from '../../../interface';
 import * as styles from './header.css';
-import HasGlobalClickListener from '../has-global-click-listener';
-import { CSSTransitionGroup } from 'react-transition-group';
+import UserService from '../../user/user-service';
+// import { ClickParam } from 'antd/lib/menu';
 
 interface HeaderProps {
   compactMode?: boolean;
@@ -19,14 +20,13 @@ const LOGO_COLLAPSE_DISTANCE = 100;
 const LOGO_COLLAPSE_DELAY = 200;
 
 class Header extends React.Component<HeaderProps, HeaderState> {
-  private usernameEle: HTMLElement | null;
   /** @constructor */
   constructor(props: HeaderProps) {
     super(props);
     this.state = {
       collapseLogo: this.props.compactMode === true,
       showUserPanel: false,
-      userProfile: null
+      userProfile: UserService.getUserProfile()
     };
   }
 
@@ -53,74 +53,39 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public render() {
+    console.log(this.state.userProfile)
+    const menu = (
+      <div className={styles.menu}>
+        <div className={styles.arrow}/>
+        <li>
+          个人信息
+        </li>
+        <li>
+          已参加会议
+        </li>
+        <hr/>
+        <li onClick={UserService.logout}>
+          退出
+        </li>
+      </div>
+    );
     const userButton = this.state.userProfile === null ?
       (
         <div className={styles.userLoginContainer}>
           <a
-            // onClick={() => UserService.requireLogin()}
-            onClick={() => alert(1)}
+            onClick={() => UserService.requireLogin()}
           >
             LOG IN
           </a>
         </div>
-      ) :
-      (
-        <div
-          className={styles.userLoginContainer}
-          ref={(ele: HTMLElement | null) => this.usernameEle = ele}
-        >
-          <HasGlobalClickListener
-            listenerMountingFlag={this.state.showUserPanel}
-            onGlobalClick={() => { this.setState({showUserPanel: false}); }}
-          >
-            <div
-              className={styles.username}
-              onClick={(e) => {
-                this.setState({showUserPanel: !this.state.showUserPanel});
-                e.stopPropagation();
-              }}
-            >
-              Hi, nihao
-            </div>
-            <CSSTransitionGroup
-              transitionName={{
-                enter: styles.userPanelContainerEnter,
-                enterActive: styles.userPanelContainerEnterActive,
-                leave: styles.userPanelContainerLeave,
-                leaveActive: styles.userPanelContainerLeaveActive,
-              }}
-              transitionEnterTimeout={200}
-              transitionLeaveTimeout={200}
-            >
-              {this.state.showUserPanel ? (
-                <div
-                  className={styles.userPanelDropdown}
-                  onClick={() => { this.setState({showUserPanel: false}); }}
-                >
-                  <div
-                    className={styles.arrow}
-                    style={{
-                      right: (this.usernameEle ? this.usernameEle.clientWidth / 2 : 20) + 'px'
-                    }}
-                  />
-                  <ul>
-                    <li>
-                      APPOINTMENTS
-                    </li>
-                    <li>
-                      LIKED LOOKS
-                    </li>
-                    <li className={styles.breakLine}/>
-                    <li>
-                      LOGOUT
-                    </li>
-                  </ul>
-                </div>
-              ) : null}
-            </CSSTransitionGroup>
-          </HasGlobalClickListener>
-        </div>
+      ) : (
+        <Dropdown overlay={menu} placement="bottomRight">
+          <a className="ant-dropdown-link" href="#">
+            Hi, {this.state.userProfile.name}
+          </a>
+        </Dropdown>
       );
+
     let navStyle = {};
     let logoStyle = {};
     let logoImageStyle = {};
@@ -143,7 +108,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       >
         <div className="container container-large container-mobile-no-padding">
           <nav className={styles.navContainer} style={navStyle}>
-            <div>{userButton}</div>
+            <div className={styles.menuContainer}>{userButton}</div>
           </nav>
           <div className={styles.logoContainer} style={logoStyle}>
             <IndexLink to="/">
@@ -180,7 +145,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       );
     }
   }
-}
 
+  // private menuClickHandler = (e: ClickParam) => {
+  //   console.log(e.key)
+  // }
+}
 
 export = Header;

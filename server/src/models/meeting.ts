@@ -8,7 +8,11 @@ const meetingSchema = new mongoose.Schema({
   endDate: {type: String, required: true},
   images: {type: [mongoose.Schema.Types.ObjectId]},
   location: {
-    type: Location
+    type: {
+      province: String,
+      city: String,
+      address: String
+    }
   },
   guests: {
     type: [{
