@@ -5,14 +5,16 @@ import Pattern from '../../shared/pattern';
 import Config from '../../shared/config';
 import Session = Express.Session;
 import { createHashAndSalt, verifyPassword } from '../../shared/password';
+import * as Email from '../../shared/email';
 
+const crypto = require('crypto');
 const router = Router();
 const User = require('../../models/user');
 
 const corporations = require('../../../data/corporation.json');
 const titles = require('../../../data/title.json');
 
-router.get('/dateForRegister', (req: Request, res: Response) => {
+router.get('/dataForRegister', (req: Request, res: Response) => {
   res.json({
     code: ResponseCode.SUCCESS,
     corporations,
@@ -47,16 +49,22 @@ router.post('/register', (req: Request, res: Response) => {
     });
     return;
   }
+
+  const hash = crypto.randomBytes(12).toString('hex');
+
   const user = new User({
     name,
     gender,
     password: createHashAndSalt(password),
     email,
     title,
-    job
+    job,
+    hashForValidation: hash,
+    validated: false
   });
   user.save()
     .then((data: any) => {
+      Email.register({name, email, _id: data._id}, hash);
       res.json({
         code: ResponseCode.SUCCESS,
         item: data
@@ -142,6 +150,22 @@ router.get('/currentUserInfo', (req: Request, res: Response) => {
     }
   });
 });
+
+router.get('/verify/:userId/:hash', (req: Request, res: Response) => {
+  const _id = req.params.userId;
+  User.findById(_id, ['hashForValidation']).exec()
+    .then((user: any) => {
+      if (user.hashForValidation === req.params.hash) {
+        User.update({_id }, {$set: {validated: true}}).exec()
+          .then(() => {
+            res.json({code: ResponseCode.SUCCESS});
+          });
+      } else {
+        res.json({code: ResponseCode.INVALID_INPUT});
+      }
+    })
+    .catch((err: any) => errHandler(err, res));
+})
 
 router.get('/:id', (req: Request, res: Response) => {
   User.findOne({_id: req.params.id}, ['name', 'createdDate']).exec()

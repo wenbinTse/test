@@ -10,7 +10,8 @@ import Login = require('./components/user/login');
 import Register = require('./components/user/register');
 import GlobalLoadingIndicator from './components/shared/global-loading-indicator';
 import HttpRequestDelegate from './http-request-delegate';
-import LoginModal = require('./components/user/user-modal');
+import Verify = require('./components/user/verify');
+import NotFound from './components/not-found/not-found';
 // import UserService from "./components/user/user-service";
 
 interface State {
@@ -46,7 +47,9 @@ class App extends React.Component<{}, State> {
               <IndexRoute component={Home}/>
               <Route path="login" component={Login} />
               <Route path="register" component={Register} />
-              <Route path="loginModal" component={LoginModal} />
+              <Route path="verify/:userId/:hash" component={Verify} />
+              <Route path="NotFound" component={NotFound} />
+              <Route path="*" component={NotFound} />
             </Route>
           </Router>}
       </div>

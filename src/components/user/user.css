@@ -8,3 +8,13 @@
 	font-weight: bold;
 	margin: 10px 0;
 }
+
+.loading {
+	composes: loading from '../global.css';
+}
+
+.verify-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}

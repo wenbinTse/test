@@ -31,7 +31,7 @@ class RegistrationForm extends React.Component<FormComponentProps, State> {
 
   public componentWillMount() {
     HttpRequestDelegate.get(
-      Urls.dateForRegister,
+      Urls.dataForRegister,
       true,
       (data) => {
         this.setState({
@@ -182,7 +182,19 @@ class RegistrationForm extends React.Component<FormComponentProps, State> {
           (data) => {
             this.setState({registering: false});
             if (data.code === ResponseCode.SUCCESS) {
-              message.success('您已成功注册')
+              message.success('我们已发了一封激活邮件到您的邮箱，请前往邮箱注册。');
+              setTimeout(
+                () => {
+                if ((/\/register$/i).test(window.location.pathname)) {
+                  window.location.href = '/';
+                } else if (window.location.hash === '#register') {
+                  window.location.href = window.location.pathname;
+                } else {
+                  window.location.reload();
+                }
+              },
+                3000
+              );
             } else if (data.code === ResponseCode.DUPLICATE_KEY) {
               message.warning('此邮箱已注册');
             }

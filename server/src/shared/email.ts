@@ -29,7 +29,7 @@ export const sendText = (
   sender.sendMail(options);
 };
 
-const templatePath = process.cwd() + '/src/views';
+const templatePath = process.cwd() + '/src/views/';
 
 const sendHTML = (
   addressee: Addressee,
@@ -56,6 +56,16 @@ const sendHTML = (
         subject: subject + projectENV,
         html
       };
-      sender.sendMail(options);
+      sender.sendMail(options).then(() => console.log('send'))
+        .catch((err: any) => console.error(err));
     });
 };
+
+export const register = (addressee: Addressee, hash: string) => {
+  sendHTML(
+    addressee,
+    '激活您的账号',
+    'welcome.ejs',
+    {url: `${Config.domain}/verify/${addressee._id}/${hash}`}
+  );
+}

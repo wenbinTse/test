@@ -11,8 +11,9 @@ export default class Urls {
   public static login = USER_URL + '/login';
   public static register = USER_URL + '/register';
   public static logout = USER_URL + '/logout';
-  public static dateForRegister = USER_URL + '/dateForRegister';
+  public static dataForRegister = USER_URL + '/dataForRegister';
   public static currentUserInfo = USER_URL + '/currentUserInfo';
+  public static verify = (userId: string, hash: string) => USER_URL + `/verify/${userId}/${hash}`;
 
   // get corporation
   public static getCorporation = API_URL + '/corporation';

@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
   title: {type: String},
   job: {type: String},
   profileImage: {type: mongoose.Schema.Types.ObjectId},
-  createdDate: {type: Date, default: new Date()}
+  createdDate: {type: Date, default: new Date()},
+  validated: {type: Boolean, default: false},
+  hashForValidation: {type: String},
 });
 
 export = mongoose.model('User', userSchema);

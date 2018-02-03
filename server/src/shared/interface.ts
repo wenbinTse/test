@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 export enum ResponseCode {
   SUCCESS,
   UNLOGIN,
@@ -34,4 +35,5 @@ export interface Password {
 export interface Addressee {
   name: string;
   email: string;
+  _id: mongoose.Schema.Types.ObjectId
 }
