@@ -1,22 +1,25 @@
 import * as React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { browserHistory } from 'react-router';
+import { Form, Icon, Input, Button, message } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import * as Styles from './user.css';
-import UserService from "./user-service";
-
-interface Props {
-  form: any;
-}
+import {  FormComponentProps } from 'antd/lib/form';
+import { ResponseCode } from '../../interface';
+import Urls from '../../urls';
+import HttpRequestDelegate from '../../http-request-delegate';
+import UserService from './user-service';
 
 interface State {
   loading: boolean;
+  logging: boolean;
 }
 
-class LoginForm extends React.Component<Props, State> {
-  constructor(props: Props) {
+class LoginForm extends React.Component<FormComponentProps, State> {
+  constructor(props: FormComponentProps) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
+      logging: false
     };
   }
   public render() {
@@ -38,28 +41,46 @@ class LoginForm extends React.Component<Props, State> {
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
           )}
         </FormItem>
-        <Button type="primary" htmlType="submit" style={{width: '100%'}}>
+        <Button type="primary" htmlType="submit" style={{width: '100%'}} loading={this.state.logging}>
           登录
         </Button>
-        <div>
-          <a href="">register now!</a>
+        <div className={Styles.bottomContainer}>
+          <span>没有账号? <a onClick={() => UserService.requireSignup()}>注册</a></span>
+          <a onClick={() => browserHistory.push('/forgetPassword')}>忘记密码</a>
         </div>
       </Form>
     );
   }
+  
   private handleSubmit = (e: any) => {
     e.preventDefault();
     this.props.form.validateFields((err: any, values: any) => {
       if (!err) {
-        UserService.login(
+        this.setState({logging: true});
+        HttpRequestDelegate.postJson(
+          Urls.login,
           values,
-          () => {
-            if ((/\/login$/i).test(window.location.pathname)) {
-              window.location.href = '/';
-            } else if (window.location.hash === '#login') {
-              window.location.href = window.location.pathname;
+          true,
+          (data) => {
+            this.setState({logging: false});
+            if (data.code === ResponseCode.SUCCESS) {
+              message.success('成功登录');
+              setTimeout(
+                () => {
+                  if ((/\/login$/i).test(window.location.pathname)) {
+                    window.location.href = '/';
+                  } else if (window.location.hash === '#login') {
+                    window.location.href = window.location.pathname;
+                  } else {
+                    window.location.reload();
+                  }
+                },
+                1000
+              );
+            } else if (data.code === ResponseCode.INCORRECT_USERNAME_OR_PASSWORD) {
+              message.warning('邮箱或密码错误');
             } else {
-              window.location.reload();
+              message.error('请稍后再试');
             }
           });
       }

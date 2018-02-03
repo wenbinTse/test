@@ -12,7 +12,8 @@ import GlobalLoadingIndicator from './components/shared/global-loading-indicator
 import HttpRequestDelegate from './http-request-delegate';
 import Verify = require('./components/user/verify');
 import NotFound from './components/not-found/not-found';
-// import UserService from "./components/user/user-service";
+import UserService from './components/user/user-service';
+import ForgetPassword = require('./components/user/forget-password');
 
 interface State {
   loading: boolean;
@@ -27,9 +28,9 @@ class App extends React.Component<{}, State> {
   }
 
   public componentDidMount() {
-    // UserService.requestUserProfile(() => {
+    UserService.requestUserProfile(() => {
       this.setState({loading: false});
-    // });
+    });
   }
 
   public render() {
@@ -48,7 +49,8 @@ class App extends React.Component<{}, State> {
               <Route path="login" component={Login} />
               <Route path="register" component={Register} />
               <Route path="verify/:userId/:hash" component={Verify} />
-              <Route path="NotFound" component={NotFound} />
+              <Route path="forgetPassword" component={ForgetPassword} />
+              <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />
             </Route>
           </Router>}

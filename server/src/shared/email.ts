@@ -61,11 +61,20 @@ const sendHTML = (
     });
 };
 
-export const register = (addressee: Addressee, hash: string) => {
+export const welcome = (addressee: Addressee, hash: string) => {
   sendHTML(
     addressee,
     '激活您的账号',
     'welcome.ejs',
     {url: `${Config.domain}/verify/${addressee._id}/${hash}`}
+  );
+}
+
+export const verificationCode = (addressee: Addressee, code: string) => {
+  sendHTML(
+    addressee,
+    '验证码',
+    'verification-code.ejs',
+    {code}
   );
 }

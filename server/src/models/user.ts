@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
   createdDate: {type: Date, default: new Date()},
   validated: {type: Boolean, default: false},
   hashForValidation: {type: String},
+  verificationCode: {
+    type: {
+      code: {type: String},
+      sendTime: {type: Date}
+    }
+  },
 });
 
 export = mongoose.model('User', userSchema);

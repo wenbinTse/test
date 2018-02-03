@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IndexLink } from 'react-router';
-import { Dropdown } from 'antd';
+import { Dropdown, Icon } from 'antd';
 import { User } from '../../../interface';
 import * as styles from './header.css';
 import UserService from '../../user/user-service';
@@ -53,7 +53,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public render() {
-    console.log(this.state.userProfile)
     const menu = (
       <div className={styles.menu}>
         <div className={styles.arrow}/>
@@ -64,7 +63,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           已参加会议
         </li>
         <hr/>
-        <li onClick={UserService.logout}>
+        <li onClick={() => UserService.logout()}>
           退出
         </li>
       </div>
@@ -75,7 +74,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <a
             onClick={() => UserService.requireLogin()}
           >
-            LOG IN
+            <Icon
+              type="user"
+            />
+            登录
           </a>
         </div>
       ) : (

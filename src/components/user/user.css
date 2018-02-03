@@ -1,3 +1,5 @@
+@value primary-color from '../global.css';
+
 .form {
 	max-width: 500px;
 	margin: 0 auto;
@@ -17,4 +19,17 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
+}
+
+.bottom-container {
+	text-align: right;
+	margin-top: 10px;
+}
+
+.bottom-container > * {
+	margin-left: 20px;
+}
+
+.bottom-container a {
+	color: primary-color !important;
 }

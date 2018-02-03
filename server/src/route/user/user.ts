@@ -64,7 +64,7 @@ router.post('/register', (req: Request, res: Response) => {
   });
   user.save()
     .then((data: any) => {
-      Email.register({name, email, _id: data._id}, hash);
+      Email.welcome({name, email, _id: data._id}, hash);
       res.json({
         code: ResponseCode.SUCCESS,
         item: data
@@ -165,7 +165,90 @@ router.get('/verify/:userId/:hash', (req: Request, res: Response) => {
       }
     })
     .catch((err: any) => errHandler(err, res));
-})
+});
+
+router.get('/sendVerificationCode/:email', (req: Request, res: Response) => {
+  const email = req.params.email;
+  User.findOne({email: email}, ['verificationCode', 'name']).exec()
+    .then((user: any) => {
+
+        if (!user) {
+          res.json({
+            code: ResponseCode.UNREGISTERED,
+            message: 'the mailbox has not been registered yet'
+          });
+          return;
+        }
+
+        if (user.verificationCode) {
+          const lastSendTime: number = user.verificationCode.sendTime.getTime();
+          const now: number = new Date().getTime();
+          if (now - lastSendTime < 60 * 1000) {
+            res.json({
+              code: ResponseCode.TOO_OFTEN,
+              message: 'send just one time each minute'
+            });
+            return;
+          }
+        }
+
+        const code = Math.random().toString(10).substring(2, 8);
+        const verificationCode = {
+          code: code,
+          sendTime: new Date()
+        };
+
+        User.update({email: email}, {$set: {verificationCode: verificationCode}}).exec()
+          .then(() => {
+            Email.verificationCode({name: user.name, email}, code);
+            res.json({code: ResponseCode.SUCCESS});
+          });
+      })
+    .catch((err: any) => errHandler(err, res));
+});
+
+const verifyCode = (verificationCode: {code: string, sendTime: Date}, code: string) => {
+  if (!verificationCode) {
+    return false;
+  }
+  if (new Date().getTime() - verificationCode.sendTime.getTime() > 5 * 60 * 1000) {
+    return false;
+  }
+  if (verificationCode.code !== code) {
+    return false;
+  }
+  return true;
+}
+
+router.post('/resetPassword', (req: Request, res: Response) => {
+  const email = req.body.email;
+  const code = req.body.code;
+  const password = req.body.password;
+  if (!email || !code || !password) {
+    res.json({code: ResponseCode.INCOMPLETE_INPUT});
+    return;
+  }
+  User.findOne({email}, ['verificationCode', 'name', '_id']).exec()
+    .then((user: any) => {
+      if (!verifyCode(user.verificationCode, code)) {
+        res.json({code: ResponseCode.INVALID_INPUT});
+        return;
+      }
+      const hash = crypto.randomBytes(12).toString('hex');
+      User.update(
+        {email},
+        {$set: {
+          password: createHashAndSalt(password),
+          hashForValidation: hash,
+          validated: false
+        }})
+        .exec()
+        .then(() => {
+          res.json({code: ResponseCode.SUCCESS});
+          Email.welcome({email, name: user.name, _id: user._id}, hash);
+        });
+    });
+});
 
 router.get('/:id', (req: Request, res: Response) => {
   User.findOne({_id: req.params.id}, ['name', 'createdDate']).exec()

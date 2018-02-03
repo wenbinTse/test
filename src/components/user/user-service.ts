@@ -27,26 +27,6 @@ export default class UserService {
     this.userModalElement.setState({visible: false, mode: UserMode.REGISTER});
   }
 
-  public static login(
-    value: {email: string, password: string},
-    callback: () => void
-  ) {
-    HttpRequestDelegate.postJson(
-      Urls.login,
-      value,
-      true,
-      (data) => {
-        if (data.code === ResponseCode.SUCCESS) {
-         callback();
-        } else if (data.code === ResponseCode.INCORRECT_USERNAME_OR_PASSWORD) {
-          message.error('邮箱或密码错误');
-        } else {
-          message.warning('请稍后再试');
-        }
-      }
-    );
-  }
-
   public static logout() {
     HttpRequestDelegate.get(
       Urls.logout,
@@ -54,6 +34,8 @@ export default class UserService {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           message.success('已登出');
+          window.localStorage.removeItem('user');
+          window.location.reload();
         } else {
           message.warn('请稍后再试');
         }

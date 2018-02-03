@@ -7,6 +7,8 @@ export enum ResponseCode {
   INCOMPLETE_INPUT,
   ERROR,
   INCORRECT_USERNAME_OR_PASSWORD,
+  UNREGISTERED,
+  TOO_OFTEN,
   DUPLICATE_KEY = 11000
 }
 
@@ -35,5 +37,5 @@ export interface Password {
 export interface Addressee {
   name: string;
   email: string;
-  _id: mongoose.Schema.Types.ObjectId
+  _id?: mongoose.Schema.Types.ObjectId
 }
