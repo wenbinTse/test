@@ -11,8 +11,8 @@ export default class UserService {
     this.userModalElement = modal;
   }
 
-  public static requireLogin() {
-    this.userModalElement.setState({visible: true, mode: UserMode.LOGIN});
+  public static requireLogin(refresh?: boolean) {
+    this.userModalElement.setState({visible: true, mode: UserMode.LOGIN, refresh});
   }
 
   public static dismissLogin() {

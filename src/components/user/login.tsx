@@ -14,7 +14,11 @@ interface State {
   logging: boolean;
 }
 
-class LoginForm extends React.Component<FormComponentProps, State> {
+interface Props extends FormComponentProps {
+  refresh?: boolean;
+}
+
+class LoginForm extends React.Component<Props, State> {
   constructor(props: FormComponentProps) {
     super(props);
     this.state = {
@@ -67,6 +71,9 @@ class LoginForm extends React.Component<FormComponentProps, State> {
               message.success('成功登录');
               setTimeout(
                 () => {
+                  if (this.props.refresh === false) {
+                    return;
+                  }
                   if ((/\/login$/i).test(window.location.pathname)) {
                     window.location.href = '/';
                   } else if (window.location.hash === '#login') {

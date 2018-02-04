@@ -100,7 +100,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         top: '0'
       };
       logoImageStyle = {
-        height: '32px'
+        height: '20px'
       };
     }
 

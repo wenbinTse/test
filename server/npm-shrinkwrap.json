@@ -2963,7 +2963,7 @@
     },
     "moment": {
       "version": "2.20.1",
-      "from": "moment@>=2.14.0",
+      "from": "https://registry.npm.taobao.org/moment/download/moment-2.20.1.tgz",
       "resolved": "https://registry.npm.taobao.org/moment/download/moment-2.20.1.tgz"
     },
     "mongodb": {

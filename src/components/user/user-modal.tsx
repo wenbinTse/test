@@ -7,6 +7,7 @@ import { UserMode } from '../../interface';
 interface State {
   visible: boolean;
   mode: UserMode;
+  refresh?: boolean;
 }
 
 class UserModal extends React.Component<{}, State> {

@@ -1,0 +1,18 @@
+.create-container {
+	margin: 0 auto;
+	max-width: 1000px;
+}
+
+.title {
+	font-size: 48px;
+	font-weight: bold;
+	margin: 10px auto;
+}
+
+.icon {
+	cursor: pointer;
+}
+
+.icon:hover {
+	font-weight: bolder;
+}

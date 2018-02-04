@@ -34,3 +34,10 @@ export enum UserMode {
   LOGIN,
   REGISTER
 }
+
+export interface Guest {
+  name: string;
+  description: string;
+  randomId: number;
+  valid: boolean;
+}

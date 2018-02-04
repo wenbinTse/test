@@ -4,6 +4,7 @@ process.env.NODE_ENV === 'development' ? 'http://localhost:5000' :
 
 const API_URL: string = SERVER_URL + '/api';
 const USER_URL: string = API_URL + '/user';
+const MEETING_ADMIN_URL = API_URL + '/meeting-admin';
 
 export default class Urls {
 
@@ -17,6 +18,12 @@ export default class Urls {
   public static sendVerificationCode = (email: string) => USER_URL + `/sendVerificationCode/${email}`;
   public static resetPassword = USER_URL + `/resetPassword`;
 
-  // get corporation
+  // Meeting Admin Api
+  public static createMeeting = MEETING_ADMIN_URL + '/create';
+
+  // Get Corporation
   public static getCorporation = API_URL + '/corporation';
+
+  // Get Cities
+  public static getCities = API_URL + '/cities';
 }

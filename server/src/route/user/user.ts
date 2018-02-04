@@ -6,6 +6,7 @@ import Config from '../../shared/config';
 import Session = Express.Session;
 import { createHashAndSalt, verifyPassword } from '../../shared/password';
 import * as Email from '../../shared/email';
+import {retry} from "async";
 
 const crypto = require('crypto');
 const router = Router();
@@ -98,6 +99,7 @@ router.post('/login', (req: Request, res: Response) => {
         res.json({
           code: ResponseCode.INCORRECT_USERNAME_OR_PASSWORD,
         });
+        return;
       }
       const session: Session = req.session as Session;
       session.user = doc;
@@ -218,7 +220,7 @@ const verifyCode = (verificationCode: {code: string, sendTime: Date}, code: stri
     return false;
   }
   return true;
-}
+};
 
 router.post('/resetPassword', (req: Request, res: Response) => {
   const email = req.body.email;

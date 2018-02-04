@@ -253,7 +253,8 @@ module.exports = {
     // to make bootstrap css available in dev.
     new CopyWebpackPlugin([
 	    {from: 'node_modules/antd/dist/antd.css', to: 'static/css'},
-	    {from: 'public/image', to: 'static/image'}
+	    {from: 'public/image', to: 'static/image'},
+      {from: 'node_modules/braft-editor/dist/braft.css', to: 'static/css'}
     ]),
   ],
   // Some libraries import Node modules but don't use them in the browser.
