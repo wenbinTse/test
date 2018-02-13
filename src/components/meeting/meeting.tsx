@@ -6,7 +6,7 @@ import Urls from '../../urls';
 import * as Styles from './meeting.css';
 import * as moment from 'moment';
 import GuestElement = require('../guest/guest');
-import Reviews = require('../review/reviews');
+import Reviews from '../review/reviews';
 const TabPane = Tabs.TabPane;
 
 const dateFormat = 'YYYY/M/D';
@@ -112,7 +112,7 @@ class MeetingDetail extends React.Component<Props, State> {
         </Row>
         <Tabs defaultActiveKey="1">
           <TabPane tab="留言" key={1}>
-            <Reviews meetingId={this.props.params.meetingId}/>
+            <Reviews meetingId={this.props.params.meetingId} type="review"/>
           </TabPane>
         </Tabs>
       </div>

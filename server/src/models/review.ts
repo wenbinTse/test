@@ -8,15 +8,16 @@ const reviewSchema = new mongoose.Schema({
   },
   meeting: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Meeting',
-    required: true
+    ref: 'Meeting'
   },
   content: {type: String, required: true},
   replyTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Review'
   },
-  createdDate: {type: Date, default: new Date()}
+  createdDate: {type: Date, default: new Date()},
+  admin: {type: Boolean}, // 是否是管理员的发言
+  numOfReply: {type: Number, default: 0}
 });
 
 export = mongoose.model('Review', reviewSchema);

@@ -62,8 +62,14 @@ export interface Meeting {
 }
 
 export interface Review {
-  name: string;
+  owner: {
+    _id: string,
+    name: string
+  };
+  _id: string;
   content: string;
+  meeting?: string;
+  numOfReply?: number;
   createdDate?: Date;
   profileImageSrc?: string;
 }

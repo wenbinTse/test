@@ -35,4 +35,5 @@ export default class Urls {
   // Review API
   public static getReviews = (meetingId: string) => REVIEW_URL + `/getReviews/${meetingId}`;
   public static addReview = REVIEW_URL + '/add';
+  public static getReplies = (reviewId: string) => REVIEW_URL + `/getReplies/${reviewId}`;
 }

@@ -7,7 +7,9 @@ import ReviewElement = require('./review');
 import AddReview = require('./add-review');
 
 interface Props {
-  meetingId: string;
+  meetingId?: string;
+  reviewId?: string;
+  type: 'review' | 'reply';
 }
 
 interface State {
@@ -25,8 +27,11 @@ class Reviews extends React.Component<Props, State> {
   }
 
   public componentWillMount() {
+    const url = this.props.type === 'review' ? Urls.getReviews(this.props.meetingId as string) :
+      Urls.getReplies(this.props.reviewId as string);
+
     HttpRequestDelegate.get(
-      Urls.getReviews(this.props.meetingId),
+      url,
       false,
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
@@ -50,12 +55,14 @@ class Reviews extends React.Component<Props, State> {
 
     const style = {maxWidth: '1024px'};
 
+    const status: string = this.props.type === 'review' ? '暂时没人留言' : '暂时没人回复';
+
     if (!this.state.reviews.length) {
       return (
         <div style={style}>
-          <AddReview type="review" meetingId={this.props.meetingId}/>
+          <AddReview type={this.props.type} meetingId={this.props.meetingId} reviewId={this.props.reviewId} successCallback={this.addReview}/>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px'}}>
-            <span style={{fontSize: '18px', fontWeight: 'bold'}}>暂时没人留言</span>
+            <span style={{fontSize: '18px', fontWeight: 'bold'}}>{status}</span>
           </div>
         </div>
       );
@@ -63,15 +70,21 @@ class Reviews extends React.Component<Props, State> {
 
     return (
       <div style={style}>
-        <AddReview type="review" meetingId={this.props.meetingId}/>
+        <AddReview type={this.props.type} meetingId={this.props.meetingId} reviewId={this.props.reviewId} successCallback={this.addReview}/>
         <List
           itemLayout="horizontal"
           dataSource={this.state.reviews}
-          renderItem={(item: Review) => <ReviewElement review={item}/>}
+          renderItem={(item: Review, index: number) => <ReviewElement review={item} index={index} type={this.props.type}/>}
         />
       </div>
     );
   }
+
+  private addReview = (review: Review) => {
+    const reviews = this.state.reviews;
+    reviews.unshift(review);
+    this.setState({reviews});
+  }
 }
 
-export = Reviews;
+export default Reviews;
