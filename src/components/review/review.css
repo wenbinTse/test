@@ -1,0 +1,31 @@
+.add-container {
+	display: flex;
+}
+
+.add-container > form {
+	margin-left: 20px;
+	width: 100%;
+}
+
+.add-container textarea {
+	border: none;
+	border-bottom: solid 1px #dcdcdc;
+	resize: none;
+	transition: border-bottom 0.3s ease-in-out;
+}
+
+.add-container textarea:focus {
+	border: none;
+	border-bottom: 1px solid black;
+	box-shadow: none;
+	outline:none;
+}
+
+.button-container {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.button-container > button {
+	margin: 8px;
+}

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { ResponseCode } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
+import Session = Express.Session;
 
 const Meeting = require('../../models/meeting');
 
@@ -15,7 +16,9 @@ router.post('/create', (req: Request, res: Response) => {
   const endDate = req.body.endDate;
   const location = req.body.location;
   const guests = req.body.guests;
+  const owner = (req.session as Session).user._id;
   const meeting = new Meeting({
+    owner,
     name,
     description,
     detail,

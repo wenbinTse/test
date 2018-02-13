@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 
 const corporation = require('../../data/corporation.json');
 
@@ -29,16 +29,18 @@ router.get('/cities', (req: Request, res: Response) => {
     formatCities.push(item);
   });
   res.json({list: formatCities});
-})
+});
 
 const userRouter = require('./user/user');
 const meetingRouter = require('./meeting/meeting');
 const userAdminRouter = require('./user/user-admin');
-const meetigAdminRouter = require('./meeting/meeting-admin');
+const meetingAdminRouter = require('./meeting/meeting-admin');
+const reviewRouter = require('./review/review');
 
 router.use('/user', userRouter);
 router.use('/user-admin', userAdminRouter);
 router.use('/meeting', meetingRouter);
-router.use('/meeting-admin', meetigAdminRouter);
+router.use('/meeting-admin', meetingAdminRouter);
+router.use('/review', reviewRouter);
 
 export = router;

@@ -113,7 +113,8 @@ router.post('/login', (req: Request, res: Response) => {
               _id: doc._id,
               email: doc.email,
               userType: doc.userType,
-              profileImage: doc.profileImage
+              profileImage: doc.profileImage,
+              profileImageSrc: doc.profileImage ? Config.server + '/api/image/profileImage' + doc.profileImage : ''
             }
           });
         }

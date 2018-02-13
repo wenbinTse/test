@@ -69,6 +69,7 @@ class LoginForm extends React.Component<Props, State> {
             this.setState({logging: false});
             if (data.code === ResponseCode.SUCCESS) {
               message.success('成功登录');
+              window.localStorage.setItem('user', JSON.stringify(data.item));
               setTimeout(
                 () => {
                   if (this.props.refresh === false) {

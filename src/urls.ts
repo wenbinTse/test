@@ -5,6 +5,8 @@ process.env.NODE_ENV === 'development' ? 'http://localhost:5000' :
 const API_URL: string = SERVER_URL + '/api';
 const USER_URL: string = API_URL + '/user';
 const MEETING_ADMIN_URL = API_URL + '/meeting-admin';
+const MEETING_URL = API_URL + '/meeting/';
+const REVIEW_URL = API_URL + '/review';
 
 export default class Urls {
 
@@ -18,6 +20,9 @@ export default class Urls {
   public static sendVerificationCode = (email: string) => USER_URL + `/sendVerificationCode/${email}`;
   public static resetPassword = USER_URL + `/resetPassword`;
 
+  // Meeting Api
+  public static getMeeting = (meetingId: string) => MEETING_URL + `/${meetingId}`;
+
   // Meeting Admin Api
   public static createMeeting = MEETING_ADMIN_URL + '/create';
 
@@ -26,4 +31,8 @@ export default class Urls {
 
   // Get Cities
   public static getCities = API_URL + '/cities';
+
+  // Review API
+  public static getReviews = (meetingId: string) => REVIEW_URL + `/getReviews/${meetingId}`;
+  public static addReview = REVIEW_URL + '/add';
 }

@@ -132,9 +132,9 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
             </FormItem>
           </Col>
           <Col span={2}>
-            <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }}>
-              -
-            </span>
+          <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }}>
+            -
+          </span>
           </Col>
           <Col span={11}>
             <FormItem>
@@ -180,7 +180,7 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
           </div>
         </FormItem>
         <FormItem {...formItemLayout} label="嘉宾">
-          <Button icon="plus" onClick={() => this.addGuest()}>添加</Button>
+          <Button icon="plus" type="primary" onClick={() => this.addGuest()}>添加</Button>
           {this.state.guests.map((guest, index) =>
             <Row gutter={16} key={guest.randomId} style={{marginBottom: '24px'}}>
               <Col span={4}>
@@ -221,6 +221,7 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
 
   private handleDescriptionChange = (description: string) => {
     this.setState({description});
+    console.log(description)
   }
 
   private handleDetailChange = (detail: string) => {
@@ -287,7 +288,7 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
           (data) => {
             this.setState({creating: false});
             if (data.code === ResponseCode.SUCCESS) {
-              message.success('会议创建成功');
+              message.success('会议创建成功,3s后跳转到管理页面已编辑更多信息');
             } else if (data.code === ResponseCode.UNLOGIN) {
               UserService.requireLogin(false);
             }

@@ -22,7 +22,7 @@ class Layout extends React.Component<LayoutProps, {}> {
   }
   public render() {
     const screenHeight = document.documentElement.clientHeight;
-    const minHeight = screenHeight - 62 * 2;
+    const minHeight = screenHeight - 70 * 2;
     return (
       <div>
         <UserModal ref={(e) => UserService.bindUserModalElement(e as UserModal)}/>

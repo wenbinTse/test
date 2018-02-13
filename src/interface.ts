@@ -8,6 +8,7 @@ export enum ResponseCode {
   INCORRECT_USERNAME_OR_PASSWORD,
   UNREGISTERED,
   TOO_OFTEN,
+  FIND_NOTHING,
   DUPLICATE_KEY = 11000
 }
 
@@ -40,4 +41,29 @@ export interface Guest {
   description: string;
   randomId: number;
   valid: boolean;
+  profileImageSrc?: string;
+}
+
+export interface Location {
+  province: string;
+  city: string;
+  address: string;
+}
+
+export interface Meeting {
+  name: string;
+  location: Location;
+  description: string;
+  detail: string;
+  startDate: string;
+  endDate: string;
+  guests: Guest[];
+  images: string[];
+}
+
+export interface Review {
+  name: string;
+  content: string;
+  createdDate?: Date;
+  profileImageSrc?: string;
 }

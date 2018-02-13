@@ -7,7 +7,9 @@ class Footer extends React.Component<{}, {}> {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      color: 'white',
+      background: 'black'
     };
     return (
       <div style={style}><span>清华大学出版社</span></div>

@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	align-items: center;
+}
+
+.container > div:last-of-type {
+	width: calc(100% - 75px);
+	margin-left: 15px;
+	display: flex;
+	flex-direction: column;
+}
+
+.container > div:last-of-type > span:first-of-type {
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+.container > div:last-of-type > span:last-of-type {
+	max-height: 40px;
+	line-height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.container > div:last-of-type > span {
+	width: 100%;
+}

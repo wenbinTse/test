@@ -1,7 +1,12 @@
 import * as mongoose from 'mongoose';
-import { Location } from '../shared/interface';
 
 const meetingSchema = new mongoose.Schema({
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    index: true,
+    ref: 'User'
+  },
   name: {type: String, required: true, trim: true},
   description: {type: String, trim: true},
   detail: {type: String, trim: true},
