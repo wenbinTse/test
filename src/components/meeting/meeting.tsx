@@ -60,7 +60,7 @@ class MeetingDetail extends React.Component<Props, State> {
     const locationString = meeting.location.province + meeting.location.city + meeting.location.address;
 
     return (
-      <div>
+      <div className="container container-large">
         <Row gutter={16}>
           {meeting.images && meeting.images.length &&
           <Col sm={24} md={12}>

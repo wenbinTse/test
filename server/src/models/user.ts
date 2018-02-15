@@ -20,6 +20,18 @@ const userSchema = new mongoose.Schema({
       sendTime: {type: Date}
     }
   },
+  location: {
+    type: {
+      province: String,
+      city: String,
+      address: String
+    },
+    default: {
+      province: '',
+      city: '',
+      address: ''
+    }
+  }
 });
 
 export = mongoose.model('User', userSchema);

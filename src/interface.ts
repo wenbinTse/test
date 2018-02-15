@@ -28,7 +28,12 @@ export interface User {
   name: string;
   profileImageSrc: string;
   email: string;
+  title: string;
+  corporation: string;
+  gender: Gender;
+  job: string;
   userType: UserType;
+  location: Location;
 }
 
 export enum UserMode {

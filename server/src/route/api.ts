@@ -36,11 +36,13 @@ const meetingRouter = require('./meeting/meeting');
 const userAdminRouter = require('./user/user-admin');
 const meetingAdminRouter = require('./meeting/meeting-admin');
 const reviewRouter = require('./review/review');
+const userProfileRouter = require('./user/user-profile');
 
 router.use('/user', userRouter);
 router.use('/user-admin', userAdminRouter);
 router.use('/meeting', meetingRouter);
 router.use('/meeting-admin', meetingAdminRouter);
 router.use('/review', reviewRouter);
+router.use('/profile', userProfileRouter);
 
 export = router;

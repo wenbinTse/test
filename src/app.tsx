@@ -15,7 +15,9 @@ import NotFound from './components/not-found/not-found';
 import UserService from './components/user/user-service';
 import ForgetPassword = require('./components/user/forget-password');
 import MeetingCreate = require('./components/meeting/meeting-create');
-import MeetingDetail = require("./components/meeting/meeting");
+import MeetingDetail = require('./components/meeting/meeting');
+import ProfileLayout from './components/profile/profile-layout';
+import PersonalInfo from './components/profile/personal-info';
 
 interface State {
   loading: boolean;
@@ -54,6 +56,9 @@ class App extends React.Component<{}, State> {
               <Route path="forgetPassword" component={ForgetPassword} />
               <Route path="meeting/:meetingId" component={MeetingDetail} />
               <Route path="create-meeting" component={MeetingCreate} />
+              <Route path="/profile" component={ProfileLayout}>
+                <IndexRoute component={PersonalInfo}/>
+              </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />
             </Route>

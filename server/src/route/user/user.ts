@@ -58,6 +58,7 @@ router.post('/register', (req: Request, res: Response) => {
     gender,
     password: createHashAndSalt(password),
     email,
+    corporation,
     title,
     job,
     hashForValidation: hash,

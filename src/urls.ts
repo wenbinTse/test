@@ -7,6 +7,7 @@ const USER_URL: string = API_URL + '/user';
 const MEETING_ADMIN_URL = API_URL + '/meeting-admin';
 const MEETING_URL = API_URL + '/meeting/';
 const REVIEW_URL = API_URL + '/review';
+const PROFILE_URL = API_URL + '/profile';
 
 export default class Urls {
 
@@ -19,6 +20,10 @@ export default class Urls {
   public static verify = (userId: string, hash: string) => USER_URL + `/verify/${userId}/${hash}`;
   public static sendVerificationCode = (email: string) => USER_URL + `/sendVerificationCode/${email}`;
   public static resetPassword = USER_URL + `/resetPassword`;
+
+  // User Profile Api
+  public static dataForProfile = PROFILE_URL + '/dataForProfile';
+  public static editProfile = PROFILE_URL + '/edit';
 
   // Meeting Api
   public static getMeeting = (meetingId: string) => MEETING_URL + `/${meetingId}`;

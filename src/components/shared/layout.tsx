@@ -33,7 +33,7 @@ class Layout extends React.Component<LayoutProps, {}> {
         {this.props.children &&
         this.props.children.props.route['header-clearance'] === false ? '' : <HeaderClearance/>}
         <div
-          className={body + ' container container-large'}
+          className={body}
           style={{minHeight}}
         >
           {this.props.children}

@@ -221,7 +221,6 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
 
   private handleDescriptionChange = (description: string) => {
     this.setState({description});
-    console.log(description)
   }
 
   private handleDetailChange = (detail: string) => {
@@ -284,7 +283,7 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
             description: this.state.description,
             detail: this.state.detail
           },
-          false,
+          true,
           (data) => {
             this.setState({creating: false});
             if (data.code === ResponseCode.SUCCESS) {
