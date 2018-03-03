@@ -18,6 +18,10 @@ import MeetingCreate = require('./components/meeting/meeting-create');
 import MeetingDetail = require('./components/meeting/meeting');
 import ProfileLayout from './components/profile/profile-layout';
 import PersonalInfo from './components/profile/personal-info';
+import MeetingManage from './components/meeting-manage/meeting-manage';
+import MeetingManageLayout from './components/meeting-manage/meeting-manage-layout';
+import MeetingManageImage from './components/meeting-manage/meeting-manage-image';
+import MeetingManageFile from './components/meeting-manage/meeting-manage-file';
 
 interface State {
   loading: boolean;
@@ -56,8 +60,13 @@ class App extends React.Component<{}, State> {
               <Route path="forgetPassword" component={ForgetPassword} />
               <Route path="meeting/:meetingId" component={MeetingDetail} />
               <Route path="create-meeting" component={MeetingCreate} />
-              <Route path="/profile" component={ProfileLayout}>
+              <Route path="profile" component={ProfileLayout}>
                 <IndexRoute component={PersonalInfo}/>
+              </Route>
+              <Route path="/meetingManage/:meetingId" component={MeetingManageLayout}>
+                <IndexRoute component={MeetingManage} />
+                <Route path="images" component={MeetingManageImage} />
+                <Route path="files" component={MeetingManageFile} />
               </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />

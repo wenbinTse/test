@@ -16,7 +16,7 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Review'
   },
   createdDate: {type: Date, default: new Date()},
-  admin: {type: Boolean}, // 是否是管理员的发言
+  admin: {type: Boolean, default: false}, // 是否是管理员的发言
   numOfReply: {type: Number, default: 0}
 });
 

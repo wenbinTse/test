@@ -34,6 +34,7 @@ export interface User {
   job: string;
   userType: UserType;
   location: Location;
+  meetings: Meeting[];
 }
 
 export enum UserMode {
@@ -56,6 +57,7 @@ export interface Location {
 }
 
 export interface Meeting {
+  _id: string;
   name: string;
   location: Location;
   description: string;
@@ -77,4 +79,13 @@ export interface Review {
   numOfReply?: number;
   createdDate?: Date;
   profileImageSrc?: string;
+  admin: boolean;
+}
+
+export interface FileObject {
+  id: string;
+  name: string;
+  fileType: string;
+  size: number;
+  createdDate: Date;
 }

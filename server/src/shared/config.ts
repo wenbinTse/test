@@ -9,7 +9,8 @@ const domain = process.env.NODE_ENV ? devDomain : productDomain;
 const server = process.env.NODE_ENV ? devServer : productDomain;
 
 export default {
-  dbUrl: 'mongodb://tsinghua:bishe@ds111478.mlab.com:11478/tsinghua_dev',
+  // dbUrl: 'mongodb://tsinghua:bishe@ds111478.mlab.com:11478/tsinghua_dev',
+  dbUrl: 'mongodb://localhost:27017/bishe',
   port: port,
   sessionMaxAge: 30 * 24 * 60 * 60 * 1000,
   passwordMinLength: 8,

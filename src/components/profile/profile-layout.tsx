@@ -16,7 +16,7 @@ class ProfileLayout extends React.Component<{}, {}> {
         >
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
             <Menu.Item key="1">
-              <Link activeClassname={Styles.active} to="/profile">
+              <Link activeClassName={Styles.active} to="/profile">
                 <Icon type="user"/>
                 <span className="nav-text">nav 1</span>
               </Link>
@@ -29,7 +29,7 @@ class ProfileLayout extends React.Component<{}, {}> {
         </Sider>
         <Layout>
           <Content style={{margin: '24px 16px 0'}}>
-            <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+            <div>
               {this.props.children}
             </div>
           </Content>

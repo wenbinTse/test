@@ -61,16 +61,16 @@ class MeetingDetail extends React.Component<Props, State> {
 
     return (
       <div className="container container-large">
-        <Row gutter={16}>
+        <Row gutter={24}>
           {meeting.images && meeting.images.length &&
-          <Col sm={24} md={12}>
+          <Col sm={24} md={14}>
             <Carousel>
               {meeting.images.map((src, index) =>
-                <img src={src} key={index}/>)
+                <img src={src} key={index} style={{height: '300px'}}/>)
               }
             </Carousel>
           </Col>}
-          <Col sm={24} md={12}>
+          <Col sm={24} md={10}>
             <div className={Styles.meetingDetailTitle}>
               <h1>{meeting.name}</h1>
               <Icon type="check-circle" style={{color: 'green'}}/>
@@ -85,7 +85,7 @@ class MeetingDetail extends React.Component<Props, State> {
                 <span>{locationString}</span>
               </div>
             </div>
-            <Button style={{width: '100px'}} type="primary">注册</Button>
+            <Button style={{width: '100px', margin: '24px 0'}} type="primary" size="large">注册</Button>
           </Col>
         </Row>
         <Row style={{margin: '20px 0'}}>
@@ -104,14 +104,20 @@ class MeetingDetail extends React.Component<Props, State> {
          )}
           </Row>
         </Row>
-        <Row style={{margin: '20px 0'}}>
-          <span className={Styles.middleTitle}>更多详情</span>
-          <Col sm={24}>
-            <span dangerouslySetInnerHTML={{__html: meeting.detail}}/>
-          </Col>
-        </Row>
+        {
+          meeting.detail &&
+          <Row style={{margin: '20px 0'}}>
+            <span className={Styles.middleTitle}>更多详情</span>
+            <Col sm={24}>
+              <span dangerouslySetInnerHTML={{__html: meeting.detail}}/>
+            </Col>
+          </Row>
+        }
         <Tabs defaultActiveKey="1">
           <TabPane tab="留言" key={1}>
+            <Reviews meetingId={this.props.params.meetingId} type="review"/>
+          </TabPane>
+          <TabPane tab="留言" key={2}>
             <Reviews meetingId={this.props.params.meetingId} type="review"/>
           </TabPane>
         </Tabs>

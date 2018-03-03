@@ -24,6 +24,11 @@ export enum UserType {
   ORDINARY
 }
 
+export enum Status {
+  DELETED,
+  ACTIVE
+}
+
 export interface Location {
   province: string;
   city: string;

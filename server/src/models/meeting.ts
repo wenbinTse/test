@@ -1,5 +1,6 @@
-import * as mongoose from 'mongoose';
+import { Status } from '../shared/interface';
 
+import * as mongoose from 'mongoose';
 const meetingSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -13,6 +14,12 @@ const meetingSchema = new mongoose.Schema({
   startDate: {type: String, required: true},
   endDate: {type: String, required: true},
   images: {type: [mongoose.Schema.Types.ObjectId]},
+  files: {type: [{
+    id: mongoose.Schema.Types.ObjectId,
+    name: String,
+    fileType: String,
+    size: Number
+  }]},
   location: {
     type: {
       province: String,
@@ -25,6 +32,10 @@ const meetingSchema = new mongoose.Schema({
       name: String,
       description: String
     }]
+  },
+  status: {
+    type: Status,
+    default: Status.ACTIVE
   },
   createdDate: {type: Date, default: new Date()}
 });

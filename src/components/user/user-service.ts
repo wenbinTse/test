@@ -44,7 +44,7 @@ export default class UserService {
   }
 
   public static getUserProfile() {
-    return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : {};
+    return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : null;
   }
 
   public static requestUserProfile(callback: () => void) {

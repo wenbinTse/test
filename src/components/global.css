@@ -12,8 +12,8 @@
 @value default-background-color: #fff;
 @value light-background-color: #f3f3f3;
 
-@value header-height: 62px;
-@value footer-height: 62px;
+@value header-height: 48px;
+@value footer-height: 48px;
 
 /*
  Bootstrap4 override

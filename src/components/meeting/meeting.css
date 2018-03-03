@@ -55,3 +55,110 @@
 	font-weight: bolder;
 	font-size: 19px;
 }
+
+@value container-height 300px;
+
+.card-container {
+	width: 100%;
+	height: container-height;
+	border: 1px solid grey;
+	border-bottom: 2px solid black;
+	box-shadow: #6a6f7b;
+}
+
+.card-container > div:last-of-type {
+	padding: 8px;
+}
+
+.card-container > div:last-of-type > h3 {
+	margin: 0 0 0 8px;
+	font-weight: bolder;
+}
+
+.card-container > div:first-of-type {
+	height: 50%;
+	border: 1px solid #dcdcdc;
+}
+
+.item {
+	margin: 4px 0;
+}
+
+.item > i {
+	margin: 0 8px 0 0;
+}
+
+.item > span {
+	overflow: hidden;
+}
+
+.none {
+	background: black;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 50%;
+}
+
+.carousel {
+	height: 100%;
+	width: 100%;
+}
+
+.carousel > div:first-of-type {
+	height: 100%;
+}
+
+.carousel > div:first-of-type > div:first-of-type {
+	height: 100%;
+}
+
+.card-container > div:last-of-type > div:last-of-type {
+	border-top: 1px solid #dcdcdc;
+	overflow-y: hidden;
+}
+
+div[class="ant-list-item"] > div:first-of-type {
+	width: 100%;
+}
+
+.featured-meetings-container {
+	width: 100%;
+	background: black;
+}
+
+.featured-meeting-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.featured-meeting-container > img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	height: 400px;
+}
+
+.featured-meeting-container > div {
+	width: 100%;
+	height: 100%;	
+	background: black;
+	color: white;
+	height: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.featured-meeting-container > h2 {
+	font-size: 36px;
+	font-weight: bolder;
+	position: absolute;
+	bottom: 24px;
+	right: 20%;
+	color: white;
+	text-shadow: 2px 2px 2px white;
+}

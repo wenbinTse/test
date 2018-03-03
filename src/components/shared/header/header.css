@@ -198,6 +198,12 @@
   cursor: pointer;
 }
 
+.menu > span {
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .menu > li:last-of-type {
   color: red;
 }

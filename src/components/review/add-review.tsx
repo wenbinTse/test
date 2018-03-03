@@ -21,6 +21,8 @@ interface State {
 }
 
 class AddReview extends React.Component<Props, State> {
+  private user = UserService.getUserProfile();
+  private wholeName: string;
   private form: HTMLFormElement;
   constructor(props: Props) {
     super(props);
@@ -29,19 +31,25 @@ class AddReview extends React.Component<Props, State> {
       content: '',
       adding: false
     };
+    this.wholeName = this.user.name;
+    for (const meeting of this.user.meetings) {
+      if (meeting._id === props.meetingId) {
+        this.wholeName = '管理员';
+        break;
+      }
+    }
+    console.log(this.user)
   }
   
   public render() {
-    const user = UserService.getUserProfile();
-    const wholeName = user.name;
-    const name = wholeName ? wholeName.substr(0, 1) : '';
-    const profileImageSrc = user.profileImageSrc;
+    const name = this.wholeName ? this.wholeName.substr(0, 1) : '';
+    const profileImageSrc = this.user.profileImageSrc;
 
     const style = this.state.typing ? {} : {display: 'none'};
 
     return (
       <div className={Styles.addContainer}>
-        <Avatar src={profileImageSrc} size="large">{name}</Avatar>
+        <Avatar src={profileImageSrc} size="large" style={{background: '#40a9ff'}}>{name}</Avatar>
         <form ref={(e) => this.form = e as HTMLFormElement}>
           <TextArea
             placeholder="发表公开留言"

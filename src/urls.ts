@@ -10,6 +10,8 @@ const REVIEW_URL = API_URL + '/review';
 const PROFILE_URL = API_URL + '/profile';
 
 export default class Urls {
+  // Home Api
+  public static dataForHome = API_URL + '/dataForHome';
 
   // User Api
   public static login = USER_URL + '/login';
@@ -24,10 +26,20 @@ export default class Urls {
   // User Profile Api
   public static dataForProfile = PROFILE_URL + '/dataForProfile';
   public static editProfile = PROFILE_URL + '/edit';
-
+  public static editProfileImage = PROFILE_URL + '/editProfileImage';
   // Meeting Api
   public static getMeeting = (meetingId: string) => MEETING_URL + `/${meetingId}`;
+  public static searchMeeting = MEETING_URL + '/search';
 
+  // Meeting Manage Api
+  public static dataForMeetingManage = (id: string) => MEETING_ADMIN_URL + '/dataForMeetingManage/' + id; 
+  public static editMeeting = (id: string) => MEETING_ADMIN_URL + '/edit/' + id;
+  public static meetingImages = (id: string) => MEETING_ADMIN_URL + '/images/' + id;
+  public static uploadMeetingImage = (id: string) => MEETING_ADMIN_URL + '/uploadImage/' + id;
+  public static deleteMeetingImage = (meetingId: string, imageId: string) => MEETING_ADMIN_URL + `/deleteImage/${meetingId}/${imageId}`;
+  public static meetingFiles = (id: string) => MEETING_ADMIN_URL + '/files/' + id;
+  public static uploadMeetingFile = (id: string) => MEETING_ADMIN_URL + '/uploadFile/' + id;
+  public static deleteMeetingFile = (meetingId: string, fileId: string) => MEETING_ADMIN_URL + `/deleteFile/${meetingId}/${fileId}`;
   // Meeting Admin Api
   public static createMeeting = MEETING_ADMIN_URL + '/create';
 
@@ -36,6 +48,9 @@ export default class Urls {
 
   // Get Cities
   public static getCities = API_URL + '/cities';
+
+  // File API
+  public static download = (id: string, fileName: string) => API_URL + `/file/file/${id}/${fileName}`;
 
   // Review API
   public static getReviews = (meetingId: string) => REVIEW_URL + `/getReviews/${meetingId}`;

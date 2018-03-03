@@ -1,16 +1,18 @@
 import { Router, Request, Response } from 'express';
-import { Gender, Location, ResponseCode } from '../../shared/interface';
+import { Gender, Location, ResponseCode, UserType } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Pattern from '../../shared/pattern';
 import Config from '../../shared/config';
 import Session = Express.Session;
 import { createHashAndSalt, verifyPassword } from '../../shared/password';
 import * as Email from '../../shared/email';
-import {retry} from "async";
+import { Urls } from '../../shared/urls';
+import { profileImage } from '../../../../src/components/profile/profile.css';
 
 const crypto = require('crypto');
 const router = Router();
 const User = require('../../models/user');
+const Meeting = require('../../models/meeting');
 
 const corporations = require('../../../data/corporation.json');
 const titles = require('../../../data/title.json');
@@ -104,21 +106,28 @@ router.post('/login', (req: Request, res: Response) => {
       }
       const session: Session = req.session as Session;
       session.user = doc;
-      session.save((err) => {
+      session.save(async (err) => {
         if (err) {
+          res.json({code: ResponseCode.ERROR});
           console.error(err);
-        } else {
-          res.json({
-            code: ResponseCode.SUCCESS,
-            item: {
-              _id: doc._id,
-              email: doc.email,
-              userType: doc.userType,
-              profileImage: doc.profileImage,
-              profileImageSrc: doc.profileImage ? Config.server + '/api/image/profileImage' + doc.profileImage : ''
-            }
-          });
+          return;
         }
+        const item: any = {
+            _id: doc._id,
+            email: doc.email,
+            userType: doc.userType,
+            profileImage: doc.profileImage,
+            profileImageSrc: Urls.profileImage(doc.profileImage)
+        };
+        if (doc.userType === UserType.MEETING_ADMIN) {
+          await Meeting.find({owner: doc._id}, ['name']).exce()
+            .then((meetings: any[]) => item.meetings = meetings)
+            .catch((err: any) => console.log(err));
+        }
+        res.json({
+          code: ResponseCode.SUCCESS,
+          item
+        });
       });
     })
     .catch((err: any) => errHandler(err, res));
@@ -144,15 +153,30 @@ router.get('/currentUserInfo', (req: Request, res: Response) => {
     return;
   }
   const user = session.user;
-  res.json({
-    code: ResponseCode.SUCCESS,
-    item: {
-      name: user.name,
-      profileImage: user.profileImage,
-      email: user.email,
-      _id: user._id
-    }
-  });
+  User.findById(user._id, ['name', 'profileImage', 'email', 'userType']).exec()
+    .then(async (doc: any) => {
+      if (!doc) {
+        res.json({code: ResponseCode.ERROR});
+        return;
+      }
+      const item: any = {
+        name: doc.name,
+        profileImage: doc.profileImage,
+        profileImageSrc: Urls.profileImage(doc.profileImage),
+        email: doc.email,
+        _id: doc._id,
+        meetings: []
+      };
+      if (doc.userType === UserType.MEETING_ADMIN) {
+        await Meeting.find({owner: user._id}, 'name').exec()
+          .then((docs: any[]) => item.meetings = docs)
+          .catch((err: any) => console.log(err));
+      }
+      res.json({
+        code: ResponseCode.SUCCESS,
+        item
+      });
+    });
 });
 
 router.get('/verify/:userId/:hash', (req: Request, res: Response) => {

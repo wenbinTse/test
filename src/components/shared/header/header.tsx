@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { IndexLink } from 'react-router';
+import { IndexLink, browserHistory } from 'react-router';
 import { Dropdown, Icon } from 'antd';
 import { User } from '../../../interface';
 import * as styles from './header.css';
 import UserService from '../../user/user-service';
-// import { ClickParam } from 'antd/lib/menu';
 
 interface HeaderProps {
   compactMode?: boolean;
@@ -56,12 +55,21 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const menu = (
       <div className={styles.menu}>
         <div className={styles.arrow}/>
-        <li>
+        <li onClick={() => this.menuClickHandler('/profile')}>
           个人信息
         </li>
         <li>
           已参加会议
         </li>
+        <hr/>
+        {
+          this.state.userProfile && this.state.userProfile.meetings.length &&
+          <span><Icon type="setting" style={{marginRight: '4px', color: 'red'}}/>管理会议</span>
+        }
+        {
+          this.state.userProfile && this.state.userProfile.meetings.map((meeting) =>
+            <li key={meeting._id} onClick={() => this.menuClickHandler('/meetingManage/' + meeting._id)}>{meeting.name}</li>)
+        }
         <hr/>
         <li onClick={() => UserService.logout()}>
           退出
@@ -148,9 +156,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     }
   }
 
-  // private menuClickHandler = (e: ClickParam) => {
-  //   console.log(e.key)
-  // }
+  private menuClickHandler = (address: string) => {
+    browserHistory.push(address);
+  }
 }
 
 export = Header;
