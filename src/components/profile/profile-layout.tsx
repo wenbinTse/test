@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Link } from 'react-router';
-import { Layout, Icon, Menu } from 'antd';
+import { IndexLink } from 'react-router';
+import { Layout, Icon } from 'antd';
 import * as Styles from './profile.css';
 const Sider = Layout.Sider;
 const Content = Layout.Content;
@@ -12,20 +12,18 @@ class ProfileLayout extends React.Component<{}, {}> {
         <Sider
           breakpoint="md"
           collapsedWidth="0"
-          style={{backgroundColor: 'black'}}
+          style={{backgroundColor: 'black', marginBottom: '24px', height: '500px'}}
         >
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-            <Menu.Item key="1">
-              <Link activeClassName={Styles.active} to="/profile">
-                <Icon type="user"/>
-                <span className="nav-text">nav 1</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
+          <div className={Styles.linkContainer}>
+            <IndexLink activeClassName={Styles.active} to="/profile">
+              <Icon type="user"/>
+              <span className="nav-text">个人信息</span>
+            </IndexLink>
+            <IndexLink activeClassName={Styles.active} to="/profile/meetings">
               <Icon type="video-camera"/>
-              <span className="nav-text">nav 2</span>
-            </Menu.Item>
-          </Menu>
+              <span className="nav-text">会议列表</span>
+            </IndexLink>
+          </div>
         </Sider>
         <Layout>
           <Content style={{margin: '24px 16px 0'}}>

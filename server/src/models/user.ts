@@ -31,6 +31,15 @@ const userSchema = new mongoose.Schema({
       city: '',
       address: ''
     }
+  },
+  taxPayerId: {
+    type: String
+  },
+  invoiceTitle: {
+    type: String
+  },
+  phone: {
+    type: String
   }
 });
 

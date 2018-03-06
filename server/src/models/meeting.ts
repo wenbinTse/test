@@ -37,7 +37,8 @@ const meetingSchema = new mongoose.Schema({
     type: Status,
     default: Status.ACTIVE
   },
-  createdDate: {type: Date, default: new Date()}
+  createdDate: {type: Date, default: new Date()},
+  stayTypes: {type: [String], default: []}
 });
 
 export = mongoose.model('Meeting', meetingSchema);

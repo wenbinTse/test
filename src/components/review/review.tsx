@@ -35,10 +35,10 @@ class ReviewElement extends React.Component<Props, State> {
     const spanStyle: React.CSSProperties = {color: 'black', textDecoration: 'underline', cursor: 'pointer'};
     const s1 = !this.state.showRelies ? `显示${review.numOfReply}条回复` : '收起';
     const s2 = !this.state.showRelies ? '回复' : '收起';
-    
+
     return (
       <div className={Styles.container} style={style}>
-        <Avatar size="large" src={review.profileImageSrc} style={{background: '#f56a00'}}>
+        <Avatar size="large" src={review.admin ? '' : review.profileImageSrc} style={{background: '#f56a00'}}>
           {profileName}
         </Avatar>
         <div style={{width: '100%'}}>

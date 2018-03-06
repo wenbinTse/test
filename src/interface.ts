@@ -42,6 +42,12 @@ export enum UserMode {
   REGISTER
 }
 
+export enum AttendanceStatus {
+  PENDING, // 审核中
+  REFUSED,
+  AUDITED // 审核通过,
+}
+
 export interface Guest {
   name: string;
   description: string;
@@ -62,10 +68,11 @@ export interface Meeting {
   location: Location;
   description: string;
   detail: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   guests: Guest[];
   images: string[];
+  stayTypes: string[];
 }
 
 export interface Review {
@@ -82,6 +89,21 @@ export interface Review {
   admin: boolean;
 }
 
+export interface Attandence {
+  _id: string;
+  taxPayerId: string;
+  invoiceTitle: string;
+  meeting: Meeting;
+  user: User;
+  phone: string;
+  forecastArriveTime: string;
+  stayType: string;
+  stayDates: Date[];
+  remarks: string;
+  status: AttendanceStatus;
+  createdDate: Date;
+}
+
 export interface FileObject {
   id: string;
   name: string;
@@ -89,3 +111,8 @@ export interface FileObject {
   size: number;
   createdDate: Date;
 }
+
+export const allStayTypes: string[] = ['不住宿', '合住', '独住标准间', '独住大床房'];
+
+export const stayTypeOptions: Array<{label: string, value: string}> =
+  allStayTypes.map((type) => ({label: type, value: type}));

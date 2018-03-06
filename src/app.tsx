@@ -22,6 +22,8 @@ import MeetingManage from './components/meeting-manage/meeting-manage';
 import MeetingManageLayout from './components/meeting-manage/meeting-manage-layout';
 import MeetingManageImage from './components/meeting-manage/meeting-manage-image';
 import MeetingManageFile from './components/meeting-manage/meeting-manage-file';
+import ProfileMeetings from './components/profile/profile-meetings';
+import MeetingApplicants from './components/meeting-manage/meeting-manage-applicants';
 
 interface State {
   loading: boolean;
@@ -62,11 +64,13 @@ class App extends React.Component<{}, State> {
               <Route path="create-meeting" component={MeetingCreate} />
               <Route path="profile" component={ProfileLayout}>
                 <IndexRoute component={PersonalInfo}/>
+                <Route path="meetings" component={ProfileMeetings} />
               </Route>
               <Route path="/meetingManage/:meetingId" component={MeetingManageLayout}>
                 <IndexRoute component={MeetingManage} />
                 <Route path="images" component={MeetingManageImage} />
                 <Route path="files" component={MeetingManageFile} />
+                <Route path="applicants" component={MeetingApplicants} />
               </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />

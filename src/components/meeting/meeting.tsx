@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Spin, Row, Col, Carousel, Icon, Tabs } from 'antd';
+import { Button, Spin, Row, Col, Carousel, Icon, Tabs, Modal } from 'antd';
 import { Meeting, ResponseCode } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
@@ -7,6 +7,7 @@ import * as Styles from './meeting.css';
 import * as moment from 'moment';
 import GuestElement = require('../guest/guest');
 import Reviews from '../review/reviews';
+import MeetingRegister = require('./meeting-register');
 const TabPane = Tabs.TabPane;
 
 const dateFormat = 'YYYY/M/D';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 interface State {
+  showRegisterModal: boolean;
   meeting?: Meeting;
   valid: boolean;
 }
@@ -26,6 +28,7 @@ class MeetingDetail extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      showRegisterModal: false,
       valid: true
     };
   }
@@ -85,7 +88,13 @@ class MeetingDetail extends React.Component<Props, State> {
                 <span>{locationString}</span>
               </div>
             </div>
-            <Button style={{width: '100px', margin: '24px 0'}} type="primary" size="large">注册</Button>
+            <Button
+              style={{width: '100px', margin: '24px 0'}}
+              type="primary" 
+              size="large"
+              onClick={() => this.setState({showRegisterModal: true})}
+            >注册
+            </Button>
           </Col>
         </Row>
         <Row style={{margin: '20px 0'}}>
@@ -121,6 +130,18 @@ class MeetingDetail extends React.Component<Props, State> {
             <Reviews meetingId={this.props.params.meetingId} type="review"/>
           </TabPane>
         </Tabs>
+        <Modal
+          visible={this.state.showRegisterModal}
+          footer={false}
+          onCancel={() => this.setState({showRegisterModal: false})}
+        >
+          <MeetingRegister
+            meetingId={meeting._id}
+            startDate={meeting.startDate}
+            endDate={meeting.endDate}
+            stayTypes={meeting.stayTypes}
+          />
+        </Modal>
       </div>
     );
   }

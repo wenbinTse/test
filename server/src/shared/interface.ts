@@ -29,6 +29,12 @@ export enum Status {
   ACTIVE
 }
 
+export enum AttendanceStatus {
+  PENDING, // 审核中
+  REFUSED,
+  AUDITED // 审核通过,
+}
+
 export interface Location {
   province: string;
   city: string;
@@ -43,5 +49,5 @@ export interface Password {
 export interface Addressee {
   name: string;
   email: string;
-  _id?: mongoose.Schema.Types.ObjectId
+  _id?: mongoose.Schema.Types.ObjectId;
 }

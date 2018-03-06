@@ -1,10 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { ResponseCode } from '../../shared/interface';
+import { ResponseCode, AttendanceStatus } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Session = Express.Session;
 import { checkObjectId, checkLogin } from '../../shared/middle-ware';
 import { Urls } from '../../shared/urls';
 import File from '../../shared/file';
+import { Attendance } from '../../models/attendance';
 
 const Meeting = require('../../models/meeting');
 const router = Router();
@@ -18,6 +19,14 @@ router.post('/create', (req: Request, res: Response) => {
   const endDate = req.body.endDate;
   const location = req.body.location;
   const guests = req.body.guests;
+  const stayTypes = req.body.stayTypes;
+
+  if (!name || !startDate || !endDate || !location || !location.province || !location.city
+    || !location.address || !stayTypes) {
+      res.json({code: ResponseCode.INCOMPLETE_INPUT});
+      return;
+    }
+
   const owner = (req.session as Session).user._id;
   const meeting = new Meeting({
     owner,
@@ -27,7 +36,8 @@ router.post('/create', (req: Request, res: Response) => {
     startDate,
     endDate,
     location,
-    guests
+    guests,
+    stayTypes
   });
   meeting.save()
     .then((data: any) => res.json({
@@ -57,6 +67,14 @@ router.post('/edit/:id', checkObjectId, (req: Request, res: Response) => {
   const endDate = req.body.endDate;
   const location = req.body.location;
   const guests =  req.body.guests;
+  const stayTypes = req.body.stayTypes;
+
+  if (!name || !startDate || !endDate || !location || !location.province || !location.city
+    || !location.address || !stayTypes) {
+      res.json({code: ResponseCode.INCOMPLETE_INPUT});
+      return;
+    }
+
   Meeting.findByIdAndUpdate(req.params.id, {
     $set: {
       name,
@@ -65,7 +83,8 @@ router.post('/edit/:id', checkObjectId, (req: Request, res: Response) => {
       startDate,
       endDate,
       location,
-      guests
+      guests,
+      stayTypes
     }
   }).exec()
     .then(() => {
@@ -172,6 +191,61 @@ router.get('/deleteFile/:meetingId/:fileId', (req: Request, res: Response) => {
       .then(() => res.json({code: ResponseCode.SUCCESS}))
       .catch((err: any) => errHandler(err, res));
   });
+});
+
+router.get('/applicants/:id', checkObjectId, (req: Request, res: Response) => {
+  Attendance.find({meeting: req.params.id})
+    .sort({createdDate: -1})
+    .populate('user', 'name email gender corporation title job profileImage')
+    .exec()
+    .then((docs: any[]) => {
+      const pending: any[] = [];
+      const audited: any[] = [];
+      for (const doc of docs) {
+        switch (doc.status) {
+          case AttendanceStatus.PENDING:
+            pending.push(doc);
+            break;
+          case AttendanceStatus.AUDITED:
+            audited.push(doc);
+            break;
+        }
+      }
+      res.json({
+        code: ResponseCode.SUCCESS,
+        pending,
+        audited
+      });
+    })
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.post('/auditAttendance/:id', checkObjectId, (req: Request, res: Response) => {
+  const meetingId = req.params.id;
+  const attenIds: string[] = req.body.attenIds;
+  if (!attenIds || !attenIds.length) {
+    res.json({code: ResponseCode.INCOMPLETE_INPUT});
+  }
+  Attendance.update(
+    {_id: {$in: attenIds}, meeting: meetingId},
+    {$set: {status: AttendanceStatus.AUDITED}}
+  ).exec()
+    .then(() => res.json({code: ResponseCode.SUCCESS}))
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.post('/refuseAttendance/:id', checkObjectId, (req: Request, res: Response) => {
+  const meetingId = req.params.id;
+  const attenIds: string[] = req.body.attenIds;
+  if (!attenIds || !attenIds.length) {
+    res.json({code: ResponseCode.INCOMPLETE_INPUT});
+  }
+  Attendance.update(
+    {_id: {$in: attenIds}, meeting: meetingId},
+    {$set: {status: AttendanceStatus.REFUSED}}
+  ).exec()
+    .then(() => res.json({code: ResponseCode.SUCCESS}))
+    .catch((err: any) => errHandler(err, res));
 });
 
 export = router;

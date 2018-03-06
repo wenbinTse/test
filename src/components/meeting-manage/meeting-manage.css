@@ -27,7 +27,6 @@
 
 .container {
     background: white;
-    max-width: 1220px;
 }
 
 .images {
@@ -75,4 +74,21 @@
 
 .images > div:last-of-type {
     flex-grow: 0;
+}
+
+.applicants-container {
+}
+
+.applicants-container td {
+    white-space: nowrap;
+}
+
+.applicants-container th {
+    white-space: nowrap;
+}
+
+.search {
+    width: 100%;
+    max-width: 500px;
+    margin: 16px 0;
 }

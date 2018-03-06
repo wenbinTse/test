@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Form, Input, Button, Col, DatePicker, Cascader, Row, Icon, Spin, message } from 'antd';
-import { Meeting, ResponseCode } from '../../interface';
+import { Meeting, ResponseCode, stayTypeOptions } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import UserService from '../user/user-service';
@@ -9,6 +9,7 @@ import FormItem from 'antd/lib/form/FormItem';
 import { FormComponentProps } from 'antd/lib/form';
 import * as moment from 'moment';
 import * as Styles from './meeting-manage.css';
+import CheckboxGroup from 'antd/lib/checkbox/Group';
 
 interface Option {
   label: string;
@@ -41,10 +42,21 @@ class MeetingManageForm extends React.Component<Props, State> {
     };
   }
 
+  public componentWillMount() {
+    this.askForData(this.props.params.meetingId);
+  }
+
   public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.params.meetingId === nextProps.params.meetingId) {
+      return;
+    }
+    this.askForData(nextProps.params.meetingId);
+  }
+
+  private askForData(meetingId: string) {
     this.setState({loading: true});
     HttpRequestDelegate.get(
-      Urls.dataForMeetingManage(nextProps.params.meetingId),
+      Urls.dataForMeetingManage(meetingId),
       true,
       (data) => {
         this.setState({
@@ -219,6 +231,13 @@ class MeetingManageForm extends React.Component<Props, State> {
               onChange={this.detailChangeHandler}
             />
           </div>
+        </FormItem>
+        <FormItem label="可选住宿类型" help="都不选则为不提供住宿" {...formItemLayout}>
+          {getFieldDecorator('stayTypes', {
+            initialValue: meeting.stayTypes
+          })(
+            <CheckboxGroup options={stayTypeOptions}/>
+          )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button

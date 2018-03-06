@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { FormComponentProps } from 'antd/lib/form';
-import { Form, Input, Button, Col, DatePicker, Cascader, Row, Icon, message } from 'antd';
+import { Form, Input, Button, Col, DatePicker, Cascader, Row, Icon, message, Checkbox } from 'antd';
 import * as Styles from './meeting.css';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/braft.css';
-import { Guest, ResponseCode } from '../../interface';
+import { Guest, ResponseCode, stayTypeOptions } from '../../interface';
 import FormItem from 'antd/lib/form/FormItem';
 import UserService from '../user/user-service';
+
+const CheckboxGroup = Checkbox.Group;
 
 interface Option {
   label: string;
@@ -37,7 +39,6 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
       description: '',
       creating: false
     };
-
   }
   
   public componentWillMount() {
@@ -211,6 +212,11 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
               onChange={this.handleDetailChange}
             />
           </div>
+        </FormItem>
+        <FormItem label="可选住宿类型" help="都不选则为不提供住宿" {...formItemLayout}>
+          {getFieldDecorator('stayTypes')(
+            <CheckboxGroup options={stayTypeOptions}/>
+          )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button loading={this.state.creating} type="primary" htmlType="submit" style={{width: '100%'}} onClick={this.handleSubmit}>创建</Button>

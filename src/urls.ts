@@ -27,9 +27,12 @@ export default class Urls {
   public static dataForProfile = PROFILE_URL + '/dataForProfile';
   public static editProfile = PROFILE_URL + '/edit';
   public static editProfileImage = PROFILE_URL + '/editProfileImage';
+  public static userMeetings = PROFILE_URL + '/meetings';
+  public static cancelAttendance = (attendanceId: string) => PROFILE_URL + '/cancelAttendance/' + attendanceId;
   // Meeting Api
   public static getMeeting = (meetingId: string) => MEETING_URL + `/${meetingId}`;
   public static searchMeeting = MEETING_URL + '/search';
+  public static registerMeeting = MEETING_URL + '/register';
 
   // Meeting Manage Api
   public static dataForMeetingManage = (id: string) => MEETING_ADMIN_URL + '/dataForMeetingManage/' + id; 
@@ -40,6 +43,10 @@ export default class Urls {
   public static meetingFiles = (id: string) => MEETING_ADMIN_URL + '/files/' + id;
   public static uploadMeetingFile = (id: string) => MEETING_ADMIN_URL + '/uploadFile/' + id;
   public static deleteMeetingFile = (meetingId: string, fileId: string) => MEETING_ADMIN_URL + `/deleteFile/${meetingId}/${fileId}`;
+  public static meetingApplicants = (meetingId: string) => MEETING_ADMIN_URL + '/applicants/' + meetingId;
+  public static auditAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/auditAttendance/' + meetingId;
+  public static refuseAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/refuseAttendance/' + meetingId;
+  
   // Meeting Admin Api
   public static createMeeting = MEETING_ADMIN_URL + '/create';
 

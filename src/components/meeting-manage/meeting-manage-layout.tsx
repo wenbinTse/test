@@ -29,6 +29,10 @@ class MeetingManageLayout extends React.Component<Props, {}> {
               <Icon type="video-camera"/>
               <span className="nav-text">封面图片</span>
             </IndexLink>
+            <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/applicants`}>
+              <Icon type="user"/>
+              <span className="nav-text">人员管理</span>
+            </IndexLink>
             <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/files`}>
               <Icon type="video-camera"/>
               <span className="nav-text">会议资源</span>

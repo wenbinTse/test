@@ -1,13 +1,15 @@
 import { Router, Request, Response } from 'express';
-import { Location, Gender, ResponseCode } from '../../shared/interface';
+import { Location, Gender, ResponseCode, Status, AttendanceStatus } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
-import { checkLogin } from '../../shared/middle-ware';
+import { checkLogin, checkObjectId } from '../../shared/middle-ware';
 import Session = Express.Session;
 import File from '../../shared/file';
 import { Urls } from '../../shared/urls';
 
 const router = Router();
 const User = require('../../models/user');
+const Meeting = require('../../models/meeting');
+const Attendance = require('../../models/attendance');
 
 const corporations = require('../../../data/corporation.json');
 const titles = require('../../../data/title.json');
@@ -76,6 +78,60 @@ router.post('/editProfileImage', (req: Request, res: Response) => {
     })
     .catch((err: any) => errHandler(err, res));
   });
+});
+
+router.get('/meetings', (req: Request, res: Response) => {
+  const session = req.session as Session;
+  const userId = session.user._id;
+  Attendance.find({user: userId})
+    .sort({createdDate: -1})
+    .populate('meeting')
+    .exec()
+    .then((docs: any[]) => {
+      const pending: any[] = [];
+      const refused: any[] = [];
+      const audited: any[] = [];
+      for (const doc of docs) {
+        switch (doc.status) {
+          case AttendanceStatus.PENDING:
+            pending.push(doc);
+            break;
+          case AttendanceStatus.REFUSED:
+            refused.push(doc);
+            break;
+          case AttendanceStatus.AUDITED:
+            audited.push(doc);
+            break;
+        }
+      }
+      res.json({
+        code: ResponseCode.SUCCESS,
+        pending,
+        refused,
+        audited
+      });
+    })
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/cancelAttendance/:id', checkObjectId, (req: Request, res: Response) => {
+  const session = req.session as Session;
+  const userId = session.user._id;
+  const attenId = req.params.id;
+  Attendance.findOne({_id: attenId, user: userId}).exec()
+    .then((atten: any) => {
+      if (!atten) {
+        res.json({code: ResponseCode.ACCESS_DENIED});
+        return;
+      }
+      if (atten.status === AttendanceStatus.AUDITED) {
+        res.json({code: ResponseCode.INVALID_INPUT});
+        return;
+      }
+      Attendance.remove({_id: attenId}).exec()
+        .then(() => res.json({code: ResponseCode.SUCCESS}))
+        .catch((err: any) => errHandler(err, res));
+    });
 });
 
 export = router;

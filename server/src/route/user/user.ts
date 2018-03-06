@@ -119,11 +119,6 @@ router.post('/login', (req: Request, res: Response) => {
             profileImage: doc.profileImage,
             profileImageSrc: Urls.profileImage(doc.profileImage)
         };
-        if (doc.userType === UserType.MEETING_ADMIN) {
-          await Meeting.find({owner: doc._id}, ['name']).exce()
-            .then((meetings: any[]) => item.meetings = meetings)
-            .catch((err: any) => console.log(err));
-        }
         res.json({
           code: ResponseCode.SUCCESS,
           item
@@ -153,7 +148,7 @@ router.get('/currentUserInfo', (req: Request, res: Response) => {
     return;
   }
   const user = session.user;
-  User.findById(user._id, ['name', 'profileImage', 'email', 'userType']).exec()
+  User.findById(user._id, ['name', 'profileImage', 'email', 'userType', 'taxPayerId', 'invoiceTitle', 'phone']).exec()
     .then(async (doc: any) => {
       if (!doc) {
         res.json({code: ResponseCode.ERROR});
@@ -165,7 +160,10 @@ router.get('/currentUserInfo', (req: Request, res: Response) => {
         profileImageSrc: Urls.profileImage(doc.profileImage),
         email: doc.email,
         _id: doc._id,
-        meetings: []
+        meetings: [],
+        taxPayerId: doc.taxPayerId,
+        phone: doc.phone,
+        invoiceTitle: doc.invoiceTitle
       };
       if (doc.userType === UserType.MEETING_ADMIN) {
         await Meeting.find({owner: user._id}, 'name').exec()
