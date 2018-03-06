@@ -73,6 +73,7 @@ export interface Meeting {
   guests: Guest[];
   images: string[];
   stayTypes: string[];
+  files: FileObject[];
 }
 
 export interface Review {

@@ -4,10 +4,10 @@ import { errHandler } from '../../shared/util';
 import * as mongoose from 'mongoose';
 import { checkObjectId, checkLogin } from '../../shared/middle-ware';
 import { Urls } from '../../shared/urls';
+import { Attendance } from '../../models/attendance';
 import Session = Express.Session;
 
 const Meeting = require('../../models/meeting');
-const Attendance = require('../../models/attendance');
 const User = require('../../models/user');
 const router = Router();
 

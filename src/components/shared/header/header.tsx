@@ -58,19 +58,19 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         <li onClick={() => this.menuClickHandler('/profile')}>
           个人信息
         </li>
-        <li>
+        <li onClick={() => this.menuClickHandler('/profile/meetings')}>
           已参加会议
         </li>
-        <hr/>
+        {this.state.userProfile && this.state.userProfile.meetings.length > 0 && <hr/>}
         {
-          this.state.userProfile && this.state.userProfile.meetings.length &&
+          this.state.userProfile && this.state.userProfile.meetings.length > 0 &&
           <span><Icon type="setting" style={{marginRight: '4px', color: 'red'}}/>管理会议</span>
         }
         {
           this.state.userProfile && this.state.userProfile.meetings.map((meeting) =>
             <li key={meeting._id} onClick={() => this.menuClickHandler('/meetingManage/' + meeting._id)}>{meeting.name}</li>)
         }
-        <hr/>
+        {this.state.userProfile && this.state.userProfile.meetings.length > 0 && <hr/>}
         <li onClick={() => UserService.logout()}>
           退出
         </li>

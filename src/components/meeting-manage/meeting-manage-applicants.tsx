@@ -161,7 +161,7 @@ class MeetingApplicants extends React.Component<Props, State> {
           <AttandenceColumn 
             title="注册时间" 
             dataIndex="createdDate"
-            render={(text, record) => moment(record.createdDate).format('M月D号 H:m')}
+            render={(text, record) => moment(record.createdDate).format('M月D号 H:mm')}
             sorter={(a, b) => this.directSorter(a, b, 'createdDate')}
           />
           {status === AttendanceStatus.PENDING && <AttandenceColumn 
@@ -169,7 +169,12 @@ class MeetingApplicants extends React.Component<Props, State> {
             key="operations"
             width={100}
             fixed="right"
-            render={(text, record) => status === AttendanceStatus.PENDING ? <Button onClick={() => this.auditAttendance(record._id)}>同意</Button> : null}
+            render={(text, record) => status === AttendanceStatus.PENDING ?
+              <div>
+                <Button onClick={() => this.auditAttendance(record._id)}>同意</Button> 
+                <Button style={{marginLeft: '8px'}} onClick={() => this.refuseAttendance(record._id)}>拒绝</Button> 
+              </div>
+            : null}
           />}
         </AttandenceTable>
       </div>

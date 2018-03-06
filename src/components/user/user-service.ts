@@ -35,7 +35,7 @@ export default class UserService {
         if (data.code === ResponseCode.SUCCESS) {
           message.success('已登出');
           window.localStorage.removeItem('user');
-          window.location.reload();
+          window.location.href = '/';
         } else {
           message.warn('请稍后再试');
         }

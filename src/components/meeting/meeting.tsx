@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button, Spin, Row, Col, Carousel, Icon, Tabs, Modal } from 'antd';
-import { Meeting, ResponseCode } from '../../interface';
+import { Button, Spin, Row, Col, Carousel, Table, Icon, Tabs, Modal } from 'antd';
+import { Meeting, ResponseCode, FileObject } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import * as Styles from './meeting.css';
@@ -24,6 +24,11 @@ interface State {
   valid: boolean;
 }
 
+class FileTable extends Table<FileObject> {}
+// tslint:disable-next-line:max-classes-per-file
+class FileColumn extends Table.Column<FileObject> {}
+
+// tslint:disable-next-line:max-classes-per-file
 class MeetingDetail extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -126,8 +131,8 @@ class MeetingDetail extends React.Component<Props, State> {
           <TabPane tab="留言" key={1}>
             <Reviews meetingId={this.props.params.meetingId} type="review"/>
           </TabPane>
-          <TabPane tab="留言" key={2}>
-            <Reviews meetingId={this.props.params.meetingId} type="review"/>
+          <TabPane tab="资源" key={2}>
+            {this.fileTable(meeting.files)}
           </TabPane>
         </Tabs>
         <Modal
@@ -143,6 +148,32 @@ class MeetingDetail extends React.Component<Props, State> {
           />
         </Modal>
       </div>
+    );
+  }
+
+  private fileTable = (files: FileObject[]) => {
+    return (
+      <FileTable dataSource={files} rowKey={(record) => record.id} pagination={false}>
+        <FileColumn
+          title="文件名"
+          dataIndex="name" 
+          key="name"
+          render={(text, record) => <a href={Urls.download(record.id, record.name)}>{text}</a>}
+        />
+        <FileColumn title="类型" dataIndex="fileType" key="fileType"/>
+        <FileColumn 
+          title="大小" 
+          dataIndex="size" 
+          key="size"
+          render={(text, record) => <span>{Math.round(record.size / 1000) + 'kb'}</span>}
+        />
+        <FileColumn 
+          title="上传时间" 
+          dataIndex="createdDate" 
+          key="time"
+          render={(text, record) => <span>{moment(record.createdDate).format('YYYY/M/D h:m')}</span>}
+        />
+      </FileTable>
     );
   }
 }
