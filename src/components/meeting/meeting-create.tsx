@@ -7,8 +7,9 @@ import Urls from '../../urls';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/braft.css';
 import { Guest, ResponseCode, stayTypeOptions } from '../../interface';
-import FormItem from 'antd/lib/form/FormItem';
 import UserService from '../user/user-service';
+
+const FormItem = Form.Item;
 
 const CheckboxGroup = Checkbox.Group;
 

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Form, Radio, Input, Checkbox, Button, message } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
 import {  FormComponentProps } from 'antd/lib/form';
 import * as moment from 'moment';
 import Urls from '../../urls';
 import HttpRequestDelegate from '../../http-request-delegate';
 import { ResponseCode } from '../../interface';
 import UserService from '../user/user-service';
+
+const FormItem = Form.Item;
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;

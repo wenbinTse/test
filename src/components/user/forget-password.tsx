@@ -2,11 +2,12 @@ import * as React from 'react';
 import { browserHistory } from 'react-router';
 import { Form, Input, Icon, Col, Row, Button, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import FormItem from 'antd/lib/form/FormItem';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import { ResponseCode } from '../../interface';
 import * as Styles from './user.css';
+
+const FormItem = Form.Item;
 
 interface State {
   sendButtonText: string;

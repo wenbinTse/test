@@ -5,6 +5,7 @@ import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import { Gender, ResponseCode } from '../../interface';
 import * as Styles from './user.css';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;

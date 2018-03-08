@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 import { Form, Icon, Input, Button, message } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
 import * as Styles from './user.css';
 import {  FormComponentProps } from 'antd/lib/form';
 import { ResponseCode } from '../../interface';
 import Urls from '../../urls';
 import HttpRequestDelegate from '../../http-request-delegate';
 import UserService from './user-service';
+
+const FormItem = Form.Item;
 
 interface State {
   loading: boolean;
