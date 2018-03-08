@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Spin, Upload, Button, Icon, message, Popconfirm } from 'antd';
+import { Form, Spin, Upload, Button, Icon, message, Popconfirm } from 'antd';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import { ResponseCode } from '../../interface';

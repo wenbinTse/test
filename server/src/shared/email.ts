@@ -68,7 +68,7 @@ export const welcome = (addressee: Addressee, hash: string) => {
     'welcome.ejs',
     {url: `${Config.domain}/verify/${addressee._id}/${hash}`}
   );
-}
+};
 
 export const verificationCode = (addressee: Addressee, code: string) => {
   sendHTML(
@@ -77,4 +77,4 @@ export const verificationCode = (addressee: Addressee, code: string) => {
     'verification-code.ejs',
     {code}
   );
-}
+};

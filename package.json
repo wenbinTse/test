@@ -41,6 +41,7 @@
     "react-dev-utils": "2.0.1",
     "react-dom": "^16.2.0",
     "react-error-overlay": "1.0.6",
+    "react-highcharts": "^16.0.2",
     "react-router": "3.2.0",
     "react-transition-group": "^2.2.1",
     "source-map-loader": "^0.2.3",

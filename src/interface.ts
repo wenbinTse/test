@@ -90,7 +90,7 @@ export interface Review {
   admin: boolean;
 }
 
-export interface Attandence {
+export interface Attendance {
   _id: string;
   taxPayerId: string;
   invoiceTitle: string;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Spin, Tabs, Collapse, Modal, Button, message } from 'antd';  
-import { AttendanceStatus, ResponseCode, Attandence } from '../../interface';
+import { Spin, Tabs, Collapse, Modal, Button, message, Badge } from 'antd';  
+import { AttendanceStatus, ResponseCode, Attendance } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import UserService from '../user/user-service';
@@ -12,9 +12,9 @@ const confirm = Modal.confirm;
 
 interface State {
   loading: boolean;
-  pending: Attandence[];
-  refused: Attandence[];
-  audited: Attandence[];
+  pending: Attendance[];
+  refused: Attendance[];
+  audited: Attendance[];
 }
 
 class ProfileMeetings extends React.Component<{}, State> {
@@ -47,7 +47,7 @@ class ProfileMeetings extends React.Component<{}, State> {
     );
   }
 
-  private renderTab(attendances: Attandence[]) {
+  private renderTab(attendances: Attendance[]) {
     if (!attendances.length) {
       return (
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white', height: '200px'}}>暂无数据</div>
@@ -62,7 +62,7 @@ class ProfileMeetings extends React.Component<{}, State> {
     );
   }
 
-  private renderItem(atten: Attandence, index: number) {
+  private renderItem(atten: Attendance, index: number) {
     const meeting = atten.meeting;
     const startDateStr = moment(meeting.startDate).format('MM月DD号');
     const endDateStr = moment(meeting.endDate).format('MM月DD号');
@@ -94,7 +94,7 @@ class ProfileMeetings extends React.Component<{}, State> {
     );
   }
 
-  private showConfirmModal = (atten: Attandence) => {
+  private showConfirmModal = (atten: Attendance) => {
     confirm({
       title: '确认取消注册该会议？',
       content: '您是否确认取消注册该会议？该操作不可撤回。',
@@ -102,7 +102,7 @@ class ProfileMeetings extends React.Component<{}, State> {
     });
   }
 
-  private cancelAtten = (atten: Attandence) => {
+  private cancelAtten = (atten: Attendance) => {
     HttpRequestDelegate.get(
       Urls.cancelAttendance(atten._id),
       true,
@@ -126,13 +126,31 @@ class ProfileMeetings extends React.Component<{}, State> {
     }
     return (
       <Tabs defaultActiveKey="1">
-        <TabPane tab="已通过审核" key={1}>
+        <TabPane
+          tab={
+            <Badge count={this.state.audited.length}>
+              <span>yitongguoshenhe</span>
+            </Badge>}
+          key={1}
+        >
           {this.renderTab(this.state.audited)}
         </TabPane>
-        <TabPane tab="未审核" key={2}>
+        <TabPane
+          tab={
+            <Badge count={this.state.pending.length}>
+              <span>yitongguoshenhe</span>
+            </Badge>}
+          key={2}
+        >
           {this.renderTab(this.state.pending)}
         </TabPane>
-        <TabPane tab="被拒绝" key={3}>
+        <TabPane
+          tab={
+            <Badge count={this.state.refused.length}>
+              <span>yitongguoshenhe</span>
+            </Badge>}
+          key={3}
+        >
           {this.renderTab(this.state.refused)}
         </TabPane>
       </Tabs>

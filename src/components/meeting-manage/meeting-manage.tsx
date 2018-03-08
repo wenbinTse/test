@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Form, Input, Button, Col, DatePicker, Cascader, Row, Icon, Spin, message } from 'antd';
+import { Form, Input, Button, Col, DatePicker, Cascader, Row, Icon, Spin, message, Checkbox } from 'antd';
 import { Meeting, ResponseCode, stayTypeOptions } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import UserService from '../user/user-service';
 import BraftEditor from 'braft-editor';
-import FormItem from 'antd/lib/form/FormItem';
 import { FormComponentProps } from 'antd/lib/form';
 import * as moment from 'moment';
 import * as Styles from './meeting-manage.css';
-import CheckboxGroup from 'antd/lib/checkbox/Group';
+const FormItem = Form.Item;
+const CheckboxGroup = Checkbox.Group;
 
 interface Option {
   label: string;
@@ -31,8 +31,6 @@ interface State {
 }
 
 class MeetingManageForm extends React.Component<Props, State> {
-  private guestNameFormItems: FormItem[];
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -84,8 +82,6 @@ class MeetingManageForm extends React.Component<Props, State> {
       return <h2>没有此会议</h2>;
     }
 
-    this.guestNameFormItems = [];
-
     const meeting = this.state.meeting as Meeting;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -123,17 +119,17 @@ class MeetingManageForm extends React.Component<Props, State> {
     };
     return (
       <Form>
-        <FormItem {...formItemLayout} label="会议名">
-          {getFieldDecorator('name', {
+         <FormItem {...formItemLayout} label="会议名">
+           {getFieldDecorator('name', {
             rules: [{
               required: true, message: '请输入会议名称',
             }],
             initialValue: meeting.name
           })(
             <Input />
-          )}
+          )} 
         </FormItem>
-        <FormItem {...formItemLayout} label="时间" required={true}>
+         <FormItem {...formItemLayout} label="时间" required={true}>
           <Col span={11}>
             <FormItem>
               {getFieldDecorator('startDate', {
@@ -187,8 +183,8 @@ class MeetingManageForm extends React.Component<Props, State> {
               </FormItem>
             </Col>
           </Row>
-        </FormItem>
-        <FormItem {...formItemLayout} label="介绍">
+        </FormItem> 
+         <FormItem {...formItemLayout} label="介绍">
           <div style={{border: '1px solid #dcdcdc'}}>
             <BraftEditor
               {...editorProps}
@@ -197,14 +193,13 @@ class MeetingManageForm extends React.Component<Props, State> {
               onChange={this.descriptionChangeHandler}
             />
           </div>
-        </FormItem>
-        <FormItem {...formItemLayout} label="嘉宾">
+        </FormItem> 
+         <FormItem {...formItemLayout} label="嘉宾">
           <Button icon="plus" type="primary" onClick={() => this.addGuest()}>添加</Button>
           {meeting.guests.map((guest, index) =>
             <Row gutter={16} key={index} style={{marginBottom: '24px'}}>
               <Col span={4}>
                 <FormItem
-                  ref={(e) => this.guestNameFormItems.push(e as FormItem)}
                   validateStatus={guest.valid === false ? 'error' : 'success'}
                   help={guest.valid === false ? '请输入嘉宾名' : ''}
                 >
@@ -221,8 +216,8 @@ class MeetingManageForm extends React.Component<Props, State> {
               </Col>
             </Row>
           )}
-        </FormItem>
-        <FormItem label="注意事项" {...formItemLayout}>
+        </FormItem> 
+         <FormItem label="注意事项" {...formItemLayout}>
           <div style={{border: '1px solid #dcdcdc'}}>
             <BraftEditor
               {...editorProps}
@@ -231,15 +226,15 @@ class MeetingManageForm extends React.Component<Props, State> {
               onChange={this.detailChangeHandler}
             />
           </div>
-        </FormItem>
-        <FormItem label="可选住宿类型" help="都不选则为不提供住宿" {...formItemLayout}>
+        </FormItem> 
+         <FormItem label="可选住宿类型" help="都不选则为不提供住宿" {...formItemLayout}>
           {getFieldDecorator('stayTypes', {
             initialValue: meeting.stayTypes
           })(
             <CheckboxGroup options={stayTypeOptions}/>
           )}
-        </FormItem>
-        <FormItem {...tailFormItemLayout}>
+        </FormItem> 
+         <FormItem {...tailFormItemLayout}>
           <Button
             loading={this.state.changing}
             type="primary"
@@ -248,7 +243,7 @@ class MeetingManageForm extends React.Component<Props, State> {
             onClick={this.submitHandler}
           >更改
           </Button>
-        </FormItem>
+        </FormItem>  
       </Form>
     );
   }
