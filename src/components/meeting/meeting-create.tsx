@@ -29,7 +29,6 @@ interface State {
 }
 
 class MeetingCreateForm extends React.Component<FormComponentProps, State> {
-  private guestNameFormItems: FormItem[];
   constructor(props: FormComponentProps) {
     super(props);
     this.state = {
@@ -104,8 +103,6 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
       height: 250,
       contentFormat: 'html'
     };
-
-    this.guestNameFormItems = [];
 
     return (
       <Form className={Styles.createContainer}>
@@ -187,7 +184,6 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
             <Row gutter={16} key={guest.randomId} style={{marginBottom: '24px'}}>
               <Col span={4}>
                 <FormItem
-                  ref={(e) => this.guestNameFormItems.push(e as FormItem)}
                   validateStatus={guest.valid ? 'success' : 'error'}
                   help={guest.valid ? '' : '请输入嘉宾名'}
                 >

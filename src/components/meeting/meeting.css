@@ -162,3 +162,16 @@ div[class="ant-list-item"] > div:first-of-type {
 	color: white;
 	text-shadow: 2px 2px 2px white;
 }
+
+/* For demo */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}

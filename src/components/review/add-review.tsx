@@ -22,9 +22,9 @@ interface State {
 
 class AddReview extends React.Component<Props, State> {
   private user = UserService.getUserProfile();
-  private wholeName: string;
+  private wholeName: string = '';
   private form: HTMLFormElement;
-  private profileImageSrc: string;
+  private profileImageSrc: string = '';
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -32,13 +32,15 @@ class AddReview extends React.Component<Props, State> {
       content: '',
       adding: false
     };
-    this.wholeName = this.user.name;
-    this.profileImageSrc = this.user.profileImageSrc;
-    for (const meeting of this.user.meetings) {
-      if (meeting._id === props.meetingId) {
-        this.wholeName = '管理员';
-        this.profileImageSrc = '';
-        break;
+    if (this.user) {
+      this.wholeName = this.user.name;
+      this.profileImageSrc = this.user.profileImageSrc;
+      for (const meeting of this.user.meetings) {
+        if (meeting._id === props.meetingId) {
+          this.wholeName = '管理员';
+          this.profileImageSrc = '';
+          break;
+        }
       }
     }
   }

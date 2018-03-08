@@ -11,3 +11,5 @@ export const none: string;
 export const carousel: string;
 export const featuredMeetingsContainer: string;
 export const featuredMeetingContainer: string;
+export const antCarousel: string;
+export const slickSlide: string;
