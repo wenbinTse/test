@@ -129,7 +129,7 @@ class ProfileMeetings extends React.Component<{}, State> {
         <TabPane
           tab={
             <Badge count={this.state.audited.length}>
-              <span>yitongguoshenhe</span>
+              <span>已过审核 </span>
             </Badge>}
           key={1}
         >
@@ -138,7 +138,7 @@ class ProfileMeetings extends React.Component<{}, State> {
         <TabPane
           tab={
             <Badge count={this.state.pending.length}>
-              <span>yitongguoshenhe</span>
+              <span>尚未审核 </span>
             </Badge>}
           key={2}
         >
@@ -147,7 +147,7 @@ class ProfileMeetings extends React.Component<{}, State> {
         <TabPane
           tab={
             <Badge count={this.state.refused.length}>
-              <span>yitongguoshenhe</span>
+              <span>未过审核 </span>
             </Badge>}
           key={3}
         >

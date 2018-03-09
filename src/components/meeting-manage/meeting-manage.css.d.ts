@@ -6,3 +6,5 @@ export const container: string;
 export const images: string;
 export const applicantsContainer: string;
 export const search: string;
+export const chart: string;
+export const chartContainer: string;

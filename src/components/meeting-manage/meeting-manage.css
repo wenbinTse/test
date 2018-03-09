@@ -92,3 +92,11 @@
     max-width: 500px;
     margin: 16px 0;
 }
+
+.chart {
+    min-width: 1000px;
+}
+
+.chart-container {
+    min-width: 1048px;
+}

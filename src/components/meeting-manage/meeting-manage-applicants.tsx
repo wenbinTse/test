@@ -41,18 +41,20 @@ class MeetingApplicants extends React.Component<Props, State> {
       Urls.meetingApplicants(this.props.params.meetingId),
       true,
       (data) => {
-        this.setState({loading: false});
         if (data.code === ResponseCode.SUCCESS) {
           this.setState({
+            loading: false,
             pending: data.pending,
             audited: data.audited,
             allPending: data.pending,
             allAudited: data.audited
           });
-        } else if (data.code === ResponseCode.UNLOGIN) {
-          UserService.requireLogin();
-        } else if (data.code === ResponseCode.ACCESS_DENIED) {
-          browserHistory.push('/NotFound');
+        } else {
+          if (data.code === ResponseCode.UNLOGIN) {
+            UserService.requireLogin();
+          } else if (data.code === ResponseCode.ACCESS_DENIED) {
+            browserHistory.push('/NotFound');
+          }
         }
       }
     );
