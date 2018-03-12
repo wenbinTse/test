@@ -12,7 +12,6 @@ export class Weixin {
   }
   static getAccessToken = () => {
     request.get(Weixin.accessTokenUrl, (err, res, body) => {
-      console.log('access_token: ' + res.statusCode);
       console.log(body);
       Weixin.accessToken = JSON.parse(body).access_token;
       Weixin.getJsapiTicket();
@@ -21,7 +20,6 @@ export class Weixin {
 
   static getJsapiTicket = () => {
     request.get(`https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=${Weixin.accessToken}&type=jsapi`, (err, res, body) => {
-      console.log('js_ticket: ' + res.statusCode);
       console.log(body);
       Weixin.jsapiTicket = JSON.parse(body).ticket;
     });
@@ -35,7 +33,7 @@ export class Weixin {
       appId: Config.weixinAppId, // 必填，公众号的唯一标识
       timestamp, // 必填，生成签名的时间戳
       nonceStr, // 必填，生成签名的随机串
-      signature: crypto.createHash('sha1').update(str).digest('hex'),// 必填，签名
+      signature: crypto.createHash('sha1').update(str).digest('hex'), // 必填，签名
       jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
     };
   }

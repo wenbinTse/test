@@ -1,5 +1,5 @@
 const SERVER_URL: string = process.env.REACT_APP_ENV === 'dev' &&
-process.env.NODE_ENV === 'development' ? 'http://localhost:5000' :
+process.env.NODE_ENV === 'development' ? 'http://localhost:80' :
   window.location.protocol + '//' + window.location.host;
 
 const API_URL: string = SERVER_URL + '/api';

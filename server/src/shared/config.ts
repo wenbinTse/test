@@ -1,4 +1,4 @@
-const port = 5000;
+const port = 80;
 
 const devDomain = 'http://localhost:8080';
 const devServer = 'http://localhost:' + port;
