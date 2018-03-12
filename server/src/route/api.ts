@@ -73,6 +73,7 @@ const meetingAdminRouter = require('./meeting/meeting-admin');
 const reviewRouter = require('./review/review');
 const userProfileRouter = require('./user/user-profile');
 const fileRouter = require('./file/file');
+const checkInRouter = require('./checkin/checkin');
 
 router.use('/user', userRouter);
 router.use('/user-admin', userAdminRouter);
@@ -81,5 +82,6 @@ router.use('/meeting-admin', meetingAdminRouter);
 router.use('/review', reviewRouter);
 router.use('/profile', userProfileRouter);
 router.use('/file', fileRouter);
+router.use('/checkIn', checkInRouter);
 
 export = router;

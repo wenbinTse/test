@@ -22,5 +22,7 @@ export default {
   administrator: '清华大学出版社',
   domain: domain,
   server: server,
-  cdnDomain: cdnDomain
+  cdnDomain: cdnDomain,
+  weixinAppId: 'wx3cb4e8ddf808458d',
+  weixinSecret: '1f4e65f6740fdd01dcc41fe535502316'
 };

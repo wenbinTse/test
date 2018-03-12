@@ -38,7 +38,8 @@ const meetingSchema = new mongoose.Schema({
     default: Status.ACTIVE
   },
   createdDate: {type: Date, default: new Date()},
-  stayTypes: {type: [String], default: []}
+  stayTypes: {type: [String], default: []},
+  checkedIn: {type: Boolean, default: false}
 });
 
 export = mongoose.model('Meeting', meetingSchema);

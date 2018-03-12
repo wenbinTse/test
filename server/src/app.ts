@@ -7,6 +7,7 @@ import * as path from 'path';
 import Config from './shared/config';
 import * as mongoose from 'mongoose';
 import { MongoError } from 'mongodb';
+import { Weixin } from './weixin/weixin';
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -20,6 +21,8 @@ mongoose.connect(dbUrl, (err: MongoError) => {
     console.log('DB CONNECTION SUCCESS: ' + dbUrl);
   }
 });
+
+Weixin.init();
 
 const app = express();
 const api = require('./route/api');
@@ -37,14 +40,22 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-const ALLOW_ORIGIN: string = Config.domain;
+const ALLOW_ORIGINS: string[] = [Config.domain, 'http://buaa.free.ngrok.cc', 'undefined', 'http://c68051d2.ngrok.io'];
 
 // Allow all requests that reaches express to make API calls.
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.header('Access-Control-Allow-Origin', ALLOW_ORIGIN);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
+  // if (!req.headers.origin || ALLOW_ORIGINS.indexOf(req.headers.origin as string) >= 0 ) {
+  //   res.header('Access-Control-Allow-Origin', req.headers.origin as string);
+  //   res.header('Access-Control-Allow-Credentials', 'true');
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type');
+  //   next();
+  // } else {
+  //   res.sendStatus(402);
+  // }
+    res.header('Access-Control-Allow-Origin', req.headers.origin as string);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
 });
 
 app.use('/', express.static(path.join(__dirname, '/../../build')));
