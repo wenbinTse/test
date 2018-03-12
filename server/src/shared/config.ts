@@ -2,8 +2,8 @@ const port = 80;
 
 const devDomain = 'http://localhost:8080';
 const devServer = 'http://localhost:' + port;
-const productDomain = 'www.baidu.com'; // replace domain!!!
-const cdnDomain = 'cdn.baidu.com';
+const productDomain = '39.107.95.124'; // replace domain!!!
+const cdnDomain = '39.107.95.124';
 
 const domain = process.env.NODE_ENV ? devDomain : productDomain;
 const server = process.env.NODE_ENV ? devServer : productDomain;

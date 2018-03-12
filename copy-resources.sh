@@ -4,3 +4,5 @@
 
 cp node_modules/antd/dist/antd.css build/static/css/
 cp -r public/image build/static/image
+cp node_modules/braft-editor/dist/braft.css build/static/css/
+
