@@ -46,7 +46,7 @@ export default class Urls {
   public static meetingApplicants = (meetingId: string) => MEETING_ADMIN_URL + '/applicants/' + meetingId;
   public static auditAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/auditAttendance/' + meetingId;
   public static refuseAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/refuseAttendance/' + meetingId;
-  
+
   // Meeting Admin Api
   public static createMeeting = MEETING_ADMIN_URL + '/create';
 
@@ -63,4 +63,5 @@ export default class Urls {
   public static getReviews = (meetingId: string) => REVIEW_URL + `/getReviews/${meetingId}`;
   public static addReview = REVIEW_URL + '/add';
   public static getReplies = (reviewId: string) => REVIEW_URL + `/getReplies/${reviewId}`;
+  public static initcheckingIn = (meetingId: string) => API_URL + '/checkIn/init/' + meetingId;
 }

@@ -1,6 +1,8 @@
 /**
  * @fileoverview Set up the route for entire frontend using react router
  */
+// tslint:disable-next-line:no-var-requires
+require('es6-shim');
 
 import * as React from 'react';
 import { browserHistory, IndexRoute, Route, Router } from 'react-router';
@@ -24,6 +26,7 @@ import MeetingManageImage from './components/meeting-manage/meeting-manage-image
 import MeetingManageFile from './components/meeting-manage/meeting-manage-file';
 import ProfileMeetings from './components/profile/profile-meetings';
 import MeetingApplicants from './components/meeting-manage/meeting-manage-applicants';
+import Checkin from './components/checkin/checkin';
 
 interface State {
   loading: boolean;
@@ -57,6 +60,7 @@ class App extends React.Component<{}, State> {
             <Route path="/" component={Layout}>
               <IndexRoute component={Home}/>
               <Route path="login" component={Login} />
+              <Route path="checkin/:meetingId" component={Checkin} />
               <Route path="register" component={Register} />
               <Route path="verify/:userId/:hash" component={Verify} />
               <Route path="forgetPassword" component={ForgetPassword} />

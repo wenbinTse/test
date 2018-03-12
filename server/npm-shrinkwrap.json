@@ -22,6 +22,11 @@
       "from": "@types/bson@*",
       "resolved": "https://registry.npm.taobao.org/@types/bson/download/@types/bson-1.0.6.tgz"
     },
+    "@types/caseless": {
+      "version": "0.12.1",
+      "from": "@types/caseless@*",
+      "resolved": "https://registry.npm.taobao.org/@types/caseless/download/@types/caseless-0.12.1.tgz"
+    },
     "@types/cookie-parser": {
       "version": "1.4.1",
       "from": "@types/cookie-parser@>=1.4.1 <2.0.0",
@@ -75,6 +80,11 @@
       "version": "0.0.32",
       "from": "@types/express-session@0.0.32",
       "resolved": "https://registry.npm.taobao.org/@types/express-session/download/@types/express-session-0.0.32.tgz"
+    },
+    "@types/form-data": {
+      "version": "2.2.1",
+      "from": "@types/form-data@*",
+      "resolved": "https://registry.npm.taobao.org/@types/form-data/download/@types/form-data-2.2.1.tgz"
     },
     "@types/gridfs-stream": {
       "version": "0.5.30",
@@ -150,10 +160,20 @@
       "resolved": "https://registry.npm.taobao.org/@types/passport-facebook/download/@types/passport-facebook-2.1.7.tgz",
       "dev": true
     },
+    "@types/request": {
+      "version": "2.47.0",
+      "from": "@types/request@latest",
+      "resolved": "https://registry.npm.taobao.org/@types/request/download/@types/request-2.47.0.tgz"
+    },
     "@types/serve-static": {
       "version": "1.13.1",
       "from": "@types/serve-static@*",
       "resolved": "https://registry.npm.taobao.org/@types/serve-static/download/@types/serve-static-1.13.1.tgz"
+    },
+    "@types/tough-cookie": {
+      "version": "2.3.2",
+      "from": "@types/tough-cookie@*",
+      "resolved": "https://registry.npm.taobao.org/@types/tough-cookie/download/@types/tough-cookie-2.3.2.tgz"
     },
     "abab": {
       "version": "1.0.4",
