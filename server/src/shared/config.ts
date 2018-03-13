@@ -7,9 +7,9 @@ const cdnDomain = '39.107.95.124';
 const devDbUrl = 'mongodb://localhost:27017/bishe';
 const prodDbUrl = 'mongodb://xiewenbin:xiewenbin@dds-2zefda6af14cf5941.mongodb.rds.aliyuncs.com:3717,dds-2zefda6af14cf5942.mongodb.rds.aliyuncs.com:3717/bishe?replicaSet=mgset-5363213';
 
-const dbUrl = process.env.NODE_ENV === 'production' ? devDbUrl : prodDbUrl;
-const domain = process.env.NODE_ENV === 'production' ? devDomain : productDomain;
-const server = process.env.NODE_ENV === 'production'  ? devServer : productDomain;
+const dbUrl = process.env.NODE_ENV !== 'production' ? devDbUrl : prodDbUrl;
+const domain = process.env.NODE_ENV !== 'production' ? devDomain : productDomain;
+const server = process.env.NODE_ENV !== 'production'  ? devServer : productDomain;
 
 export default {
   // dbUrl: 'mongodb://tsinghua:bishe@ds111478.mlab.com:11478/tsinghua_dev',
