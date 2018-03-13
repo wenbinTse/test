@@ -15,12 +15,15 @@ interface State {
   loading: boolean;
 }
 
+let self: any;
+
 class Checkin extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       loading: true
     };
+    self = this;
   }
 
   private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
@@ -36,7 +39,6 @@ class Checkin extends React.Component<Props, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           this.setState({loading: false});
-          console.log(wx)
           wx.config({
             appId: data.wx.appId, // 必填，公众号的唯一标识
             timestamp: data.wx.timestamp, // 必填，生成签名的时间戳
@@ -74,10 +76,10 @@ class Checkin extends React.Component<Props, State> {
       scanType: ['qrCode'],
       success: function(res: any) {
         alert(res.resultStr);
-        HttpRequestDelegate.get(
-          Urls.checkIn(this.props.params.meetingId, this.userId),
+        self.HttpRequestDelegate.get(
+          self.Urls.checkIn(this.props.params.meetingId, this.userId),
           true,
-          (data) => {
+          (data: any) => {
             if (data.code === ResponseCode.SUCCESS) {
               message.success('签到成功');
             } else if (data.code === ResponseCode.UNLOGIN) {
