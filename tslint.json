@@ -59,6 +59,7 @@
       "check-open-brace",
       "check-whitespace"
     ],
+    "object-literal-shorthand": false,
     "ordered-imports": false,
     "prefer-for-of": false,
     "quotemark": [true, "single", "jsx-double"],

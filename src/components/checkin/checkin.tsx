@@ -73,18 +73,25 @@ class Checkin extends React.Component<Props, State> {
     this.wx.scanQRCode({
       needResult: 1,
       scanType: ['qrCode'],
-      success(res: any) {
+      success: function(res: any) {
+        alert(1)
         this.submit(res.resultStr);
       },
-      fail(res: any) {
+      // tslint:disable-next-line:only-arrow-functions
+      fail: function(res: any) {
         message.error(res);
+        alert(2)
         console.log(res);
+      },
+      // tslint:disable-next-line:only-arrow-functions
+      complete: function(res: any) {
+        alert(3)
       }
     });
   }
 
   private submitHandler = (userId: string) => {
-    alert(1)
+    alert(11)
     HttpRequestDelegate.get(
       Urls.checkIn(this.props.params.meetingId, userId),
       true,
