@@ -39,7 +39,6 @@ class Checkin extends React.Component<Props, State> {
           this.setState({loading: false});
           this.wx = (window as any).wx;
           this.wx.config({
-            debug: true,
             appId: data.wx.appId, // 必填，公众号的唯一标识
             timestamp: data.wx.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.wx.nonceStr, // 必填，生成签名的随机串
@@ -75,6 +74,7 @@ class Checkin extends React.Component<Props, State> {
       needResult: 1,
       scanType: ['qrCode'],
       success: function(res: any) {
+        alert(res.resultStr);
         HttpRequestDelegate.get(
           Urls.checkIn(this.props.params.meetingId, this.userId),
           true,
