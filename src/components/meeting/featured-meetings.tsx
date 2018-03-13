@@ -26,7 +26,7 @@ class FeaturedMeetings extends React.Component<Props, {}> {
     const imageSrc = meeting.images && meeting.images.length ? meeting.images[0] : '';
     return (
       <div className={Styles.featuredMeetingContainer}>
-        {imageSrc && <img src={imageSrc}/>}
+        {imageSrc && <img src={imageSrc} className={Styles.featuredMeetingImg}/>}
         {!imageSrc && <div>暂无图片</div>}
         <h2>{meeting.name}</h2>
       </div>

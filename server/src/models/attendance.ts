@@ -28,6 +28,7 @@ const attendanceSchema = new mongoose.Schema({
   stayDates: {type: [Date]}, // 住宿日期
   remarks: {type: String}, // 备注
   status: {type: AttendanceStatus, default: AttendanceStatus.PENDING},
+  checkedIn: {type: Boolean, default: false},
   createdDate: {type: Date, default: new Date()}
 });
 

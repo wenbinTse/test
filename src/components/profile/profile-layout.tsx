@@ -23,6 +23,10 @@ class ProfileLayout extends React.Component<{}, {}> {
               <Icon type="video-camera"/>
               <span className="nav-text">会议列表</span>
             </IndexLink>
+            <IndexLink activeClassName={Styles.active} to="/profile/qrcode">
+              <Icon type="qrcode"/>
+              <span className="nav-text">签到二维码</span>
+            </IndexLink>
           </div>
         </Sider>
         <Layout>

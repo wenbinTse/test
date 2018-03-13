@@ -3,7 +3,7 @@ import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
 import { ResponseCode } from '../../interface';
 import { Button, Spin, message } from 'antd';
-import { loading } from '../user/user.css';
+import UserService from '../user/user-service';
 
 interface Props {
   params: {
@@ -56,7 +56,7 @@ class Checkin extends React.Component<Props, State> {
   public render() {
     if (!this.isWeixin) {
       message.warn('请在微信中打开');
-      return <div/>;
+      return <div className="container container-large"><h1>请在微信中打开</h1></div>;
     }
     if (this.state.loading) {
       return (
@@ -75,12 +75,29 @@ class Checkin extends React.Component<Props, State> {
       needResult: 1,
       scanType: ['qrCode'],
       success(res: any) {
-        console.log(res);
+        this.submit(res.resultStr);
       },
       fail(res: any) {
+        message.error(res);
         console.log(res);
       }
     });
+  }
+
+  private submitHandler = (userId: string) => {
+    HttpRequestDelegate.get(
+      Urls.checkIn(this.props.params.meetingId, userId),
+      true,
+      (data) => {
+        if (data.code === ResponseCode.SUCCESS) {
+          message.success('签到成功');
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        } else if (data.code === ResponseCode.INCOMPLETE_INPUT || data.code === ResponseCode.DUPLICATE_KEY) {
+          message.warning(data.message);
+        }
+      }
+    );
   }
 }
 

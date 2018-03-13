@@ -27,6 +27,7 @@ import MeetingManageFile from './components/meeting-manage/meeting-manage-file';
 import ProfileMeetings from './components/profile/profile-meetings';
 import MeetingApplicants from './components/meeting-manage/meeting-manage-applicants';
 import Checkin from './components/checkin/checkin';
+import QrCode from './components/profile/qrcode';
 
 interface State {
   loading: boolean;
@@ -69,6 +70,7 @@ class App extends React.Component<{}, State> {
               <Route path="profile" component={ProfileLayout}>
                 <IndexRoute component={PersonalInfo}/>
                 <Route path="meetings" component={ProfileMeetings} />
+                <Route path="qrcode" component={QrCode} />
               </Route>
               <Route path="/meetingManage/:meetingId" component={MeetingManageLayout}>
                 <IndexRoute component={MeetingManage} />
