@@ -39,6 +39,7 @@ class Checkin extends React.Component<Props, State> {
           this.setState({loading: false});
           this.wx = (window as any).wx;
           this.wx.config({
+            debug: true,
             appId: data.wx.appId, // 必填，公众号的唯一标识
             timestamp: data.wx.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.wx.nonceStr, // 必填，生成签名的随机串
@@ -74,8 +75,19 @@ class Checkin extends React.Component<Props, State> {
       needResult: 1,
       scanType: ['qrCode'],
       success: function(res: any) {
-        alert(1)
-        this.submit(res.resultStr);
+        HttpRequestDelegate.get(
+          Urls.checkIn(this.props.params.meetingId, this.userId),
+          true,
+          (data) => {
+            if (data.code === ResponseCode.SUCCESS) {
+              message.success('签到成功');
+            } else if (data.code === ResponseCode.UNLOGIN) {
+              UserService.requireLogin();
+            } else if (data.code === ResponseCode.INCOMPLETE_INPUT || data.code === ResponseCode.DUPLICATE_KEY) {
+              message.warning(data.message);
+            }
+          }
+        );
       },
       // tslint:disable-next-line:only-arrow-functions
       fail: function(res: any) {
@@ -88,23 +100,6 @@ class Checkin extends React.Component<Props, State> {
         alert(3)
       }
     });
-  }
-
-  private submitHandler = (userId: string) => {
-    alert(11)
-    HttpRequestDelegate.get(
-      Urls.checkIn(this.props.params.meetingId, userId),
-      true,
-      (data) => {
-        if (data.code === ResponseCode.SUCCESS) {
-          message.success('签到成功');
-        } else if (data.code === ResponseCode.UNLOGIN) {
-          UserService.requireLogin();
-        } else if (data.code === ResponseCode.INCOMPLETE_INPUT || data.code === ResponseCode.DUPLICATE_KEY) {
-          message.warning(data.message);
-        }
-      }
-    );
   }
 }
 
