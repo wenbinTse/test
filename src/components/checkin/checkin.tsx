@@ -23,7 +23,6 @@ class Checkin extends React.Component<Props, State> {
     };
   }
 
-  private wx: any;
   private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
 
   public componentDidMount() {
@@ -37,15 +36,15 @@ class Checkin extends React.Component<Props, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           this.setState({loading: false});
-          this.wx = (window as any).wx;
-          this.wx.config({
+          console.log(wx)
+          wx.config({
             appId: data.wx.appId, // 必填，公众号的唯一标识
             timestamp: data.wx.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.wx.nonceStr, // 必填，生成签名的随机串
             signature: data.wx.signature, // 必填，签名
             jsApiList: data.wx.jsApiList // 必填，需要使用的JS接口列表
           });
-          this.wx.error((res: any) => console.error(res));
+          wx.error((res: any) => console.error(res));
         }
       });
     };
@@ -70,7 +69,7 @@ class Checkin extends React.Component<Props, State> {
   }
 
   private scanHandler = () => {
-    this.wx.scanQRCode({
+    wx.scanQRCode({
       needResult: 1,
       scanType: ['qrCode'],
       success: function(res: any) {
