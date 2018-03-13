@@ -7,6 +7,23 @@ const attendance_1 = require("../../models/attendance");
 const interface_1 = require("../../shared/interface");
 const router = express_1.Router();
 const Meeting = require('../../models/meeting');
+router.get('/init/:id', middle_ware_1.checkObjectId, (req, res) => {
+    console.log(req.headers);
+    const url = req.headers.referer;
+    Meeting.findById(req.params.id, ['name', 'startDate', 'endDate']).exec()
+        .then((doc) => {
+        if (doc) {
+            res.json({
+                code: interface_1.ResponseCode.SUCCESS,
+                meeting: doc,
+                wx: weixin_1.Weixin.getSignature(url)
+            });
+        }
+        else {
+            res.json({ code: interface_1.ResponseCode.FIND_NOTHING });
+        }
+    }).catch((err) => util_1.errHandler(err, res));
+});
 router.get('/:meetingId/:userId', (req, res) => {
     const meetingId = req.params.meetingId;
     const userId = req.params.userId;
@@ -36,23 +53,6 @@ router.get('/:meetingId/:userId', (req, res) => {
             .then(() => res.json({ code: interface_1.ResponseCode.SUCCESS }));
     })
         .catch((err) => util_1.errHandler(err, res));
-});
-router.get('/init/:id', middle_ware_1.checkObjectId, (req, res) => {
-    console.log(req.headers);
-    const url = req.headers.referer;
-    Meeting.findById(req.params.id, ['name', 'startDate', 'endDate']).exec()
-        .then((doc) => {
-        if (doc) {
-            res.json({
-                code: interface_1.ResponseCode.SUCCESS,
-                meeting: doc,
-                wx: weixin_1.Weixin.getSignature(url)
-            });
-        }
-        else {
-            res.json({ code: interface_1.ResponseCode.FIND_NOTHING });
-        }
-    }).catch((err) => util_1.errHandler(err, res));
 });
 module.exports = router;
 //# sourceMappingURL=checkin.js.map

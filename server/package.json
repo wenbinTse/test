@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run build && NODE_ENV=local npm run watch",
     "build": "npm run build-ts",
-    "serve": "node dist/server.js",
+    "serve": "NODE_ENV=production node dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"nodemon dist/server.js\"",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "build-ts": "tsc",
