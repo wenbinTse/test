@@ -39,6 +39,7 @@ class Checkin extends React.Component<Props, State> {
       true,
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
+          alert(33)
           this.setState({loading: false});
           this.wx = (window as any).wx;
           this.wx.config({
