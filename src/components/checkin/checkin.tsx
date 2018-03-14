@@ -38,6 +38,7 @@ class Checkin extends React.Component<Props, State> {
       true,
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
+          alert(33)
           this.setState({loading: false});
           wx.config({
             appId: data.wx.appId, // 必填，公众号的唯一标识
