@@ -15,20 +15,21 @@ interface State {
   loading: boolean;
 }
 
-let self: any;
-
 class Checkin extends React.Component<Props, State> {
+  
+  private wx: any;
+  
   constructor(props: Props) {
     super(props);
     this.state = {
       loading: true
     };
-    self = this;
   }
 
   private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
 
   public componentDidMount() {
+  
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = 'http://res.wx.qq.com/open/js/jweixin-1.2.0.js';
@@ -39,14 +40,15 @@ class Checkin extends React.Component<Props, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           this.setState({loading: false});
-          wx.config({
+          this.wx = (window as any).wx;
+          this.wx.config({
             appId: data.wx.appId, // 必填，公众号的唯一标识
             timestamp: data.wx.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.wx.nonceStr, // 必填，生成签名的随机串
             signature: data.wx.signature, // 必填，签名
             jsApiList: data.wx.jsApiList // 必填，需要使用的JS接口列表
           });
-          wx.error((res: any) => console.error(res));
+          this.wx.error((res: any) => console.error(res));
         }
       });
     };
@@ -71,13 +73,13 @@ class Checkin extends React.Component<Props, State> {
   }
 
   private scanHandler = () => {
-    wx.scanQRCode({
+    this.wx.scanQRCode({
       needResult: 1,
       scanType: ['qrCode'],
       success: function(res: any) {
         alert(res.resultStr);
-        self.HttpRequestDelegate.get(
-          self.Urls.checkIn(this.props.params.meetingId, this.userId),
+        HttpRequestDelegate.get(
+          Urls.checkIn(this.props.params.meetingId, this.userId),
           true,
           (data: any) => {
             if (data.code === ResponseCode.SUCCESS) {
