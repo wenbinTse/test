@@ -81,10 +81,12 @@ class Checkin extends React.Component<Props, State> {
       scanType: ['qrCode'],
       success: function(res: any) {
         alert(res.resultStr);
+        alert(Urls.checkIn(this.meetingId, this.userId));
         HttpRequestDelegate.get(
           Urls.checkIn(this.meetingId, this.userId),
           true,
           (data: any) => {
+            console.log(111)
             if (data.code === ResponseCode.SUCCESS) {
               message.success('签到成功');
             } else if (data.code === ResponseCode.UNLOGIN) {
