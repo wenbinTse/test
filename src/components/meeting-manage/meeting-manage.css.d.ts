@@ -8,3 +8,4 @@ export const applicantsContainer: string;
 export const search: string;
 export const chart: string;
 export const chartContainer: string;
+export const qrcode: string;

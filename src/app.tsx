@@ -26,8 +26,8 @@ import MeetingManageImage from './components/meeting-manage/meeting-manage-image
 import MeetingManageFile from './components/meeting-manage/meeting-manage-file';
 import ProfileMeetings from './components/profile/profile-meetings';
 import MeetingApplicants from './components/meeting-manage/meeting-manage-applicants';
-import Checkin from './components/checkin/checkin';
 import QrCode from './components/profile/qrcode';
+import Checkin from './components/meeting-manage/checkin';
 
 interface State {
   loading: boolean;
@@ -61,7 +61,6 @@ class App extends React.Component<{}, State> {
             <Route path="/" component={Layout}>
               <IndexRoute component={Home}/>
               <Route path="login" component={Login} />
-              <Route path="checkin/:meetingId" component={Checkin} />
               <Route path="register" component={Register} />
               <Route path="verify/:userId/:hash" component={Verify} />
               <Route path="forgetPassword" component={ForgetPassword} />
@@ -77,6 +76,7 @@ class App extends React.Component<{}, State> {
                 <Route path="images" component={MeetingManageImage} />
                 <Route path="files" component={MeetingManageFile} />
                 <Route path="applicants" component={MeetingApplicants} />
+                <Route path="checkin" component={Checkin} />
               </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />

@@ -4,6 +4,7 @@ import { Weixin } from '../../weixin/weixin';
 import { errHandler } from '../../shared/util';
 import { Attendance } from '../../models/attendance';
 import { Status, ResponseCode, AttendanceStatus } from '../../shared/interface';
+import * as mongoose from 'mongoose';
 
 const router = Router();
 const Meeting = require('../../models/meeting');
@@ -28,6 +29,12 @@ router.get('/init/:id', checkObjectId, (req: Request, res: Response) => {
 router.get('/:meetingId/:userId', (req: Request, res: Response) => {
   const meetingId = req.params.meetingId;
   const userId = req.params.userId;
+  if (!mongoose.Types.ObjectId.isValid(meetingId) || !mongoose.Types.ObjectId.isValid(userId)) {
+    res.json({
+      code: ResponseCode.FIND_NOTHING
+    });
+    return;
+  }
   Attendance.findOne({meeting: meetingId, user: userId}, ['status', 'checkedIn']).exec()
     .then((doc: any) => {
       if (!doc) {
@@ -48,10 +55,15 @@ router.get('/:meetingId/:userId', (req: Request, res: Response) => {
         });
         return;
       }
-      Attendance.update({_id: doc._id}, {
+      Attendance.findByIdAndUpdate({_id: doc._id}, {
         $set: {checkedIn: true}
-      }).exec()
-        .then(() => res.json({code: ResponseCode.SUCCESS}));
+      })
+      .populate('user', 'name email gender corporation title job profileImage')
+      .exec()
+      .then((doc: any) => res.json({
+        code: ResponseCode.SUCCESS,
+        item: doc
+      }));
     })
       .catch((err: any) => errHandler(err, res));
 });

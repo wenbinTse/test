@@ -27,6 +27,9 @@ Weixin.init();
 const app = express();
 const api = require('./route/api');
 
+const compression = require('compression');
+app.use(compression());
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

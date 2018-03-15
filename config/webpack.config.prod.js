@@ -260,7 +260,7 @@ module.exports = {
       output: {
         comments: false,
       },
-      sourceMap: true,
+      sourceMap: false,
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({

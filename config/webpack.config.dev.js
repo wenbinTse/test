@@ -252,7 +252,7 @@ module.exports = {
     // with static resources in memory. We must copy the css to its "deployed" location
     // to make bootstrap css available in dev.
     new CopyWebpackPlugin([
-	    {from: 'node_modules/antd/dist/antd.css', to: 'static/css'},
+	    {from: 'node_modules/antd/dist/antd.min.css', to: 'static/css'},
 	    {from: 'public/image', to: 'static/image'},
       {from: 'node_modules/braft-editor/dist/braft.css', to: 'static/css'}
     ]),

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import UserService from '../user/user-service';
+import Urls from '../../urls';
 
 class QrCode extends React.Component<{}, {}> {
   private userId: any;
@@ -9,7 +10,7 @@ class QrCode extends React.Component<{}, {}> {
     this.userId = user._id;
   }
   public render() {
-    const qrSrc = 'http://qr.liantu.com/api.php?w=250&text=' + this.userId;
+    const qrSrc = Urls.qrcode(this.userId);
     return (
       <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
         <img src={qrSrc}/>

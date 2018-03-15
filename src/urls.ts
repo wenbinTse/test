@@ -67,4 +67,7 @@ export default class Urls {
   // Check-IN API
   public static checkIn = (meetingId: string, userId: string) => API_URL + `/checkIn/${meetingId}/${userId}`;
   public static initcheckingIn = (meetingId: string) => API_URL + '/checkIn/init/' + meetingId;
+
+  // Qrcode Api
+  public static qrcode = (text: string) => 'http://qr.liantu.com/api.php?w=250&text=' + text;
 }

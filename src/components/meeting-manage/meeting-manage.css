@@ -100,3 +100,10 @@
 .chart-container {
     min-width: 1048px;
 }
+
+.qrcode {
+    border: 2px solid black;
+    margin: 16px;
+    width: 200px;
+    height: 200px;
+}

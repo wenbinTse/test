@@ -824,13 +824,20 @@
       "resolved": "https://registry.npm.taobao.org/component-emitter/download/component-emitter-1.2.1.tgz"
     },
     "compressible": {
-      "version": "2.0.12",
+      "version": "2.0.13",
       "from": "compressible@>=2.0.11 <2.1.0",
-      "resolved": "https://registry.npm.taobao.org/compressible/download/compressible-2.0.12.tgz"
+      "resolved": "https://registry.npm.taobao.org/compressible/download/compressible-2.0.13.tgz",
+      "dependencies": {
+        "mime-db": {
+          "version": "1.33.0",
+          "from": "mime-db@>=1.33.0 <2.0.0",
+          "resolved": "https://registry.npm.taobao.org/mime-db/download/mime-db-1.33.0.tgz"
+        }
+      }
     },
     "compression": {
       "version": "1.7.1",
-      "from": "compression@>=1.6.2 <2.0.0",
+      "from": "https://registry.npm.taobao.org/compression/download/compression-1.7.1.tgz",
       "resolved": "https://registry.npm.taobao.org/compression/download/compression-1.7.1.tgz"
     },
     "concat-map": {
