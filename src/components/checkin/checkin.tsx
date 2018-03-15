@@ -19,6 +19,7 @@ class Checkin extends React.Component<Props, State> {
   
   private wx: any;
   private meetingId: string;
+  private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
   
   constructor(props: Props) {
     super(props);
@@ -28,8 +29,6 @@ class Checkin extends React.Component<Props, State> {
     this.meetingId = props.params.meetingId;
     alert(this.meetingId);
   }
-
-  private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
 
   public componentDidMount() {
   
@@ -76,14 +75,15 @@ class Checkin extends React.Component<Props, State> {
   }
 
   private scanHandler = () => {
+    const meetingId = this.meetingId;
     this.wx.scanQRCode({
       needResult: 1,
       scanType: ['qrCode'],
-      success: function(res: any) {
+      success: (res: any) => {
         alert(res.resultStr);
-        alert(Urls.checkIn(this.meetingId, this.userId));
+        alert(Urls.checkIn(meetingId, res.resultStr));
         HttpRequestDelegate.get(
-          Urls.checkIn(this.meetingId, this.userId),
+          Urls.checkIn(meetingId, res.resultStr),
           true,
           (data: any) => {
             console.log(111)
