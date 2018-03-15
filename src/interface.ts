@@ -103,6 +103,7 @@ export interface Attendance {
   remarks: string;
   status: AttendanceStatus;
   createdDate: Date;
+  checkedIn: boolean;
 }
 
 export interface FileObject {

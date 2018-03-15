@@ -125,12 +125,13 @@ div[class="ant-list-item"] > div:first-of-type {
 }
 
 .featured-meetings-container {
+	height: 500px;
 	width: 100%;
 	background: black;
 }
 
 .featured-meeting-img {
-	height: 100%;
+	height: 500px;
 	width: 100%;
 	object-fit: cover;
 }

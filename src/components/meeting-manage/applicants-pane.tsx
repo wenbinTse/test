@@ -33,6 +33,7 @@ class AttendanceColumn extends Table.Column<Attendance> {}
 
 // tslint:disable-next-line:max-classes-per-file
 class ApplicantsPane extends React.Component<Props, State> {
+  private selectedField: string;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -40,10 +41,6 @@ class ApplicantsPane extends React.Component<Props, State> {
       showModal: false,
       chartData: []
     };
-  }
-
-  public componentDidMount() {
-    this.updateChartData('corporation');
   }
 
   public render() {
@@ -91,9 +88,10 @@ class ApplicantsPane extends React.Component<Props, State> {
           visible={this.state.showModal}
           className={Styles.chartContainer}
           onCancel={() => this.setState({showModal: false})}
+          footer={false}
         >
           <div className={Styles.chart}>
-            <Select defaultValue="corporation" onChange={this.updateChartData}>
+            <Select defaultValue="corporation" onChange={this.fieldChangeHandler}>
               <Option value="corporation">单位</Option>
               <Option value="title">职称</Option>
               <Option value="gender">性别</Option>
@@ -111,7 +109,7 @@ class ApplicantsPane extends React.Component<Props, State> {
         />
         <Button href={this.export()} download="数据.csv" onClick={this.exportClickHandler}>导出</Button>
         <div style={{marginBottom: '16px'}}>
-          <Button onClick={() => this.setState({showModal: !this.state.showModal})}>可视化</Button>
+          <Button onClick={() => this.showChart()}>可视化</Button>
           {
             this.props.status === AttendanceStatus.PENDING &&
             <Button onClick={() => this.auditAttendance()} type="primary" style={{marginLeft: '16px'}}>同意</Button>
@@ -157,6 +155,18 @@ class ApplicantsPane extends React.Component<Props, State> {
             render={(text, record) => moment(record.createdDate).format('M月D号 H:mm')}
             sorter={(a, b) => this.directSorter(a, b, 'createdDate')}
           />
+          {
+            this.props.status === AttendanceStatus.AUDITED &&
+            <AttendanceColumn 
+              title="签到状态" 
+              dataIndex="checkedIn"
+              width={100}
+              fixed="right"
+              render={(text, record) => record.checkedIn ? '已签到' : '未签到'}
+              filters={[{text: '已签到', value: 'true'}, {text: '未签到', value: 'false'}]}
+              onFilter={(value, record) => value === 'true' && record.checkedIn || (value === 'false' && !record.checkedIn)}
+            />
+          }
           {this.props.status === AttendanceStatus.PENDING && <AttendanceColumn 
             title="操作" 
             key="operations"
@@ -174,9 +184,25 @@ class ApplicantsPane extends React.Component<Props, State> {
     );
   }
 
-  private updateChartData = (field: string) => {
+  private showChart = () => {
+    if (!this.state.selectedRowKeys.length) {
+      message.warn('未选择任何项');
+      return;
+    }
+    this.updateChartData();
+    this.setState({showModal: true});
+  }
+
+  private fieldChangeHandler = (value: string) => {
+    this.selectedField = value;
+    this.updateChartData();
+  }
+
+  private updateChartData = () => {
+    const field = this.selectedField;
     const data = {};
-    for (const atten of this.props.allList) {
+    const list = this.props.allList.filter((value) => this.find(value._id, this.state.selectedRowKeys));
+    for (const atten of list) {
       let value = '';
       if (field === 'corporation' || field === 'title') {
         value = atten.user[field];
@@ -234,7 +260,7 @@ class ApplicantsPane extends React.Component<Props, State> {
     this.props.updateShowList(list);
   }
 
-    private find = (val: string, array: string[]) => {
+  private find = (val: string, array: string[]) => {
     for (const item of array) {
       if (val === item) {
         return true;

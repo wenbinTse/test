@@ -134,12 +134,7 @@ class Checkin extends React.Component<Props, State> {
       // tslint:disable-next-line:only-arrow-functions
       fail: function(res: any) {
         message.error(res);
-        alert(2)
         console.log(res);
-      },
-      // tslint:disable-next-line:only-arrow-functions
-      complete: function(res: any) {
-        alert(3)
       }
     });
   }

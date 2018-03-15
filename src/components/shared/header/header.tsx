@@ -61,6 +61,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         <li onClick={() => this.menuClickHandler('/profile/meetings')}>
           已参加会议
         </li>
+        <li onClick={() => this.menuClickHandler('/profile/qrcode')}>
+          个人二维码
+        </li>
         {this.state.userProfile && this.state.userProfile.meetings.length > 0 && <hr/>}
         {
           this.state.userProfile && this.state.userProfile.meetings.length > 0 &&
