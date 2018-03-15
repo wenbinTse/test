@@ -18,12 +18,15 @@ interface State {
 class Checkin extends React.Component<Props, State> {
   
   private wx: any;
+  private meetingId: string;
   
   constructor(props: Props) {
     super(props);
     this.state = {
       loading: true
     };
+    this.meetingId = props.params.meetingId;
+    alert(this.meetingId);
   }
 
   private isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
@@ -39,7 +42,6 @@ class Checkin extends React.Component<Props, State> {
       true,
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
-          alert(33)
           this.setState({loading: false});
           this.wx = (window as any).wx;
           this.wx.config({
@@ -80,7 +82,7 @@ class Checkin extends React.Component<Props, State> {
       success: function(res: any) {
         alert(res.resultStr);
         HttpRequestDelegate.get(
-          Urls.checkIn(this.props.params.meetingId, this.userId),
+          Urls.checkIn(this.meetingId, this.userId),
           true,
           (data: any) => {
             if (data.code === ResponseCode.SUCCESS) {
