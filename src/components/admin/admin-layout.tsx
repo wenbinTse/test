@@ -23,6 +23,10 @@ class AdminLayout extends React.Component<{}, {}> {
               <Icon type="usergroup-add" />
               <span className="nav-text">普通用户</span>
             </IndexLink>
+            <IndexLink activeClassName={Styles.active} to="/admin/meetings">
+              <Icon type="schedule" />
+              <span className="nav-text">会议列表</span>
+            </IndexLink>
           </div>
         </Sider>
         <Layout>

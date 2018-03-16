@@ -64,6 +64,7 @@ export interface Location {
 
 export interface Meeting {
   _id: string;
+  owner: User;
   name: string;
   location: Location;
   description: string;

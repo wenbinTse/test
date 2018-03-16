@@ -31,6 +31,7 @@ import Checkin from './components/meeting-manage/checkin';
 import AdminLayout from './components/admin/admin-layout';
 import MeetingManager from './components/admin/meeting-manager';
 import OrdinaryUsers from './components/admin/ordinary-users';
+import MeetingsForAdmin from './components/admin/meetings';
 
 interface State {
   loading: boolean;
@@ -84,6 +85,7 @@ class App extends React.Component<{}, State> {
               <Route path="/admin" component={AdminLayout}>
                 <IndexRoute component={MeetingManager}/>
                 <Route path="ordinary" component={OrdinaryUsers}/>
+                <Route path="meetings" component={MeetingsForAdmin}/>
               </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />

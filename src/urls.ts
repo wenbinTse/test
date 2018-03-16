@@ -76,4 +76,5 @@ export default class Urls {
   public static addMeetingManager =  ADMIN_URL + '/addMeetingManager';
   public static deleteUser = (userId: string) => ADMIN_URL + '/deleteUser/' + userId;
   public static getUsers = ADMIN_URL + '/getUsers';
+  public static getMeetingsADMIN = ADMIN_URL + '/meetings';
 }
