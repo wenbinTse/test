@@ -6,6 +6,7 @@ import { Attendance } from '../../models/attendance';
 import { Status, ResponseCode, AttendanceStatus, UserType } from '../../shared/interface';
 import { User } from '../../models/user';
 import { createHashAndSalt } from '../../shared/password';
+import { Meeting } from '../../models/meeting';
 
 const router = Router();
 
@@ -47,6 +48,17 @@ router.post('/getUsers', (req: Request, res: Response) => {
         list: docs
       });
     })
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/meetings', (req: Request, res: Response) => {
+  Meeting.find({status: {$ne: Status.DELETED}}, 'name startDate endDate owner')
+    .populate('owner', 'name')
+    .exec()
+    .then((docs: any[]) => res.json({
+      code: ResponseCode.SUCCESS,
+      list: docs
+    }))
     .catch((err: any) => errHandler(err, res));
 });
 

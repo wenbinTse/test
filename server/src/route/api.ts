@@ -2,11 +2,11 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { ResponseCode, Status } from '../shared/interface';
 import { errHandler } from '../shared/util';
 import { Urls } from '../shared/urls';
+import { Meeting } from '../models/meeting';
+import { FeaturedMeeting } from '../models/featured-meeting';
 
 const corporation = require('../../data/corporation.json');
 const router = Router();
-const Meeting = require('../models/meeting');
-const FeaturedMeeting = require('../models/featured-meeting');
 
 router.get('/corporation', (req: Request, res: Response) => {
   res.json({list: corporation});
