@@ -40,6 +40,7 @@ const sendHTML = (
 ) => {
   const path = templatePath + templateFileName;
   data.domain = Config.domain;
+  data.addressee = addressee;
   EJS.renderFile(path,
     data,
     (err, html) => {
@@ -76,5 +77,14 @@ export const verificationCode = (addressee: Addressee, code: string) => {
     '验证码',
     'verification-code.ejs',
     {code}
+  );
+};
+
+export const registerMeeting = (addressee: Addressee, meeting: {_id: string, name: string}) => {
+  sendHTML(
+    addressee,
+    '成功注册会议',
+    'register-meeting.ejs',
+    {meeting}
   );
 };

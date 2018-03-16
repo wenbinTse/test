@@ -1,3 +1,8 @@
 <div>
-    
+  <p style="margin: 8px 0;">尊敬的<%=addressee.name%>:</p>
+  <p style="margin: 8px 0">您已成功注册会议——
+    <a style="text-decoration: none; color: #1890ff; font-weight: bolder" href=<%=domain%>/meeting/<%=meeting._id%>><%=meeting.name%></a>。
+    正待管理员审核。
+  </p>
+  <%include footer.ejs%>
 <div>

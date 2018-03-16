@@ -8,6 +8,7 @@ import { Attendance } from '../../models/attendance';
 import { Meeting } from '../../models/meeting';
 import { User } from '../../models/user';
 import Session = Express.Session;
+import * as Email from '../../shared/email';
 
 const router = Router();
 
@@ -73,24 +74,27 @@ router.post('/register', checkLogin, async (req: Request, res: Response) => {
   const stayType = req.body.stayType;
   const stayDates = req.body.stayDates;
   const remarks = req.body.remarks;
-  const userId = (req.session as Session).user._id;
+
+  const session = req.session as Session;
+  const userId = session.user._id;
+  const userName = session.user.name;
+  const email = session.user.email;
+
 
   if (!meetingId || !taxPayerId || !invoiceTitle || !phone) {
     res.json({code: ResponseCode.INCOMPLETE_INPUT});
     return;
   }
 
-  let invalid = false;
-  await Meeting.findById(meetingId, ['startDate', 'endDate']).exec()
-   .then((meeting: any) => {
-    if (!meeting) {
-      res.json({code: ResponseCode.FIND_NOTHING});
-      invalid = true;
-    }
+  let meeting: any;
+  await Meeting.findById(meetingId, ['startDate', 'endDate', 'name']).exec()
+   .then((doc: any) => {
+    meeting = doc;
   });
-  if (invalid) {
-    return;
-  }
+   if (!meeting) {
+      res.json({code: ResponseCode.FIND_NOTHING});
+      return;
+    }
 
   const attendance = new Attendance({
     meeting: meetingId,
@@ -106,6 +110,7 @@ router.post('/register', checkLogin, async (req: Request, res: Response) => {
   attendance.save()
     .then((data: any) => {
       res.json({code: ResponseCode.SUCCESS});
+      Email.registerMeeting({name: userName, email}, meeting); // 发送邮件
       const userId = (req.session as Session).user._id;
       User.update({_id: userId}, {$set: {
         taxPayerId,
