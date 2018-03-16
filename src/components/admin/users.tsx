@@ -59,7 +59,7 @@ class Users extends React.Component<Props, State> {
           size="large"
           onSearch={(keyword) => this.search(keyword)}
           enterButton={true}
-          style={{margin: '16px 0', maxWidth: '500px'}}
+          style={{marginBottom: '16px', marginTop: '8px', maxWidth: '500px'}}
         />
         <UserTable dataSource={this.state.users}>
           <UserColumn title="id" dataIndex="_id"/>

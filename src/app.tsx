@@ -84,7 +84,7 @@ class App extends React.Component<{}, State> {
               </Route>
               <Route path="/admin" component={AdminLayout}>
                 <IndexRoute component={MeetingManager}/>
-                <Route path="ordinary" component={OrdinaryUsers}/>
+                <Route path="ordinaryUsers" component={OrdinaryUsers}/>
                 <Route path="meetings" component={MeetingsForAdmin}/>
               </Route>
               <Route path="notFound" component={NotFound} />
