@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { Location, Gender, ResponseCode } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
+import { User } from '../../models/user';
 
 const router = Router();
-const User = require('../../models/user');
 
 router.post('/add', (req: Request, res: Response) => {
   const name = req.body.name;

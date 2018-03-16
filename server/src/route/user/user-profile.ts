@@ -6,10 +6,9 @@ import Session = Express.Session;
 import File from '../../shared/file';
 import { Urls } from '../../shared/urls';
 import { Attendance } from '../../models/attendance';
+import { User } from '../../models/user';
 
 const router = Router();
-const User = require('../../models/user');
-const Meeting = require('../../models/meeting');
 
 const corporations = require('../../../data/corporation.json');
 const titles = require('../../../data/title.json');

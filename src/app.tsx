@@ -28,6 +28,9 @@ import ProfileMeetings from './components/profile/profile-meetings';
 import MeetingApplicants from './components/meeting-manage/meeting-manage-applicants';
 import QrCode from './components/profile/qrcode';
 import Checkin from './components/meeting-manage/checkin';
+import AdminLayout from './components/admin/admin-layout';
+import MeetingManager from './components/admin/meeting-manager';
+import OrdinaryUsers from './components/admin/ordinary-users';
 
 interface State {
   loading: boolean;
@@ -77,6 +80,10 @@ class App extends React.Component<{}, State> {
                 <Route path="files" component={MeetingManageFile} />
                 <Route path="applicants" component={MeetingApplicants} />
                 <Route path="checkin" component={Checkin} />
+              </Route>
+              <Route path="/admin" component={AdminLayout}>
+                <IndexRoute component={MeetingManager}/>
+                <Route path="ordinary" component={OrdinaryUsers}/>
               </Route>
               <Route path="notFound" component={NotFound} />
               <Route path="*" component={NotFound} />

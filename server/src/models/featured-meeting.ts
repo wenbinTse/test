@@ -8,4 +8,4 @@ const meetingSchema = new mongoose.Schema({
   }
 });
 
-export = mongoose.model('FeaturedMeeting', meetingSchema);
+export const FeaturedMeeting = mongoose.model('FeaturedMeeting', meetingSchema);

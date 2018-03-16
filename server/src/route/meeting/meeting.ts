@@ -5,10 +5,10 @@ import * as mongoose from 'mongoose';
 import { checkObjectId, checkLogin } from '../../shared/middle-ware';
 import { Urls } from '../../shared/urls';
 import { Attendance } from '../../models/attendance';
+import { Meeting } from '../../models/meeting';
+import { User } from '../../models/user';
 import Session = Express.Session;
 
-const Meeting = require('../../models/meeting');
-const User = require('../../models/user');
 const router = Router();
 
 router.get('/list', (req: Request, res: Response) => {

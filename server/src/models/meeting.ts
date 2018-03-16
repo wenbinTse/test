@@ -42,4 +42,4 @@ const meetingSchema = new mongoose.Schema({
   checkedIn: {type: Boolean, default: false}
 });
 
-export = mongoose.model('Meeting', meetingSchema);
+export const Meeting = mongoose.model('Meeting', meetingSchema);

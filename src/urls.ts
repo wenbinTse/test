@@ -8,6 +8,7 @@ const MEETING_ADMIN_URL = API_URL + '/meeting-admin';
 const MEETING_URL = API_URL + '/meeting/';
 const REVIEW_URL = API_URL + '/review';
 const PROFILE_URL = API_URL + '/profile';
+const ADMIN_URL = API_URL + '/admin';
 
 export default class Urls {
   // Home Api
@@ -70,4 +71,9 @@ export default class Urls {
 
   // Qrcode Api
   public static qrcode = (text: string) => 'http://qr.liantu.com/api.php?w=250&text=' + text;
+  
+  // Admin Api
+  public static addMeetingManager =  ADMIN_URL + '/addMeetingManager';
+  public static deleteUser = (userId: string) => ADMIN_URL + '/deleteUser/' + userId;
+  public static getUsers = ADMIN_URL + '/getUsers';
 }

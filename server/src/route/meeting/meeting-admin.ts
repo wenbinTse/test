@@ -6,8 +6,8 @@ import { checkObjectId, checkLogin } from '../../shared/middle-ware';
 import { Urls } from '../../shared/urls';
 import File from '../../shared/file';
 import { Attendance } from '../../models/attendance';
+import { Meeting } from '../../models/meeting';
 
-const Meeting = require('../../models/meeting');
 const router = Router();
 const format_cities = require('../../../data/format-cities.json');
 

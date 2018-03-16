@@ -5,9 +5,9 @@ import { errHandler } from '../../shared/util';
 import { Attendance } from '../../models/attendance';
 import { Status, ResponseCode, AttendanceStatus } from '../../shared/interface';
 import * as mongoose from 'mongoose';
+import { Meeting } from '../../models/meeting';
 
 const router = Router();
-const Meeting = require('../../models/meeting');
 
 router.get('/init/:id', checkObjectId, (req: Request, res: Response) => {
   console.log(req.headers);

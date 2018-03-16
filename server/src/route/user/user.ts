@@ -8,11 +8,11 @@ import { createHashAndSalt, verifyPassword } from '../../shared/password';
 import * as Email from '../../shared/email';
 import { Urls } from '../../shared/urls';
 import { profileImage } from '../../../../src/components/profile/profile.css';
+import { User } from '../../models/user';
+import { Meeting } from '../../models/meeting';
 
 const crypto = require('crypto');
 const router = Router();
-const User = require('../../models/user');
-const Meeting = require('../../models/meeting');
 
 const corporations = require('../../../data/corporation.json');
 const titles = require('../../../data/title.json');

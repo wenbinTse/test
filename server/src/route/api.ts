@@ -74,6 +74,7 @@ const reviewRouter = require('./review/review');
 const userProfileRouter = require('./user/user-profile');
 const fileRouter = require('./file/file');
 const checkInRouter = require('./checkin/checkin');
+const adminRouter = require('./admin/admin');
 
 router.use('/user', userRouter);
 router.use('/user-admin', userAdminRouter);
@@ -83,5 +84,6 @@ router.use('/review', reviewRouter);
 router.use('/profile', userProfileRouter);
 router.use('/file', fileRouter);
 router.use('/checkIn', checkInRouter);
+router.use('/admin', adminRouter);
 
 export = router;

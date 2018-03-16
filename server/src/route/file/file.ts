@@ -3,7 +3,6 @@ import { ResponseCode } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import { checkObjectId } from '../../shared/middle-ware';
 
-const Meeting = require('../../models/meeting');
 const router = Router();
 import File from '../../shared/file';
 

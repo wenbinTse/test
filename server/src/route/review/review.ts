@@ -4,11 +4,10 @@ import { errHandler } from '../../shared/util';
 import { checkLogin, checkObjectId } from '../../shared/middle-ware';
 import Session = Express.Session;
 import { Urls } from '../../shared/urls';
+import { Review } from '../../models/review';
+import { Meeting } from '../../models/meeting';
 
 const router = Router();
-const Review = require('../../models/review');
-const Meeting = require('../../models/meeting');
-const User = require('../../models/user');
 
 function getReviews(condition: Object, res: Response) {
    Review.find(condition)

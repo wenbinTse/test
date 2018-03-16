@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Gender, UserType } from '../shared/interface';
+import { Gender, UserType, Status } from '../shared/interface';
 
 const userSchema = new mongoose.Schema({
   name: {type: String, required: true, trim: true},
@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String
-  }
+  },
+  status: {type: Status, default: Status.ACTIVE}
 });
 
-export = mongoose.model('User', userSchema);
+export const User = mongoose.model('User', userSchema);

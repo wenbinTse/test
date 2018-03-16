@@ -20,4 +20,4 @@ const reviewSchema = new mongoose.Schema({
   numOfReply: {type: Number, default: 0}
 });
 
-export = mongoose.model('Review', reviewSchema);
+export const Review = mongoose.model('Review', reviewSchema);

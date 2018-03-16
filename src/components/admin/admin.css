@@ -1,0 +1,18 @@
+.link-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-container > a {
+    background: rgba(50, 50, 50);
+    padding: 12px 24px;
+    color: white;
+}
+
+.link-container i {
+    margin-right: 8px
+}
+
+.active {
+  background: #40a9ff !important;
+}
