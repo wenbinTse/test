@@ -25,11 +25,11 @@ class FeaturedMeetings extends React.Component<Props, {}> {
   public renderFeaturedMeeting(meeting: Meeting) {
     const imageSrc = meeting.images && meeting.images.length ? meeting.images[0] : '';
     return (
-      <div className={Styles.featuredMeetingContainer}>
+      <a className={Styles.featuredMeetingContainer} href={'/meeting/' + meeting._id}>
         {imageSrc && <img src={imageSrc} className={Styles.featuredMeetingImg}/>}
         {!imageSrc && <div>暂无图片</div>}
-        <h2>{meeting.name}</h2>
-      </div>
+        <h1>{meeting.name}</h1>
+      </a>
     );
   }
 

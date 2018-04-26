@@ -74,7 +74,7 @@
 @media screen and (max-width: 1199px) {
 
   .responsive-logo-height {
-    height: 55px;
+    height: 40px;
   }
 }
 
@@ -85,13 +85,13 @@
   }
 
   .responsive-logo-height {
-    height: 40px;
+    height: 30px;
   }
 }
 
 @media screen and (max-width: 575px) {
   .responsive-logo-height {
-    height: 30px;
+    height: 20px;
   }
 
   .nav-list {

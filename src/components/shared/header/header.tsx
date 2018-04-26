@@ -15,8 +15,8 @@ interface HeaderState {
   showUserPanel: boolean;
 }
 
-const LOGO_COLLAPSE_DISTANCE = 100;
-const LOGO_COLLAPSE_DELAY = 200;
+const LOGO_COLLAPSE_DISTANCE = 50;
+const LOGO_COLLAPSE_DELAY = 100;
 
 class Header extends React.Component<HeaderProps, HeaderState> {
   /** @constructor */

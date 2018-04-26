@@ -109,6 +109,7 @@ class ProfileMeetings extends React.Component<{}, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           message.success('成功取消');
+          this.setState({pending: this.state.pending.filter((value) => atten._id !== value._id)});
         } else if (data.code === ResponseCode.UNLOGIN) {
           UserService.requireLogin();
         }

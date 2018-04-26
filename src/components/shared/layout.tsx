@@ -21,8 +21,6 @@ class Layout extends React.Component<LayoutProps, {}> {
     super(props);
   }
   public render() {
-    const screenHeight = document.documentElement.clientHeight;
-    const minHeight = screenHeight - 70 * 2;
     return (
       <div>
         <UserModal ref={(e) => UserService.bindUserModalElement(e as UserModal)}/>
@@ -34,7 +32,6 @@ class Layout extends React.Component<LayoutProps, {}> {
         this.props.children.props.route['header-clearance'] === false ? '' : <HeaderClearance/>}
         <div
           className={body}
-          style={{minHeight}}
         >
           {this.props.children}
         </div>

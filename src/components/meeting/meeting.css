@@ -166,14 +166,15 @@ div[class="ant-list-item"] > div:first-of-type {
 	justify-content: center;
 }
 
-.featured-meeting-container > h2 {
-	font-size: 36px;
+.featured-meeting-container > h1 {
 	font-weight: bolder;
 	position: absolute;
-	bottom: 24px;
-	right: 20%;
+	top: 0;
+	right: 0;
 	color: white;
-	text-shadow: 2px 2px 2px white;
+	padding: 8px;
+	background: black;
+	margin: 0;
 }
 
 /* For demo */

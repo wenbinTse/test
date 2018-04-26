@@ -121,7 +121,7 @@ class MeetingDetail extends React.Component<Props, State> {
         {
           meeting.detail &&
           <Row style={{margin: '20px 0'}}>
-            <span className={Styles.middleTitle}>更多详情</span>
+            <span className={Styles.middleTitle}>注意事项</span>
             <Col sm={24}>
               <span dangerouslySetInnerHTML={{__html: meeting.detail}}/>
             </Col>
