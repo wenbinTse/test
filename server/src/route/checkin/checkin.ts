@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { checkObjectId } from '../../shared/middle-ware';
+import { checkObjectId, checkLogin, checkMeetingAdmin } from '../../shared/middle-ware';
 import { Weixin } from '../../weixin/weixin';
 import { errHandler } from '../../shared/util';
 import { Attendance } from '../../models/attendance';
@@ -9,7 +9,9 @@ import { Meeting } from '../../models/meeting';
 
 const router = Router();
 
-router.get('/init/:id', checkObjectId, (req: Request, res: Response) => {
+router.use(checkLogin);
+
+router.get('/init/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   console.log(req.headers);
   const url = req.headers.referer as string;
   Meeting.findById(req.params.id, ['name', 'startDate', 'endDate']).exec()
@@ -26,8 +28,8 @@ router.get('/init/:id', checkObjectId, (req: Request, res: Response) => {
     }).catch((err: any) => errHandler(err, res));
 });
 
-router.get('/:meetingId/:userId', (req: Request, res: Response) => {
-  const meetingId = req.params.meetingId;
+router.get('/:id/:userId', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  const meetingId = req.params.id;
   const userId = req.params.userId;
   if (!mongoose.Types.ObjectId.isValid(meetingId) || !mongoose.Types.ObjectId.isValid(userId)) {
     res.json({
