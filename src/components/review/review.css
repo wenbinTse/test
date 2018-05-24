@@ -34,6 +34,7 @@
 .container {
 	display: flex;
 	margin: 8px 0;
+	position: relative;
 }
 
 .container > div:last-of-type {
@@ -44,4 +45,19 @@
 
 .container > div:last-of-type > div:last-of-type {
 	margin: 8px 0;
+}
+
+.delete-icon {
+	position: absolute;
+	right: 0;
+	top: 8px;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 50%;
+}
+
+.delete-icon:hover {
+	color: white;
+	background: red;
+	font-size: 20px;
 }

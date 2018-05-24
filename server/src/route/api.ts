@@ -68,6 +68,7 @@ router.get('/dataForHome', (req: Request, res: Response) => {
 
 import { User } from '../models/user';
 import { createHashAndSalt } from '../shared/password';
+import { checkAdmin, checkLogin } from '../shared/middle-ware';
 
 const titles = ['教授', '副教授', '讲师', '学生', '其他'];
 const corporations = ['清华大学', '北京大学', '北京航空航天大学', '复旦大学', '其他'];
@@ -92,7 +93,6 @@ router.get('/createusers', async (req: Request, res: Response) => {
 
 const userRouter = require('./user/user');
 const meetingRouter = require('./meeting/meeting');
-const userAdminRouter = require('./user/user-admin');
 const meetingAdminRouter = require('./meeting/meeting-admin');
 const reviewRouter = require('./review/review');
 const userProfileRouter = require('./user/user-profile');
@@ -101,13 +101,12 @@ const checkInRouter = require('./checkin/checkin');
 const adminRouter = require('./admin/admin');
 
 router.use('/user', userRouter);
-router.use('/user-admin', userAdminRouter);
 router.use('/meeting', meetingRouter);
-router.use('/meeting-admin', meetingAdminRouter);
+router.use('/meetingAdmin', meetingAdminRouter);
 router.use('/review', reviewRouter);
 router.use('/profile', userProfileRouter);
 router.use('/file', fileRouter);
 router.use('/checkIn', checkInRouter);
-router.use('/admin', adminRouter);
+router.use('/admin', checkLogin, checkAdmin, adminRouter);
 
 export = router;

@@ -4,7 +4,7 @@ process.env.NODE_ENV === 'development' ? 'http://localhost:80' :
 
 const API_URL: string = SERVER_URL + '/api';
 const USER_URL: string = API_URL + '/user';
-const MEETING_ADMIN_URL = API_URL + '/meeting-admin';
+const MEETING_ADMIN_URL = API_URL + '/meetingAdmin';
 const MEETING_URL = API_URL + '/meeting/';
 const REVIEW_URL = API_URL + '/review';
 const PROFILE_URL = API_URL + '/profile';
@@ -19,12 +19,12 @@ export default class Urls {
   public static register = USER_URL + '/register';
   public static logout = USER_URL + '/logout';
   public static dataForRegister = USER_URL + '/dataForRegister';
-  public static currentUserInfo = USER_URL + '/currentUserInfo';
   public static verify = (userId: string, hash: string) => USER_URL + `/verify/${userId}/${hash}`;
   public static sendVerificationCode = (email: string) => USER_URL + `/sendVerificationCode/${email}`;
   public static resetPassword = USER_URL + `/resetPassword`;
 
   // User Profile Api
+  public static currentUserInfo = PROFILE_URL + '/currentUserInfo';
   public static dataForProfile = PROFILE_URL + '/dataForProfile';
   public static editProfile = PROFILE_URL + '/edit';
   public static editProfileImage = PROFILE_URL + '/editProfileImage';
@@ -47,7 +47,10 @@ export default class Urls {
   public static meetingApplicants = (meetingId: string) => MEETING_ADMIN_URL + '/applicants/' + meetingId;
   public static auditAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/auditAttendance/' + meetingId;
   public static refuseAttendance = (meetingId: string) => MEETING_ADMIN_URL + '/refuseAttendance/' + meetingId;
-
+  public static closeMeeting = (meetingId: string) => MEETING_ADMIN_URL + '/close/' + meetingId;
+  public static getUsersForManagement = MEETING_ADMIN_URL + '/getUsers';
+  public static sendEmail = (meetingId: string) => MEETING_ADMIN_URL + '/sendEmail/' + meetingId;
+  
   // Meeting Admin Api
   public static createMeeting = MEETING_ADMIN_URL + '/create';
 
@@ -64,7 +67,8 @@ export default class Urls {
   public static getReviews = (meetingId: string) => REVIEW_URL + `/getReviews/${meetingId}`;
   public static addReview = REVIEW_URL + '/add';
   public static getReplies = (reviewId: string) => REVIEW_URL + `/getReplies/${reviewId}`;
-  
+  public static deleteReview = (reviewId: string) => REVIEW_URL + '/delete/' + reviewId;
+
   // Check-IN API
   public static checkIn = (meetingId: string, userId: string) => API_URL + `/checkIn/${meetingId}/${userId}`;
   public static initcheckingIn = (meetingId: string) => API_URL + '/checkIn/init/' + meetingId;

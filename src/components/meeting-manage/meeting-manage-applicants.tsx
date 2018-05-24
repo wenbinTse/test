@@ -49,12 +49,10 @@ class MeetingApplicants extends React.Component<Props, State> {
             allPending: data.pending,
             allAudited: data.audited
           });
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
         } else {
-          if (data.code === ResponseCode.UNLOGIN) {
-            UserService.requireLogin();
-          } else if (data.code === ResponseCode.ACCESS_DENIED) {
-            browserHistory.push('/NotFound');
-          }
+          browserHistory.push('/NotFound');
         }
       }
     );

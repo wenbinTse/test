@@ -2,6 +2,7 @@ import * as React from 'react';
 import { IndexLink } from 'react-router';
 import { Layout, Icon } from 'antd';
 import * as Styles from './profile.css';
+import { body } from '../global.css';
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
@@ -12,7 +13,7 @@ class ProfileLayout extends React.Component<{}, {}> {
         <Sider
           breakpoint="md"
           collapsedWidth="0"
-          style={{backgroundColor: 'black', marginBottom: '24px', height: '500px'}}
+          style={{backgroundColor: 'black', marginBottom: '24px'}}
         >
           <div className={Styles.linkContainer}>
             <IndexLink activeClassName={Styles.active} to="/profile">
@@ -30,8 +31,8 @@ class ProfileLayout extends React.Component<{}, {}> {
           </div>
         </Sider>
         <Layout>
-          <Content style={{margin: '24px 16px 0'}}>
-            <div>
+          <Content className={body}>
+            <div style={{margin: '24px', padding: '24px'}}>
               {this.props.children}
             </div>
           </Content>

@@ -1,12 +1,15 @@
 import { Router, Request, Response } from 'express';
-import { ResponseCode, AttendanceStatus } from '../../shared/interface';
+import { ResponseCode, AttendanceStatus, Status, Addressee } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Session = Express.Session;
-import { checkObjectId, checkLogin } from '../../shared/middle-ware';
+import { checkObjectId, checkLogin, checkMeetingAdmin } from '../../shared/middle-ware';
 import { Urls } from '../../shared/urls';
 import File from '../../shared/file';
 import { Attendance } from '../../models/attendance';
 import { Meeting } from '../../models/meeting';
+import { User } from '../../models/user';
+import { images } from '../../../../src/components/meeting-manage/meeting-manage.css';
+import * as Email from '../../shared/email';
 
 const router = Router();
 const format_cities = require('../../../data/format-cities.json');
@@ -47,19 +50,38 @@ router.post('/create', (req: Request, res: Response) => {
     .catch((err: any) => errHandler(err, res));
 });
 
-router.get('/dataForMeetingManage/:id', checkObjectId, (req: Request, res: Response) => {
-  Meeting.findById(req.params.id).exec()
+router.post('/getUsers', (req: Request, res: Response) => {
+  const field = req.body.field;
+  const keyword = req.body.keyword;
+  const condition: any = new Object();
+  if (keyword) {
+    condition[field] = keyword;
+  }
+  User.find(condition, 'name email corporation title job gender').limit(2000).exec()
+  .then((docs: any[]) => res.json({code: ResponseCode.SUCCESS, list: docs}))
+  .catch((err: any) => errHandler(err, res));
+});
+
+// 判断登录
+router.use(checkLogin);
+
+router.get('/dataForMeetingManage/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  Meeting.findOne({_id: req.params.id, status: Status.ACTIVE}).exec()
     .then((meeting: any) => {
-      res.json({
-        code: ResponseCode.SUCCESS,
-        item: meeting,
-        cities: format_cities
-      });
+      if (meeting) {
+        res.json({
+          code: ResponseCode.SUCCESS,
+          item: meeting,
+          cities: format_cities
+        });
+      } else {
+        res.json({code: ResponseCode.FIND_NOTHING});
+      }
     })
     .catch((err: any) => errHandler(err, res));
 });
 
-router.post('/edit/:id', checkObjectId, (req: Request, res: Response) => {
+router.post('/edit/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   const name = req.body.name;
   const description = req.body.description;
   const detail = req.body.detail;
@@ -75,7 +97,7 @@ router.post('/edit/:id', checkObjectId, (req: Request, res: Response) => {
       return;
     }
 
-  Meeting.findByIdAndUpdate(req.params.id, {
+  Meeting.findOneAndUpdate({_id: req.params.id, status: Status.ACTIVE}, {
     $set: {
       name,
       description,
@@ -87,73 +109,102 @@ router.post('/edit/:id', checkObjectId, (req: Request, res: Response) => {
       stayTypes
     }
   }).exec()
-    .then(() => {
-      res.json({code: ResponseCode.SUCCESS});
-    })
-    .catch((err: any) => errHandler(err, res));
-});
-
-router.get('/images/:id', checkObjectId, (req: Request, res: Response) => {
-  Meeting.findById(req.params.id, ['images']).exec()
     .then((meeting: any) => {
-      res.json({
-        code: ResponseCode.SUCCESS,
-        list: meeting.images.map((image: string) => Urls.meetingImage(image)),
-        ids: meeting.images
-      });
+      if (meeting) {
+        res.json({code: ResponseCode.SUCCESS});
+      } else {
+        res.json({code: ResponseCode.FIND_NOTHING});
+      }
     })
     .catch((err: any) => errHandler(err, res));
 });
 
-router.get('/deleteImage/:meetingId/:imageId', (req: Request, res: Response) => {
-  const imageId = req.params.imageId;
-  File.delete(res, 'meetingImage', imageId, (err: any) => {
-    if (err) {
-      errHandler(err, res);
-      return;
-    }
-    Meeting.update({_id: req.params.meetingId}, {
-      $pull: {
-        images: imageId
+router.get('/images/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  Meeting.findOne({_id: req.params.id, status: Status.ACTIVE}, ['images']).exec()
+    .then((meeting: any) => {
+      if (meeting) {
+        res.json({
+          code: ResponseCode.SUCCESS,
+          list: meeting.images.map((image: string) => Urls.meetingImage(image)),
+          ids: meeting.images
+        });
+      } else {
+        res.json({code: ResponseCode.FIND_NOTHING});
       }
-    }).exec()
-      .then(() => res.json({code: ResponseCode.SUCCESS}))
-      .catch((err: any) => errHandler(err, res));
-  });
+    })
+    .catch((err: any) => errHandler(err, res));
 });
 
-router.post('/uploadImage/:id', checkObjectId, (req: Request, res: Response) => {
+router.get('/deleteImage/:id/:imageId', checkMeetingAdmin, (req: Request, res: Response) => {
+  const imageId = req.params.imageId;
+  const meetingId = req.params.id;
+  Meeting.findOneAndUpdate({_id: meetingId, status: Status.ACTIVE}, {
+    $pull: {
+      images: imageId
+    }
+  }).exec()
+    .then((doc: any) => {
+      if (!doc) {
+        res.json({code: ResponseCode.FIND_NOTHING});
+      } else {
+        if (doc.images.findIndex((value: string) => value === imageId) === -1) {
+          res.json({code: ResponseCode.INVALID_INPUT});
+        } else {
+          File.delete(res, 'meetingImage', imageId, (err: any) => {
+            if (err) {
+              errHandler(err, res);
+            } else {
+              res.json({code: ResponseCode.SUCCESS});
+            }
+          });
+        }
+      }
+    })
+    .catch((err: any) => errHandler(err, res));
+});
+
+router.post('/uploadImage/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   File.upload(req, res, 'meetingImage', (err: any, id: string) => {
     if (err) {
       errHandler(err, res);
       return;
     }
-    Meeting.findByIdAndUpdate(req.params.id, {
+    Meeting.findOneAndUpdate({_id: req.params.id, status: Status.ACTIVE}, {
       $push: {
         images: id
       }
     }).exec()
-      .then(() => res.json({
-        code: ResponseCode.SUCCESS,
-        item: Urls.meetingImage(id),
-        id
-      }))
+      .then((doc: any) => {
+        if (doc) {
+          res.json({
+            code: ResponseCode.SUCCESS,
+            item: Urls.meetingImage(id),
+            id
+          });
+        } else {
+          res.json({code: ResponseCode.FIND_NOTHING});
+        }
+      })
       .catch((err: any) => errHandler(err, res));
   });
 });
 
-router.get('/files/:id', checkObjectId, (req: Request, res: Response) => {
-  Meeting.findById(req.params.id, ['files']).exec()
+router.get('/files/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  Meeting.findOne({_id: req.params.id, status: Status.ACTIVE}, ['files']).exec()
     .then((meeting: any) => {
-      res.json({
-        code: ResponseCode.SUCCESS,
-        list: meeting.files
-      });
+      if (meeting) {
+        res.json({
+          code: ResponseCode.SUCCESS,
+          list: meeting.files
+        });
+      } else {
+        res.json({code: ResponseCode.FIND_NOTHING});
+      }
     })
     .catch((err: any) => errHandler(err, res));
 });
 
-router.post('/uploadFile/:id', checkObjectId, (req: Request, res: Response) => {
+router.post('/uploadFile/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   File.upload(req, res, 'file', (err: any, id: string) => {
     const file = (req.files as Express.Multer.File[])[0];
     const item = {
@@ -162,38 +213,55 @@ router.post('/uploadFile/:id', checkObjectId, (req: Request, res: Response) => {
       fileType: file.contentType,
       size: file.size
     };
-    Meeting.findByIdAndUpdate(req.params.id, {
+    Meeting.findOneAndUpdate({_id: req.params.id, status: Status.ACTIVE}, {
       $addToSet: {
         files: item
       }
     }).exec()
-      .then(() => res.json({
-        code: ResponseCode.SUCCESS,
-        item,
-        id
-      }))
+      .then((meeting: any) => {
+        if (meeting) {
+          res.json({
+            code: ResponseCode.SUCCESS,
+            item,
+            id
+          });
+        } else {
+          res.json({code: ResponseCode.FIND_NOTHING});
+        }
+      })
       .catch((err: any) => errHandler(err, res));
   });
 });
 
-router.get('/deleteFile/:meetingId/:fileId', (req: Request, res: Response) => {
+router.get('/deleteFile/:id/:fileId', checkMeetingAdmin, (req: Request, res: Response) => {
   const fileId = req.params.fileId;
-  File.delete(res, 'file', fileId, (err: any) => {
-    if (err) {
-      errHandler(err, res);
-      return;
+  const meetingId = req.params.id;
+  Meeting.findOneAndUpdate({_id: meetingId, status: Status.ACTIVE}, {
+    $pull: {
+      files: {id: fileId}
     }
-    Meeting.update({_id: req.params.meetingId}, {
-      $pull: {
-        files: {id: fileId}
+  }).exec()
+    .then((doc: any) => {
+      if (!doc) {
+        res.json({code: ResponseCode.FIND_NOTHING});
+      } else {
+        if (doc.files.findIndex((value: string) => value === fileId) === -1) {
+          res.json({code: ResponseCode.INVALID_INPUT});
+        } else {
+          File.delete(res, 'file', fileId, (err: any) => {
+            if (err) {
+              errHandler(err, res);
+            } else {
+              res.json({code: ResponseCode.SUCCESS});
+            }
+          });
+        }
       }
-    }).exec()
-      .then(() => res.json({code: ResponseCode.SUCCESS}))
-      .catch((err: any) => errHandler(err, res));
-  });
+    })
+    .catch((err: any) => errHandler(err, res));
 });
 
-router.get('/applicants/:id', checkObjectId, (req: Request, res: Response) => {
+router.get('/applicants/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   Attendance.find({meeting: req.params.id})
     .sort({createdDate: -1})
     .populate('user', 'name email gender corporation title job profileImage')
@@ -220,7 +288,7 @@ router.get('/applicants/:id', checkObjectId, (req: Request, res: Response) => {
     .catch((err: any) => errHandler(err, res));
 });
 
-router.post('/auditAttendance/:id', checkObjectId, (req: Request, res: Response) => {
+router.post('/auditAttendance/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   const meetingId = req.params.id;
   const attenIds: string[] = req.body.attenIds;
   if (!attenIds || !attenIds.length) {
@@ -234,7 +302,7 @@ router.post('/auditAttendance/:id', checkObjectId, (req: Request, res: Response)
     .catch((err: any) => errHandler(err, res));
 });
 
-router.post('/refuseAttendance/:id', checkObjectId, (req: Request, res: Response) => {
+router.post('/refuseAttendance/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   const meetingId = req.params.id;
   const attenIds: string[] = req.body.attenIds;
   if (!attenIds || !attenIds.length) {
@@ -246,6 +314,30 @@ router.post('/refuseAttendance/:id', checkObjectId, (req: Request, res: Response
   ).exec()
     .then(() => res.json({code: ResponseCode.SUCCESS}))
     .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/close/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  const meetingId = req.params.id;
+  Meeting.findOneAndUpdate({_id: meetingId, status: Status.ACTIVE}, {
+    $set: {status: Status.DELETED}
+  }).exec()
+  .then((doc) => {
+    if (doc) {
+      res.json({code: ResponseCode.SUCCESS});
+    } else {
+      res.json({code: ResponseCode.FIND_NOTHING});
+    }
+  })
+  .catch((err: any) => errHandler(err, res));
+});
+
+router.post('/sendEmail/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
+  const addressees = req.body.addressees;
+  Meeting.findById(req.params.id).exec()
+  .then((doc) => {
+    Email.promotion(addressees, doc);
+    res.json({code: ResponseCode.SUCCESS});
+  });
 });
 
 export = router;

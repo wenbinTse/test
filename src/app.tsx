@@ -32,6 +32,8 @@ import AdminLayout from './components/admin/admin-layout';
 import MeetingManager from './components/admin/meeting-manager';
 import OrdinaryUsers from './components/admin/ordinary-users';
 import MeetingsForAdmin from './components/admin/meetings';
+import CloseMeeting from './components/meeting-manage/close-meeting';
+import SendEmail from './components/meeting-manage/meeting-manage-email';
 
 interface State {
   loading: boolean;
@@ -69,7 +71,7 @@ class App extends React.Component<{}, State> {
               <Route path="verify/:userId/:hash" component={Verify} />
               <Route path="forgetPassword" component={ForgetPassword} />
               <Route path="meeting/:meetingId" component={MeetingDetail} />
-              <Route path="create-meeting" component={MeetingCreate} />
+              <Route path="createMeeting" component={MeetingCreate} />
               <Route path="profile" component={ProfileLayout}>
                 <IndexRoute component={PersonalInfo}/>
                 <Route path="meetings" component={ProfileMeetings} />
@@ -81,6 +83,8 @@ class App extends React.Component<{}, State> {
                 <Route path="files" component={MeetingManageFile} />
                 <Route path="applicants" component={MeetingApplicants} />
                 <Route path="checkin" component={Checkin} />
+                <Route path="close" component={CloseMeeting}/>
+                <Route path="email" component={SendEmail} />
               </Route>
               <Route path="/admin" component={AdminLayout}>
                 <IndexRoute component={MeetingManager}/>

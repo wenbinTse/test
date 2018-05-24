@@ -141,42 +141,6 @@ router.get('/logout', (req: Request, res: Response) => {
   }
 });
 
-router.get('/currentUserInfo', (req: Request, res: Response) => {
-  const session = req.session as Session;
-  if (!session || !session.user) {
-    res.json({code: ResponseCode.UNLOGIN});
-    return;
-  }
-  const user = session.user;
-  User.findById(user._id, ['name', 'profileImage', 'email', 'userType', 'taxPayerId', 'invoiceTitle', 'phone']).exec()
-    .then(async (doc: any) => {
-      if (!doc) {
-        res.json({code: ResponseCode.ERROR});
-        return;
-      }
-      const item: any = {
-        name: doc.name,
-        profileImage: doc.profileImage,
-        profileImageSrc: Urls.profileImage(doc.profileImage),
-        email: doc.email,
-        _id: doc._id,
-        meetings: [],
-        taxPayerId: doc.taxPayerId,
-        phone: doc.phone,
-        invoiceTitle: doc.invoiceTitle
-      };
-      if (doc.userType === UserType.MEETING_ADMIN) {
-        await Meeting.find({owner: user._id}, 'name').exec()
-          .then((docs: any[]) => item.meetings = docs)
-          .catch((err: any) => console.log(err));
-      }
-      res.json({
-        code: ResponseCode.SUCCESS,
-        item
-      });
-    });
-});
-
 router.get('/verify/:userId/:hash', (req: Request, res: Response) => {
   const _id = req.params.userId;
   User.findById(_id, ['hashForValidation']).exec()

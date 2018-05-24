@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { ResponseCode } from '../../shared/interface';
+import { ResponseCode, Status } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import * as mongoose from 'mongoose';
 import { checkObjectId, checkLogin } from '../../shared/middle-ware';
@@ -50,7 +50,7 @@ router.post('/search', (req: Request, res: Response) => {
 });
 
 router.get('/:id', checkObjectId, (req: Request, res: Response) => {
-  Meeting.findById(req.params.id).exec()
+  Meeting.findOne({_id: req.params.id, status: Status.ACTIVE}).exec()
     .then((meeting: any) => {
       if (meeting) {
         const newItem = meeting._doc;

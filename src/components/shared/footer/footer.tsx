@@ -9,7 +9,9 @@ class Footer extends React.Component<{}, {}> {
       justifyContent: 'center',
       alignItems: 'center',
       color: 'white',
-      background: 'black'
+      background: 'black',
+      fontWeight: 400,
+      fontSize: '18px'
     };
     return (
       <div style={style}><span>清华大学出版社</span></div>

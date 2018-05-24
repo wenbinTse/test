@@ -74,7 +74,7 @@ class Reviews extends React.Component<Props, State> {
         <List
           itemLayout="horizontal"
           dataSource={this.state.reviews}
-          renderItem={(item: Review, index: number) => <ReviewElement review={item} index={index} type={this.props.type}/>}
+          renderItem={(item: Review, index: number) => <ReviewElement review={item} index={index} type={this.props.type} deleteCallback={this.deleteReview}/>}
         />
       </div>
     );
@@ -84,6 +84,10 @@ class Reviews extends React.Component<Props, State> {
     const reviews = this.state.reviews;
     reviews.unshift(review);
     this.setState({reviews});
+  }
+
+  private deleteReview = (review: Review) => {
+    this.setState({reviews: this.state.reviews.filter((r) => r._id !== review._id)});
   }
 }
 

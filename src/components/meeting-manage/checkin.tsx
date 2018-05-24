@@ -6,6 +6,7 @@ import { Button, Spin, message } from 'antd';
 import UserService from '../user/user-service';
 import * as Styles from './meeting-manage.css';
 import * as moment from 'moment';
+import { browserHistory } from 'react-router';
 
 interface Props {
   params: {
@@ -51,6 +52,10 @@ class Checkin extends React.Component<Props, State> {
           });
           this.wx.error((res: any) => console.error(res));
           this.setState({loading: false});
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        } else {
+          browserHistory.push('/NotFound');
         }
       });
     };

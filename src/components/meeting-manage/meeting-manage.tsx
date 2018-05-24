@@ -8,6 +8,8 @@ import BraftEditor from 'braft-editor';
 import { FormComponentProps } from 'antd/lib/form';
 import * as moment from 'moment';
 import * as Styles from './meeting-manage.css';
+import { browserHistory } from 'react-router';
+
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 
@@ -57,11 +59,17 @@ class MeetingManageForm extends React.Component<Props, State> {
       Urls.dataForMeetingManage(meetingId),
       true,
       (data) => {
-        this.setState({
-          cities: data.cities,
-          loading: false,
-          meeting: data.item
-        });
+        if (data.code === ResponseCode.SUCCESS) {
+          this.setState({
+            cities: data.cities,
+            loading: false,
+            meeting: data.item
+          });
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        } else {
+          browserHistory.push('/NotFound');
+        }
       }
     );
   }
@@ -197,7 +205,7 @@ class MeetingManageForm extends React.Component<Props, State> {
          <FormItem {...formItemLayout} label="嘉宾">
           <Button icon="plus" type="primary" onClick={() => this.addGuest()}>添加</Button>
           {meeting.guests.map((guest, index) =>
-            <Row gutter={16} key={index} style={{marginBottom: '24px'}}>
+            <Row gutter={16} key={index} style={{marginBottom: '16px'}}>
               <Col span={4}>
                 <FormItem
                   validateStatus={guest.valid === false ? 'error' : 'success'}

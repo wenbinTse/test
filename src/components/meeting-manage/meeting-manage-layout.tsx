@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Layout, Icon } from 'antd';
 import * as Styles from './meeting-manage.css';
 import { IndexLink } from 'react-router';
+import { body } from '../global.css';
+
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
@@ -25,6 +27,10 @@ class MeetingManageLayout extends React.Component<Props, {}> {
               <Icon type="user"/>
               <span className="nav-text">会议信息</span>
             </IndexLink>
+            <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/email`}>
+              <Icon type="mail"/>
+              <span className="nav-text">推广邮件</span>
+            </IndexLink>
             <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/images`}>
               <Icon type="video-camera"/>
               <span className="nav-text">封面图片</span>
@@ -41,11 +47,15 @@ class MeetingManageLayout extends React.Component<Props, {}> {
               <Icon type="video-camera"/>
               <span className="nav-text">会议资源</span>
             </IndexLink>
+            <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/close`}>
+              <Icon type="delete"/>
+              <span className="nav-text">关闭会议</span>
+            </IndexLink>
           </div>
         </Sider>
         <Layout>
-          <Content style={{margin: '24px 16px', minHeight: '500px'}}>
-            <div className={Styles.container} style={{padding: '24px'}}>
+          <Content className={body}>
+            <div className={Styles.container} style={{margin: '24px', padding: '24px'}}>
               {this.props.children}
             </div>
           </Content>

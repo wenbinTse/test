@@ -98,4 +98,37 @@ router.post('/add', checkLogin, async (req: Request, res: Response) => {
     .catch((err: any) => errHandler(err, res));
 });
 
+router.get('/delete/:id', checkLogin, checkObjectId, async (req: Request, res: Response) => {
+  const session = req.session as Session;
+  const userId = session.user._id;
+  const reviewId = req.params.id;
+  let review: any;
+  await Review.findById(reviewId).populate('meeting', ['owner'])
+    .populate('owner', ['_id'])
+    .exec()
+    .then((doc: any) => {
+      review = doc;
+    });
+  if (!review) {
+    res.json({
+      code: ResponseCode.FIND_NOTHING
+    });
+    return;
+  }
+  if (review.owner._id.toString() !== userId && review.meeting.owner.toString() !== userId) {
+    res.json({code: ResponseCode.ACCESS_DENIED});
+    return;
+  }
+  Review.findOneAndRemove({_id: reviewId}).exec()
+    .then((doc: any) => {
+      if (doc.replyTo) {
+        Review.updateOne({_id: doc.replyTo}, {$inc: {numOfReply: -1}}).exec()
+        .then(() => res.json({code: ResponseCode.SUCCESS}));
+      } else {
+        res.json({code: ResponseCode.SUCCESS});
+      }
+    })
+    .catch((err: any) => errHandler(err, res));
+});
+
 export = router;

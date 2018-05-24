@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IndexLink, browserHistory } from 'react-router';
 import { Dropdown, Icon } from 'antd';
-import { User } from '../../../interface';
+import { User, UserType } from '../../../interface';
 import * as styles from './header.css';
 import UserService from '../../user/user-service';
 
@@ -15,7 +15,7 @@ interface HeaderState {
   showUserPanel: boolean;
 }
 
-const LOGO_COLLAPSE_DISTANCE = 50;
+const LOGO_COLLAPSE_DISTANCE = 5;
 const LOGO_COLLAPSE_DELAY = 100;
 
 class Header extends React.Component<HeaderProps, HeaderState> {
@@ -64,16 +64,24 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         <li onClick={() => this.menuClickHandler('/profile/qrcode')}>
           个人二维码
         </li>
-        {this.state.userProfile && this.state.userProfile.meetings.length > 0 && <hr/>}
+        {this.state.userProfile && this.state.userProfile.userType === UserType.ADMIN && <hr/>}
+        {this.state.userProfile && this.state.userProfile.userType === UserType.ADMIN &&
+        <li><a href="/admin"><Icon type="setting" style={{marginRight: '4px', color: 'red'}}/>后台管理</a></li>}
+        
+        {this.state.userProfile && this.state.userProfile.userType === UserType.MEETING_ADMIN && <hr/>}
+        {this.state.userProfile && this.state.userProfile.userType === UserType.MEETING_ADMIN &&
+        <li><a href="/createMeeting"><Icon type="plus" style={{marginRight: '4px', color: 'red'}}/>创建会议</a></li>}
+        
+        {this.state.userProfile && this.state.userProfile.meetings && this.state.userProfile.meetings.length > 0 && <hr/>}
         {
-          this.state.userProfile && this.state.userProfile.meetings.length > 0 &&
+          this.state.userProfile && this.state.userProfile.meetings && this.state.userProfile.meetings.length > 0 &&
           <span><Icon type="setting" style={{marginRight: '4px', color: 'red'}}/>管理会议</span>
         }
         {
-          this.state.userProfile && this.state.userProfile.meetings.map((meeting) =>
+          this.state.userProfile && this.state.userProfile.meetings && this.state.userProfile.meetings.map((meeting) =>
             <li key={meeting._id} onClick={() => this.menuClickHandler('/meetingManage/' + meeting._id)}>{meeting.name}</li>)
         }
-        {this.state.userProfile && this.state.userProfile.meetings.length > 0 && <hr/>}
+        {this.state.userProfile && this.state.userProfile.meetings && this.state.userProfile.meetings.length > 0 && <hr/>}
         <li onClick={() => UserService.logout()}>
           退出
         </li>

@@ -9,3 +9,5 @@ export const search: string;
 export const chart: string;
 export const chartContainer: string;
 export const qrcode: string;
+export const closeMeeting: string;
+export const receiversContainer: string;

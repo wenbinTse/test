@@ -54,7 +54,7 @@ class MeetingDetail extends React.Component<Props, State> {
   
   public render() {
     if (!this.state.valid) {
-      return <div><h2>没有此会议</h2></div>;
+      return <div className="container container-large"><h2>没有此会议或此会议已关闭</h2></div>;
     }
     if (!this.state.meeting) {
       return <Spin size="large" style={{position: 'fixed', left: '48%', top: '48%'}}/>;
@@ -104,7 +104,7 @@ class MeetingDetail extends React.Component<Props, State> {
         </Row>
         <Row style={{margin: '20px 0'}}>
           <span className={Styles.middleTitle}>会议介绍</span>
-          <Col sm={24}>
+          <Col sm={24} style={{marginTop: '8px'}}>
             <span dangerouslySetInnerHTML={{__html: meeting.description}}/>
           </Col>
         </Row>
@@ -122,7 +122,7 @@ class MeetingDetail extends React.Component<Props, State> {
           meeting.detail &&
           <Row style={{margin: '20px 0'}}>
             <span className={Styles.middleTitle}>注意事项</span>
-            <Col sm={24}>
+            <Col sm={24} style={{marginTop: '8px'}}>
               <span dangerouslySetInnerHTML={{__html: meeting.detail}}/>
             </Col>
           </Row>

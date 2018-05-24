@@ -5,6 +5,7 @@ import Urls from '../../urls';
 import { ResponseCode } from '../../interface';
 import * as Styles from './meeting-manage.css';
 import UserService from '../user/user-service';
+import { browserHistory } from 'react-router';
 
 interface Props {
   params: {
@@ -39,6 +40,10 @@ class MeetingManageImage extends React.Component<Props, State> {
             ids: data.ids,
             images: data.list
           });
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        } else {
+          browserHistory.push('/NotFound');
         }
       }
     );

@@ -1,6 +1,7 @@
 import { Addressee } from './interface';
 import Config from './config';
 import * as EJS from 'ejs';
+import * as moment from 'moment';
 
 const email = require('nodemailer');
 
@@ -32,7 +33,7 @@ export const sendText = (
 const templatePath = process.cwd() + '/src/views/';
 
 const sendHTML = (
-  addressee: Addressee,
+  addressees: Addressee[],
   subject: string,
   templateFileName: string,
   data: {[name: string]: any},
@@ -40,7 +41,7 @@ const sendHTML = (
 ) => {
   const path = templatePath + templateFileName;
   data.domain = Config.domain;
-  data.addressee = addressee;
+  data.addressee = addressees[0];
   EJS.renderFile(path,
     data,
     (err, html) => {
@@ -53,18 +54,18 @@ const sendHTML = (
       }
       const options = {
         from: `${Config.administrator}<${Config.emailUsername}>`,
-        to:  `${addressee.name}<${addressee.email}>`,
+        to:  addressees.map((addressee) => `${addressee.name}<${addressee.email}>`).toString(),
         subject: subject + projectENV,
         html
       };
-      sender.sendMail(options).then(() => console.log('send'))
+      sender.sendMail(options).then((res: any) => console.log(res))
         .catch((err: any) => console.error(err));
     });
 };
 
 export const welcome = (addressee: Addressee, hash: string) => {
   sendHTML(
-    addressee,
+    [addressee],
     '激活您的账号',
     'welcome.ejs',
     {url: `${Config.domain}/verify/${addressee._id}/${hash}`}
@@ -73,7 +74,7 @@ export const welcome = (addressee: Addressee, hash: string) => {
 
 export const verificationCode = (addressee: Addressee, code: string) => {
   sendHTML(
-    addressee,
+    [addressee],
     '验证码',
     'verification-code.ejs',
     {code}
@@ -82,9 +83,20 @@ export const verificationCode = (addressee: Addressee, code: string) => {
 
 export const registerMeeting = (addressee: Addressee, meeting: {_id: string, name: string}) => {
   sendHTML(
-    addressee,
+    [addressee],
     '成功注册会议',
     'register-meeting.ejs',
+    {meeting}
+  );
+};
+
+export const promotion = (addressees: Addressee[], meeting: any) => {
+  meeting.startDate = moment(meeting.startDate).format('M月D号');
+  meeting.endDate = moment(meeting.endDate).format('M月D号');
+  sendHTML(
+    addressees,
+    `欢迎参加${meeting.name}`,
+    'promotion.ejs',
     {meeting}
   );
 };

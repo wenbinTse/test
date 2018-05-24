@@ -42,10 +42,8 @@ class MeetingCard extends React.Component<Props, {}> {
               <span>{dateString}</span>
             </div>
             <div className={Styles.item}>
-              <i className="fa fa-telegram"/>
               <span>{locationString}</span>
             </div>
-            <div dangerouslySetInnerHTML={{__html: meeting.description}}/>
           </div>
         </div>
       </a>

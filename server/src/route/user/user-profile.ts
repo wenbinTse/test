@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Location, Gender, ResponseCode, Status, AttendanceStatus } from '../../shared/interface';
+import { Location, Gender, ResponseCode, Status, AttendanceStatus, UserType } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import { checkLogin, checkObjectId } from '../../shared/middle-ware';
 import Session = Express.Session;
@@ -7,6 +7,7 @@ import File from '../../shared/file';
 import { Urls } from '../../shared/urls';
 import { Attendance } from '../../models/attendance';
 import { User } from '../../models/user';
+import { Meeting } from '../../models/meeting';
 
 const router = Router();
 
@@ -130,6 +131,33 @@ router.get('/cancelAttendance/:id', checkObjectId, (req: Request, res: Response)
       Attendance.remove({_id: attenId}).exec()
         .then(() => res.json({code: ResponseCode.SUCCESS}))
         .catch((err: any) => errHandler(err, res));
+    });
+});
+
+router.get('/currentUserInfo', (req: Request, res: Response) => {
+  const session = req.session as Session;
+  if (!session || !session.user) {
+    res.json({code: ResponseCode.UNLOGIN});
+    return;
+  }
+  const user = session.user;
+  User.findById(user._id, ['name', 'profileImage', 'email', 'userType', 'taxPayerId', 'invoiceTitle', 'phone']).exec()
+    .then(async (doc: any) => {
+      if (!doc) {
+        res.json({code: ResponseCode.ERROR});
+        return;
+      }
+      const item: any = doc._doc;
+      item.profileImageSrc = Urls.profileImage(doc.profileImage);
+      if (doc.userType === UserType.MEETING_ADMIN) {
+        await Meeting.find({owner: user._id, status: Status.ACTIVE}, 'name').exec()
+          .then((docs: any[]) => item.meetings = docs)
+          .catch((err: any) => console.log(err));
+      }
+      res.json({
+        code: ResponseCode.SUCCESS,
+        item
+      });
     });
 });
 

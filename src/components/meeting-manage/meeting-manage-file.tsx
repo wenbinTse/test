@@ -5,6 +5,8 @@ import Urls from '../../urls';
 import { ResponseCode, FileObject } from '../../interface';
 import UserService from '../user/user-service';
 import * as moment from 'moment';
+import { browserHistory } from 'react-router';
+
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -43,6 +45,10 @@ class MeetingManageFile extends React.Component<Props, State> {
             loading: false,
             files: data.list
           });
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        } else {
+          browserHistory.push('/NotFound');
         }
       }
     );

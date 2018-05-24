@@ -56,7 +56,7 @@
 	font-size: 19px;
 }
 
-@value container-height 300px;
+@value container-height 280px;
 
 .card-container {
 	width: 100%;
@@ -64,6 +64,7 @@
 	border: 1px solid grey;
 	border-bottom: 2px solid black;
 	box-shadow: #6a6f7b;
+	background: white;
 }
 
 .card-container > div:last-of-type {
@@ -71,25 +72,21 @@
 }
 
 .card-container > div:last-of-type > h3 {
-	margin: 0 0 0 8px;
 	font-weight: bolder;
 }
 
 .card-container > div:first-of-type {
-	height: 50%;
+	height: 60%;
 	border: 1px solid #dcdcdc;
 }
 
 .item {
-	margin: 4px 0;
+	margin: 8px 0;
 }
 
-.item > i {
-	margin: 0 8px 0 0;
-}
-
-.item > span {
-	overflow: hidden;
+.card-container .item:first-of-type {
+	padding-bottom: 8px;
+	border-bottom: 1px solid #dcdcdc
 }
 
 .none {
@@ -113,11 +110,6 @@
 
 .carousel > div:first-of-type > div:first-of-type {
 	height: 100%;
-}
-
-.card-container > div:last-of-type > div:last-of-type {
-	border-top: 1px solid #dcdcdc;
-	overflow-y: hidden;
 }
 
 div[class="ant-list-item"] > div:first-of-type {
@@ -173,7 +165,7 @@ div[class="ant-list-item"] > div:first-of-type {
 	right: 0;
 	color: white;
 	padding: 8px;
-	background: black;
+	background: rgba(0, 0, 0, 0.3);
 	margin: 0;
 }
 

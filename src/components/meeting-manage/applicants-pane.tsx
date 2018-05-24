@@ -41,6 +41,8 @@ class ApplicantsPane extends React.Component<Props, State> {
       showModal: false,
       chartData: []
     };
+    this.selectedField = 'corporation';
+    this.updateChartData();
   }
 
   public render() {
@@ -107,16 +109,16 @@ class ApplicantsPane extends React.Component<Props, State> {
           onSearch={(keyword) => this.search(keyword)}
           enterButton={true}
         />
-        <Button href={this.export()} download="数据.csv" onClick={this.exportClickHandler}>导出</Button>
         <div style={{marginBottom: '16px'}}>
-          <Button onClick={() => this.showChart()}>可视化</Button>
+          <Button href={this.export()} download="数据.csv" onClick={this.exportClickHandler}>导出</Button>
+          <Button onClick={() => this.showChart()} style={{marginLeft: '16px'}}>可视化</Button>
           {
             this.props.status === AttendanceStatus.PENDING &&
             <Button onClick={() => this.auditAttendance()} type="primary" style={{marginLeft: '16px'}}>同意</Button>
           }
           {
             this.props.status === AttendanceStatus.PENDING &&
-            <Button onClick={() => this.refuseAttendance()} style={{marginLeft: '16px'}} type="primary">拒绝</Button>
+            <Button onClick={() => this.refuseAttendance()} style={{marginLeft: '16px'}} type="danger">拒绝</Button>
           }
         </div>
         <AttendanceTable dataSource={this.props.showList} rowKey={(record) => record._id} rowSelection={rowSelection} scroll={{x: '800'}} className={Styles.applicantsContainer}>

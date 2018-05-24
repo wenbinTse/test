@@ -13,7 +13,7 @@ class QrCode extends React.Component<{}, {}> {
     const qrSrc = Urls.qrcode(this.userId);
     return (
       <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
-        <img src={qrSrc}/>
+        <img src={qrSrc} style={{border: '1px solid grey', background: 'white'}}/>
         <h3 style={{marginTop: '16px'}}>签到时请出示此二维码</h3>
       </div>
     );

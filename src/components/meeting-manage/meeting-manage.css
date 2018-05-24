@@ -107,3 +107,40 @@
     width: 200px;
     height: 200px;
 }
+
+.close-meeting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 20vh;
+}
+
+.receivers-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.receivers-container > div {
+    padding: 8px;
+    margin: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    position: relative;
+}
+
+.receivers-container > div:first-of-type {
+    background: rgba(0, 0, 0, 0.6);
+    color: white
+}
+
+.receivers-container > div i {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    font-size: 16px;
+    color: red;
+}
+
+.receivers-container > div i:hover {
+    color: grey;
+}

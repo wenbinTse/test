@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { ResponseCode } from './interface';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { ResponseCode, UserType } from './interface';
+import { Meeting } from '../models/meeting';
 import * as mongoose from 'mongoose';
 import Session = Express.Session;
 
@@ -20,4 +21,27 @@ export const checkLogin = (req: Request, res: Response, next: NextFunction) => {
   } else {
     next();
   }
-}
+};
+
+export const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
+  const session = req.session as Session;
+  const user =  session.user;
+  if (user.userType !== UserType.ADMIN) {
+    res.json({code: ResponseCode.ACCESS_DENIED});
+  } else {
+    next();
+  }
+};
+
+export const checkMeetingAdmin = (req: Request, res: Response, next: NextFunction) => {
+  const session = req.session as Session;
+  const user = session.user;
+  Meeting.findById(req.params.id, 'owner').exec()
+  .then((doc: any) => {
+    if (doc.owner.toString() !== user._id.toString()) {
+      res.json({code: ResponseCode.ACCESS_DENIED});
+    } else {
+      next();
+    }
+  });
+};

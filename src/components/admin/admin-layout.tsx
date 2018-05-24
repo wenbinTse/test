@@ -1,11 +1,20 @@
 import * as React from 'react';
-import { IndexLink } from 'react-router';
+import { IndexLink, browserHistory } from 'react-router';
 import { Layout, Icon } from 'antd';
 import * as Styles from './admin.css';
+import UserService from '../user/user-service';
+import { UserType } from '../../interface';
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
 class AdminLayout extends React.Component<{}, {}> {
+  constructor(props: {}) {
+    super(props);
+    const user = UserService.getUserProfile();
+    if (!user || user.userType !== UserType.ADMIN) {
+      browserHistory.push('/NotFound');
+    }
+  }
   public render() {
     return (
       <Layout style={{height: '100%'}}>

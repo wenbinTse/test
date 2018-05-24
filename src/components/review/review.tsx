@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { Avatar } from 'antd';
-import { Review } from '../../interface';
+import { Avatar, Icon, message } from 'antd';
+import { Review, User, UserType, ResponseCode } from '../../interface';
 import * as moment from 'moment';
 import * as Styles from './review.css';
 import Reviews from './reviews';
+import UserService from '../user/user-service';
+import HttpRequestDelegate from '../../http-request-delegate';
+import Urls from '../../urls';
 
 interface Props {
   type: 'review' | 'reply';
   review: Review;
   index?: number;
+  deleteCallback: (review: Review) => void;
 }
 
 interface State {
@@ -17,6 +21,7 @@ interface State {
 }
 
 class ReviewElement extends React.Component<Props, State> {
+  private userProfile: User | null = UserService.getUserProfile();
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -36,8 +41,14 @@ class ReviewElement extends React.Component<Props, State> {
     const s1 = !this.state.showRelies ? `显示${review.numOfReply}条回复` : '收起';
     const s2 = !this.state.showRelies ? '回复' : '收起';
 
+    const canDeleted = (this.userProfile && this.userProfile.userType === UserType.MEETING_ADMIN &&
+      this.userProfile.meetings.findIndex((x) => x._id === review.meeting) >= 0) || (
+        this.userProfile && this.userProfile._id === review.owner._id
+      );
+
     return (
       <div className={Styles.container} style={style}>
+        {canDeleted && <Icon type="delete" className={Styles.deleteIcon} onClick={this.deleteHandler}/>}
         <Avatar size="large" src={review.admin ? '' : review.profileImageSrc} style={{background: '#f56a00'}}>
           {profileName}
         </Avatar>
@@ -57,6 +68,21 @@ class ReviewElement extends React.Component<Props, State> {
             {this.props.type === 'review' && this.state.showRelies && <Reviews type="reply" reviewId={this.props.review._id} meetingId={this.props.review.meeting}/>}
         </div>
       </div>
+    );
+  }
+
+  private deleteHandler = () => {
+    HttpRequestDelegate.get(
+      Urls.deleteReview(this.props.review._id),
+      true,
+      (data) => {
+        if (data.code === ResponseCode.SUCCESS) {
+          message.success('删除成功');
+          this.props.deleteCallback(this.props.review);
+        } else if (data.code === ResponseCode.UNLOGIN) {
+          UserService.requireLogin();
+        }
+      }
     );
   }
 }
