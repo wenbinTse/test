@@ -20,11 +20,11 @@ class MeetingManageLayout extends React.Component<Props, {}> {
         <Sider
           breakpoint="md"
           collapsedWidth="0"
-          style={{backgroundColor: 'black', marginBottom: '24px'}}
+          style={{backgroundColor: 'black', marginBottom: '16px'}}
         >
           <div className={Styles.linkContainer}>
             <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}`}>
-              <Icon type="user"/>
+              <Icon type="info-circle-o" />
               <span className="nav-text">会议信息</span>
             </IndexLink>
             <IndexLink activeClassName={Styles.active} to={`/meetingManage/${this.props.params.meetingId}/email`}>
@@ -55,7 +55,7 @@ class MeetingManageLayout extends React.Component<Props, {}> {
         </Sider>
         <Layout>
           <Content className={body}>
-            <div className={Styles.container} style={{margin: '24px', padding: '24px'}}>
+            <div className={Styles.container} style={{margin: '16px', padding: '16px'}}>
               {this.props.children}
             </div>
           </Content>

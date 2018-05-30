@@ -19,9 +19,9 @@ export default {
   passwordMinLength: 8,
   hashIterationNum: 10000,
   keyLength: 128,
-  emailUsername: 'bisheqinghua@sina.com',
-  emailPassword: 'bisheqinghua',
-  emailHost: 'smtp.sina.com',
+  emailUsername: 'tsinghua@xiewb.top', // bisheqinghua@sina.com
+  emailPassword: 'Tsinghua!',
+  emailHost: 'smtp.mxhichina.com',
   administrator: '清华大学出版社',
   domain: domain,
   server: server,

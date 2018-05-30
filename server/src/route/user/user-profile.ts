@@ -53,7 +53,7 @@ router.post('/edit', checkLogin, (req: Request, res: Response) => {
     $set: {
       name,
       gender,
-      corporations,
+      corporation,
       title,
       job,
       location

@@ -60,7 +60,7 @@ class SendEmail extends React.Component<Props, State> {
           </Select>
           <Search enterButton={true} onSearch={this.search}/>
         </InputGroup>
-        <UserTable dataSource={this.state.users} rowSelection={rowSelection} rowKey={(user) => user._id}>
+        <UserTable scroll={{x: 800}} dataSource={this.state.users} rowSelection={rowSelection} rowKey={(user) => user._id}>
           <UserColumn title="姓名" dataIndex="name"/>
           <UserColumn title="邮箱" dataIndex="email"/>
           <UserColumn title="单位" dataIndex="corporation"/>
@@ -114,6 +114,8 @@ class SendEmail extends React.Component<Props, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           message.success('发送成功');
+        } else if (data.code === ResponseCode.ERROR) {
+          message.warn('邮箱服务器出现了点问题，请稍后再试');
         } else {
           browserHistory.push('/NotFound');
         }

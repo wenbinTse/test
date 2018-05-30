@@ -26,13 +26,13 @@ class ProfileLayout extends React.Component<{}, {}> {
             </IndexLink>
             <IndexLink activeClassName={Styles.active} to="/profile/qrcode">
               <Icon type="qrcode"/>
-              <span className="nav-text">签到二维码</span>
+              <span className="nav-text">个人二维码</span>
             </IndexLink>
           </div>
         </Sider>
         <Layout>
           <Content className={body}>
-            <div style={{margin: '24px', padding: '24px'}}>
+            <div style={{padding: '16px'}}>
               {this.props.children}
             </div>
           </Content>

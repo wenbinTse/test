@@ -14,3 +14,4 @@ export const featuredMeetingImg: string;
 export const featuredMeetingContainer: string;
 export const antCarousel: string;
 export const slickSlide: string;
+export const iconContainer: string;

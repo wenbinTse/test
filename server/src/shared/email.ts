@@ -7,7 +7,8 @@ const email = require('nodemailer');
 
 const sender = email.createTransport({
   host: Config.emailHost,
-  secureConnection: true, // using SSL
+  port: 25,
+  secure: false,
   auth: {
     user: Config.emailUsername,
     pass: Config.emailPassword
@@ -23,7 +24,7 @@ export const sendText = (
 ) => {
   const options = {
     from: `${Config.administrator}<${Config.emailUsername}>`,
-    to:  `${addressee.name}<${addressee.email}>`,
+    bcc:  `${addressee.name}<${addressee.email}>`,
     subject: subject + projectENV,
     text
   };
@@ -46,7 +47,6 @@ const sendHTML = (
     data,
     (err, html) => {
       if (err) {
-        console.error(err);
         if (cb) {
           cb(err);
         }
@@ -54,12 +54,21 @@ const sendHTML = (
       }
       const options = {
         from: `${Config.administrator}<${Config.emailUsername}>`,
-        to:  addressees.map((addressee) => `${addressee.name}<${addressee.email}>`).toString(),
+        bcc:  addressees.map((addressee) => `${addressee.name}<${addressee.email}>`).toString(),
         subject: subject + projectENV,
         html
       };
-      sender.sendMail(options).then((res: any) => console.log(res))
-        .catch((err: any) => console.error(err));
+      console.log(options)
+      sender.sendMail(options).then((res: any) => {
+        console.log(res);
+        if (cb) {
+          cb(null);
+        }
+      }).catch((err: any) => {
+          if (cb) {
+            cb(err);
+          }
+        });
     });
 };
 
@@ -90,13 +99,14 @@ export const registerMeeting = (addressee: Addressee, meeting: {_id: string, nam
   );
 };
 
-export const promotion = (addressees: Addressee[], meeting: any) => {
+export const promotion = (addressees: Addressee[], meeting: any, cb: (err: any) => void) => {
   meeting.startDate = moment(meeting.startDate).format('M月D号');
   meeting.endDate = moment(meeting.endDate).format('M月D号');
   sendHTML(
     addressees,
     `欢迎参加${meeting.name}`,
     'promotion.ejs',
-    {meeting}
+    {meeting},
+    cb
   );
 };

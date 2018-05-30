@@ -58,7 +58,7 @@ class RegistrationForm extends React.Component<FormComponentProps, State> {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 22 },
+        sm: { span: 21, push: 1 },
       },
     };
     const tailFormItemLayout = {
@@ -68,8 +68,8 @@ class RegistrationForm extends React.Component<FormComponentProps, State> {
           offset: 0,
         },
         sm: {
-          span: 22,
-          offset: 2,
+          span: 21,
+          offset: 3,
         },
       },
     };

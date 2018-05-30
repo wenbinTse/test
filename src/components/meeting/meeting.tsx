@@ -83,13 +83,13 @@ class MeetingDetail extends React.Component<Props, State> {
               <h1>{meeting.name}</h1>
               <Icon type="check-circle" style={{color: 'green'}}/>
             </div>
-            <div style={{display: 'flex'}}>
+            <div className={Styles.iconContainer}>
               <div className={Styles.meetingDetailTimeLocation}>
                 <Icon type="clock-circle"/>
                 <span>{dateString}</span>
               </div>
               <div className={Styles.meetingDetailTimeLocation}>
-                <i className="fa fa-telegram"/>
+                <Icon type="compass" />
                 <span>{locationString}</span>
               </div>
             </div>
@@ -102,27 +102,33 @@ class MeetingDetail extends React.Component<Props, State> {
             </Button>
           </Col>
         </Row>
-        <Row style={{margin: '20px 0'}}>
-          <span className={Styles.middleTitle}>会议介绍</span>
-          <Col sm={24} style={{marginTop: '8px'}}>
-            <span dangerouslySetInnerHTML={{__html: meeting.description}}/>
-          </Col>
-        </Row>
-        <Row style={{margin: '20px 0'}}>
-          <span className={Styles.middleTitle}>嘉宾</span>
-          <Row gutter={12}>
-          {meeting.guests.map((guest, index) =>
-              <Col xs={24} sm={12} md={12} lg={8} key={index} style={{margin: '16px 0'}}>
-                <GuestElement guest={guest}/>
-              </Col>
-         )}
+        {
+          meeting.description &&
+          <Row style={{margin: '20px 0'}}>
+            <span className={Styles.middleTitle}>会议介绍</span>
+            <Col sm={24} style={{marginTop: '8px', background: 'white', padding: '8px'}}>
+              <span dangerouslySetInnerHTML={{__html: meeting.description}}/>
+            </Col>
           </Row>
-        </Row>
+        }
+        {
+          meeting.guests && meeting.guests.length >= 0 &&
+          <Row style={{margin: '16px 0'}}>
+            <span className={Styles.middleTitle}>嘉宾</span>
+            <Row gutter={12} style={{background: 'white', margin: '8px 0 -6px'}}>
+            {meeting.guests.map((guest, index) =>
+                <Col xs={24} sm={12} md={12} lg={8} key={index} style={{margin: '8px 0'}}>
+                  <GuestElement guest={guest}/>
+                </Col>
+            )}
+            </Row>
+          </Row>
+        }
         {
           meeting.detail &&
-          <Row style={{margin: '20px 0'}}>
+          <Row style={{margin: '16px 0'}}>
             <span className={Styles.middleTitle}>注意事项</span>
-            <Col sm={24} style={{marginTop: '8px'}}>
+            <Col sm={24} style={{marginTop: '8px', background: 'white', padding: '8px'}}>
               <span dangerouslySetInnerHTML={{__html: meeting.detail}}/>
             </Col>
           </Row>

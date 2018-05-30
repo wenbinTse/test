@@ -8,6 +8,7 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/braft.css';
 import { Guest, ResponseCode, stayTypeOptions } from '../../interface';
 import UserService from '../user/user-service';
+import { browserHistory } from 'react-router';
 
 const FormItem = Form.Item;
 
@@ -181,7 +182,7 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
         <FormItem {...formItemLayout} label="嘉宾">
           <Button icon="plus" type="primary" onClick={() => this.addGuest()}>添加</Button>
           {this.state.guests.map((guest, index) =>
-            <Row gutter={16} key={guest.randomId} style={{marginBottom: '24px'}}>
+            <Row gutter={16} key={guest.randomId} style={{marginBottom: '16px'}}>
               <Col span={4}>
                 <FormItem
                   validateStatus={guest.valid ? 'success' : 'error'}
@@ -290,7 +291,11 @@ class MeetingCreateForm extends React.Component<FormComponentProps, State> {
           (data) => {
             this.setState({creating: false});
             if (data.code === ResponseCode.SUCCESS) {
-              message.success('会议创建成功,3s后跳转到管理页面已编辑更多信息');
+              message.success('会议创建成功,3s后跳转到管理页面以编辑更多信息');
+              setTimeout(
+                () => browserHistory.push('/meetingManage/' + data.item._id),
+                3000
+              );
             } else if (data.code === ResponseCode.UNLOGIN) {
               UserService.requireLogin(false);
             }

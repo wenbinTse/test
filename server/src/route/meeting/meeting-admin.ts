@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { ResponseCode, AttendanceStatus, Status, Addressee } from '../../shared/interface';
+import { ResponseCode, AttendanceStatus, Status, Addressee, UserType } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Session = Express.Session;
 import { checkObjectId, checkLogin, checkMeetingAdmin } from '../../shared/middle-ware';
@@ -25,7 +25,7 @@ router.post('/create', (req: Request, res: Response) => {
   const stayTypes = req.body.stayTypes;
 
   if (!name || !startDate || !endDate || !location || !location.province || !location.city
-    || !location.address || !stayTypes) {
+    || !location.address) {
       res.json({code: ResponseCode.INCOMPLETE_INPUT});
       return;
     }
@@ -53,7 +53,9 @@ router.post('/create', (req: Request, res: Response) => {
 router.post('/getUsers', (req: Request, res: Response) => {
   const field = req.body.field;
   const keyword = req.body.keyword;
-  const condition: any = new Object();
+  const condition: any = {
+    userType: UserType.ORDINARY
+  };
   if (keyword) {
     condition[field] = keyword;
   }
@@ -335,8 +337,14 @@ router.post('/sendEmail/:id', checkObjectId, checkMeetingAdmin, (req: Request, r
   const addressees = req.body.addressees;
   Meeting.findById(req.params.id).exec()
   .then((doc) => {
-    Email.promotion(addressees, doc);
-    res.json({code: ResponseCode.SUCCESS});
+    Email.promotion(addressees, doc, (err) => {
+      if (err) {
+        console.error(err);
+        res.json({code: ResponseCode.ERROR});
+      } else {
+        res.json({code: ResponseCode.SUCCESS});
+      }
+    });
   });
 });
 

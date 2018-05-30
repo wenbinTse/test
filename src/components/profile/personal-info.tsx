@@ -77,11 +77,13 @@ class PersonalInfoForm extends React.Component<FormComponentProps, State> {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 2 },
+        sm: { span: 3 },
+        md: { span: 2}
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 22 },
+        sm: { span: 21 },
+        md: { span: 22 }
       },
     };
     const tailFormItemLayout = {
@@ -99,7 +101,7 @@ class PersonalInfoForm extends React.Component<FormComponentProps, State> {
 
     const { getFieldDecorator } = this.props.form;
     return (
-      <Col sm={24} md={24} lg={18} style={{padding: '24px', background: 'white'}}>
+      <Col sm={24} md={24} lg={18} style={{padding: '8px', background: 'white'}}>
         <ProfileImage name={user.name} profileImageSrc={user.profileImageSrc}/>
         <Form>
           <FormItem
@@ -166,7 +168,7 @@ class PersonalInfoForm extends React.Component<FormComponentProps, State> {
               <Input type="text" placeholder="您的职务(可选)" onChange={() => this.setState({changed: true})}/>
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label="地点" required={true}>
+          <FormItem {...formItemLayout} label="地点">
             <Row gutter={16}>
               <Col span={12}>
                 <FormItem>

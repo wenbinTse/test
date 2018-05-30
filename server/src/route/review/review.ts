@@ -39,7 +39,11 @@ router.get('/getReplies/:id', checkObjectId, (req: Request, res: Response) => {
   getReviews({replyTo: reviewId}, res);
 });
 
-router.post('/add', checkLogin, async (req: Request, res: Response) => {
+
+// 下方路由需要登录
+router.use(checkLogin);
+
+router.post('/add', async (req: Request, res: Response) => {
   const type = req.body.type;
   const content = req.body.content;
   const meetingId = req.body.meetingId;
@@ -98,7 +102,7 @@ router.post('/add', checkLogin, async (req: Request, res: Response) => {
     .catch((err: any) => errHandler(err, res));
 });
 
-router.get('/delete/:id', checkLogin, checkObjectId, async (req: Request, res: Response) => {
+router.get('/delete/:id', checkObjectId, async (req: Request, res: Response) => {
   const session = req.session as Session;
   const userId = session.user._id;
   const reviewId = req.params.id;
@@ -115,6 +119,7 @@ router.get('/delete/:id', checkLogin, checkObjectId, async (req: Request, res: R
     });
     return;
   }
+  // 既不是创建者也不是相应会议管理员
   if (review.owner._id.toString() !== userId && review.meeting.owner.toString() !== userId) {
     res.json({code: ResponseCode.ACCESS_DENIED});
     return;

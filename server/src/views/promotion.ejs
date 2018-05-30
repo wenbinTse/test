@@ -1,19 +1,18 @@
-<div>
+<div style="background: rgba(0, 0, 0, 0.1); padding: 8px">
   <p>
-    <strong style="font-size: 40px"><%=meeting.name%></strong>
-    <%if(meeting.startDate == meeting.endDate) {%>
+    欢迎参加<strong><%=meeting.name%></strong>
+    (<%if(meeting.startDate == meeting.endDate) {%>
       <span><%=meeting.startDate%></span>
     <%} else {%>
         <span><%=meeting.startDate%> - <%=meeting.endDate%></span>
-    <%}%>
+    <%}%>)
   </p>
-  <h2>会议介绍</h2>
-  <div style="margin-left: 8px">
+  <div>
       <%-meeting.description%>
   </div>
-  <h2>
+  <strong>
     注意事项
-  </h2>
+  </strong>
   <div style="margin-left: 8px">
     <%-meeting.detail%>
   </div>

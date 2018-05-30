@@ -4,7 +4,7 @@ import UserService from '../user/user-service';
 import * as Styles from './review.css';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
-import { ResponseCode, Review } from '../../interface';
+import { ResponseCode, Review, UserType } from '../../interface';
 const { TextArea } = Input;
 
 interface Props {
@@ -35,11 +35,13 @@ class AddReview extends React.Component<Props, State> {
     if (this.user) {
       this.wholeName = this.user.name;
       this.profileImageSrc = this.user.profileImageSrc;
-      for (const meeting of this.user.meetings) {
-        if (meeting._id === props.meetingId) {
-          this.wholeName = '管理员';
-          this.profileImageSrc = '';
-          break;
+      if (this.user.userType === UserType.MEETING_ADMIN) {
+        for (const meeting of this.user.meetings) {
+          if (meeting._id === props.meetingId) {
+            this.wholeName = '管理员';
+            this.profileImageSrc = '';
+            break;
+          }
         }
       }
     }

@@ -61,8 +61,8 @@ class Reviews extends React.Component<Props, State> {
       return (
         <div style={style}>
           <AddReview type={this.props.type} meetingId={this.props.meetingId} reviewId={this.props.reviewId} successCallback={this.addReview}/>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px'}}>
-            <span style={{fontSize: '18px', fontWeight: 'bold'}}>{status}</span>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <span style={{fontSize: '14px', color: 'rgba(0, 0, 0, 0.4)'}}>{status}</span>
           </div>
         </div>
       );

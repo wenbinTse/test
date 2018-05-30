@@ -1,6 +1,8 @@
 .create-container {
-	margin: 0 auto;
+	margin: 16px auto;
 	max-width: 850px;
+	background: white;
+	padding: 8px;
 }
 
 .title {
@@ -180,4 +182,9 @@ div[class="ant-list-item"] > div:first-of-type {
 
 .ant-carousel .slick-slide h3 {
   color: #fff;
+}
+
+.icon-container {
+	display: flex;
+	flex-wrap: wrap;
 }

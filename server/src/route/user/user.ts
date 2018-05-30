@@ -69,12 +69,18 @@ router.post('/register', (req: Request, res: Response) => {
   user.save()
     .then((data: any) => {
       Email.welcome({name, email, _id: data._id}, hash);
-      res.json({
-        code: ResponseCode.SUCCESS,
-        item: data
-      });
       const session: Session = req.session as Session;
       session.user = data;
+      session.save((err) => {
+        if (err) {
+          errHandler(err, res);
+        } else {
+          res.json({
+            code: ResponseCode.SUCCESS,
+            item: data
+          });
+        }
+      });
     })
     .catch((err: any) => {
       console.error(err);
