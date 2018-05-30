@@ -36,7 +36,7 @@ class MeetingCard extends React.Component<Props, {}> {
             )}
           </Carousel>
           <div>
-            <h3>{meeting.name}</h3>
+            <h3 title={meeting.name}>{meeting.name}</h3>
             <div className={Styles.item}>
               <Icon type="clock-circle"/>
               <span>{dateString}</span>

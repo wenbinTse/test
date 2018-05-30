@@ -75,6 +75,9 @@
 
 .card-container > div:last-of-type > h3 {
 	font-weight: bolder;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .card-container > div:first-of-type {

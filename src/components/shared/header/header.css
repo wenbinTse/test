@@ -180,6 +180,7 @@
   border-top: 2px solid black;
   border-image: initial;
   margin-top: 5px;
+  max-width: 400px;
 }
 
 .arrow {
@@ -196,6 +197,9 @@
   padding: 10px;
   padding-left: 60px;
   cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .menu > span {
