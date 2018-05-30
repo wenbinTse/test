@@ -150,7 +150,7 @@ router.get('/deleteImage/:id/:imageId', checkMeetingAdmin, (req: Request, res: R
       if (!doc) {
         res.json({code: ResponseCode.FIND_NOTHING});
       } else {
-        if (doc.images.findIndex((value: string) => value === imageId) === -1) {
+        if (doc.images.findIndex((value: any) => value.toString() === imageId) === -1) {
           res.json({code: ResponseCode.INVALID_INPUT});
         } else {
           File.delete(res, 'meetingImage', imageId, (err: any) => {
