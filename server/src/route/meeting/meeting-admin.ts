@@ -54,7 +54,8 @@ router.post('/getUsers', (req: Request, res: Response) => {
   const field = req.body.field;
   const keyword = req.body.keyword;
   const condition: any = {
-    userType: UserType.ORDINARY
+    userType: UserType.ORDINARY,
+    status: Status.ACTIVE
   };
   if (keyword) {
     condition[field] = keyword;
