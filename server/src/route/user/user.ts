@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Gender, Location, ResponseCode, UserType } from '../../shared/interface';
+import { Gender, Location, ResponseCode, UserType, Status } from '../../shared/interface';
 import { errHandler } from '../../shared/util';
 import Pattern from '../../shared/pattern';
 import Config from '../../shared/config';
@@ -102,7 +102,7 @@ router.post('/login', (req: Request, res: Response) => {
     res.json({code: ResponseCode.INCOMPLETE_INPUT});
     return;
   }
-  User.findOne({email}, ['_id', 'email', 'userType', 'profileImage', 'password', 'name']).exec()
+  User.findOne({email, status: Status.ACTIVE}, ['_id', 'email', 'userType', 'profileImage', 'password', 'name']).exec()
     .then((doc: any) => {
       if (!doc || !verifyPassword(password, doc.password.salt, doc.password.hash)) {
         res.json({

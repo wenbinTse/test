@@ -29,6 +29,9 @@ class Checkin extends React.Component<Props, State> {
     this.state = {
       loading: true
     };
+    if (!this.isWeixin) {
+      message.warn('请在微信中打开');
+    }
   }
 
   public componentDidMount() {
@@ -65,7 +68,6 @@ class Checkin extends React.Component<Props, State> {
   public render() {
     const url = window.location.href; 
     if (!this.isWeixin) {
-      message.warn('请在微信中打开');
       return (
         <div className="container container-large container-center">
           <img src={Urls.qrcode(url)} className={Styles.qrcode}/>

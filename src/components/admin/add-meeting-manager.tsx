@@ -20,7 +20,7 @@ class AddMeetingManagerForm extends React.Component<Props, {}> {
           {getFieldDecorator('name', {
             rules: [{required: true, message: '请输入姓名'}]
           })(
-            <Input prefix={<Icon type="user"/>} placeholder="name"/>
+            <Input prefix={<Icon type="user"/>} placeholder="会议管理员名"/>
           )
           }
         </FormItem>
