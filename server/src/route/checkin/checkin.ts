@@ -40,10 +40,12 @@ router.get('/:id/:userId', checkObjectId, checkMeetingAdmin, (req: Request, res:
   Attendance.findOne({meeting: meetingId, user: userId}, ['status', 'checkedIn']).exec()
     .then((doc: any) => {
       if (!doc) {
+        console.error(1)
         res.json({code: ResponseCode.FIND_NOTHING});
         return;
       }
       if (doc.status !== AttendanceStatus.AUDITED) {
+        console.error(2)
         res.json({
           code: ResponseCode.INCOMPLETE_INPUT,
           message: '您尚未同意或者已经拒绝了该用户的注册申请'
@@ -51,6 +53,7 @@ router.get('/:id/:userId', checkObjectId, checkMeetingAdmin, (req: Request, res:
         return;
       }
       if (doc.checkedIn) {
+        console.error(3)
         res.json({
           code: ResponseCode.DUPLICATE_KEY,
           message: '已签到'
@@ -62,10 +65,13 @@ router.get('/:id/:userId', checkObjectId, checkMeetingAdmin, (req: Request, res:
       })
       .populate('user', 'name email gender corporation title job profileImage')
       .exec()
-      .then((doc: any) => res.json({
-        code: ResponseCode.SUCCESS,
-        item: doc
-      }));
+      .then((doc: any) => {
+        console.log(4)
+        res.json({
+          code: ResponseCode.SUCCESS,
+          item: doc
+        });
+      });
     })
       .catch((err: any) => errHandler(err, res));
 });
