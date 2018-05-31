@@ -134,6 +134,8 @@ class Checkin extends React.Component<Props, State> {
               UserService.requireLogin();
             } else if (data.code === ResponseCode.INCOMPLETE_INPUT || data.code === ResponseCode.DUPLICATE_KEY) {
               message.warning(data.message);
+            } else {
+              message.error('用户二维码错误');
             }
           }
         );

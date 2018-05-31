@@ -31,7 +31,7 @@ router.get('/init/:id', checkObjectId, checkMeetingAdmin, (req: Request, res: Re
 router.get('/:id/:userId', checkObjectId, checkMeetingAdmin, (req: Request, res: Response) => {
   const meetingId = req.params.id;
   const userId = req.params.userId;
-  if (!mongoose.Types.ObjectId.isValid(meetingId) || !mongoose.Types.ObjectId.isValid(userId)) {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.json({
       code: ResponseCode.FIND_NOTHING
     });
