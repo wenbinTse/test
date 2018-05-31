@@ -71,7 +71,7 @@ class Checkin extends React.Component<Props, State> {
       return (
         <div className="container container-large container-center">
           <img src={Urls.qrcode(url)} className={Styles.qrcode}/>
-          <h1>请在微信中打开</h1>
+          <h1>请在微信扫描打开</h1>
         </div>
       );
     }
@@ -121,13 +121,12 @@ class Checkin extends React.Component<Props, State> {
       needResult: 1,
       scanType: ['qrCode'],
       success: (res: any) => {
-        alert(res.resultStr);
-        alert(Urls.checkIn(meetingId, res.resultStr));
         HttpRequestDelegate.get(
           Urls.checkIn(meetingId, res.resultStr),
           true,
           (data: any) => {
             if (data.code === ResponseCode.SUCCESS) {
+              console.log(data)
               message.success('签到成功');
               this.setState({attendance: data.item});
             } else if (data.code === ResponseCode.UNLOGIN) {
