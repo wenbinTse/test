@@ -64,8 +64,8 @@ class MeetingsForAdmin extends React.Component<{}, State> {
     }
     return (
       <div>
-        <h3>首页推荐会议</h3>
-        <MeetingTable dataSource={this.state.featuredMeetings}>
+        <h2 style={{color: '#40a9ff'}}>首页推荐会议</h2>
+        <MeetingTable dataSource={this.state.featuredMeetings} size="middle">
           <MeetingColumn
             title="会议名"
             dataIndex={name}
@@ -92,14 +92,14 @@ class MeetingsForAdmin extends React.Component<{}, State> {
               </Popconfirm>}
           />
         </MeetingTable>
-        <h3>所有会议</h3>
+        <h2 style={{color: '#40a9ff'}}>所有会议</h2>
         <Search
           placeholder="关键字"
           style={{marginBottom: '16px', maxWidth: '500px'}} 
           size="large"
           enterButton={true}
         />
-        <MeetingTable dataSource={this.state.meetings}>
+        <MeetingTable dataSource={this.state.meetings} size="middle">
           <MeetingColumn
             title="会议名"
             dataIndex={name}

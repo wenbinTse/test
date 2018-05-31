@@ -6,7 +6,7 @@ import Urls from '../../urls';
 import AddMeetingManager from './add-meeting-manager';
 import { title } from '../meeting/meeting.css';
 import UserService from '../user/user-service';
-import { search } from '../meeting-manage/meeting-manage.css';
+import { search, width } from '../meeting-manage/meeting-manage.css';
 
 const confirm = Modal.confirm;
 const Search = Input.Search;
@@ -61,7 +61,7 @@ class Users extends React.Component<Props, State> {
           enterButton={true}
           style={{marginBottom: '16px', marginTop: '8px', maxWidth: '500px'}}
         />
-        <UserTable dataSource={this.state.users} rowKey={(record) => record._id}>
+        <UserTable dataSource={this.state.users} rowKey={(record) => record._id} size="middle">
           <UserColumn title="id" dataIndex="_id"/>
           <UserColumn title="姓名" dataIndex="name" sorter={(a, b) => this.sorter(a, b, 'name')}/>
           <UserColumn title="邮箱" dataIndex="email" sorter={(a, b) => this.sorter(a, b, 'email')}/>
