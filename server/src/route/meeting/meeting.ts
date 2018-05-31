@@ -13,7 +13,7 @@ import * as Email from '../../shared/email';
 const router = Router();
 
 router.get('/list', (req: Request, res: Response) => {
-  Meeting.find({})
+  Meeting.find({status: Status.ACTIVE})
     .exec()
     .then((data: any[]) =>
       res.json({
@@ -27,6 +27,7 @@ router.post('/search', (req: Request, res: Response) => {
   const keyword = req.body.keyword;
   const reg: RegExp = new RegExp(keyword, 'i');
   const condition = {
+    status: Status.ACTIVE,
     $or: [
       {name: {$regex: reg}},
       {description: {$regex: reg}},
