@@ -67,6 +67,7 @@
 	border-bottom: 2px solid black;
 	box-shadow: #6a6f7b;
 	background: white;
+	margin: 8px 0;
 }
 
 .card-container > div:last-of-type {
@@ -117,10 +118,6 @@
 	height: 100%;
 }
 
-div[class="ant-list-item"] > div:first-of-type {
-	width: 100%;
-}
-
 .featured-meetings-container {
 	height: 500px;
 	width: 100%;
@@ -133,7 +130,47 @@ div[class="ant-list-item"] > div:first-of-type {
 	object-fit: cover;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1080px) {
+	.featured-meetings-container {
+		width: 100%;
+		background: black;
+		height: 380px;
+	}
+	.featured-meeting-img {
+		height: 380px;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.featured-meetings-container {
+		width: 100%;
+		background: black;
+		height: 320px;
+	}
+	.featured-meeting-img {
+		height: 320px;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+
+@media screen and (max-width: 750px) {
+	.featured-meetings-container {
+		width: 100%;
+		background: black;
+		height: 250px;
+	}
+	.featured-meeting-img {
+		height: 250px;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+@media screen and (max-width: 500px) {
 	.featured-meetings-container {
 		width: 100%;
 		background: black;
@@ -145,6 +182,7 @@ div[class="ant-list-item"] > div:first-of-type {
 		object-fit: cover;
 	}
 }
+
 
 .featured-meeting-container {
 	width: 100%;

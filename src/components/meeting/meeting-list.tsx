@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { List } from 'antd';
+import { List, Spin, Row, Col } from 'antd';
 import { Meeting } from '../../interface';
 import MeetingCard from './meeting-card';
 
@@ -18,17 +18,22 @@ class MeetingList extends React.Component<Props, {}> {
   }
 
   public render() {
+    if (this.props.loading) {
+      return (
+        <div style={{width: '100%', display: 'flex', height: '200px', justifyContent: 'center', alignItems: 'center'}}>
+          <Spin/>
+        </div>
+      );
+    }
     return (
-      <List
-        loading={this.props.loading}
-        dataSource={this.props.meetings}
-        grid={{xs: 1, sm: 2, lg: 3, gutter: 16}}
-        renderItem={(item: Meeting, index: number) =>
-          <List.Item style={{width: '100%'}}>
-            <MeetingCard meeting={item} index={index}/>
-          </List.Item>
-        }
-      />
+      <Row gutter={16}>
+        {this.props.meetings.map((meeting, index) =>
+        <Col key={meeting._id} xs={24} sm={12} lg={8}>
+          <MeetingCard meeting={meeting} index={index}/>
+        </Col>
+        )}
+      </Row>
+
     );
   }
 }
