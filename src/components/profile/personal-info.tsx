@@ -101,108 +101,110 @@ class PersonalInfoForm extends React.Component<FormComponentProps, State> {
 
     const { getFieldDecorator } = this.props.form;
     return (
-      <Col sm={24} md={24} lg={18} style={{padding: '8px', background: 'white'}}>
-        <ProfileImage name={user.name} profileImageSrc={user.profileImageSrc}/>
-        <Form>
-          <FormItem
-            {...formItemLayout}
-            label="邮箱"
-          >
-            <Input value={user.email} disabled={true}/>
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="姓名"
-          >
-            {getFieldDecorator('name', {
-              rules: [{
-                required: true, message: '请输入您的姓名',
-              }],
-              initialValue: user.name
-            })(
-              <Input type="text" placeholder="您的姓名" onChange={() => this.setState({changed: true})}/>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="性别">
-            {getFieldDecorator('gender', {
-              rules: [{required: true}],
-              initialValue: user.gender
-            })(
-              <RadioGroup onChange={() => this.setState({changed: true})}>
-                <Radio value={Gender.MALE}>男</Radio>
-                <Radio value={Gender.FEMALE}>女</Radio>
-              </RadioGroup>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="单位">
-            {getFieldDecorator('corporation', {
-              rules: [{required: true, message: '请输入您的工作/学习单位'}],
-              initialValue: user.corporation
-            })(
-              <AutoComplete
-                dataSource={this.state.corporations}
-                onSearch={this.handleCorporationChange}
-                placeholder="您所在的单位"
-                onChange={() => this.setState({changed: true})}
-              />
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="职称">
-            {getFieldDecorator('title', {
-              rules: [{required: true, message: '请输入您的职称'}],
-              initialValue: user.title
-            })(
-              <Select onChange={() => this.setState({changed: true})}>
-                {this.state.titles.map((title) =>
-                  <Option key={title} value={title}>
-                    {title}
-                  </Option>
-                )}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="职务" colon={false}>
-            {getFieldDecorator('job', {
-              initialValue: user.job
-            })(
-              <Input type="text" placeholder="您的职务(可选)" onChange={() => this.setState({changed: true})}/>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="地点">
-            <Row gutter={16}>
-              <Col span={12}>
-                <FormItem>
-                  {getFieldDecorator('city', {
-                    initialValue: !!user.location.province ? [user.location.province, user.location.city] : []
-                  })(
-                    <Cascader options={this.state.cities} placeholder="省/市" onChange={() => this.setState({changed: true})}/>
+      <div style={{padding: '8px', background: 'white'}}>
+        <div style={{maxWidth: '900px', margin: '0 auto'}}>
+          <ProfileImage name={user.name} profileImageSrc={user.profileImageSrc}/>
+          <Form>
+            <FormItem
+              {...formItemLayout}
+              label="邮箱"
+            >
+              <Input value={user.email} disabled={true}/>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="姓名"
+            >
+              {getFieldDecorator('name', {
+                rules: [{
+                  required: true, message: '请输入您的姓名',
+                }],
+                initialValue: user.name
+              })(
+                <Input type="text" placeholder="您的姓名" onChange={() => this.setState({changed: true})}/>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="性别">
+              {getFieldDecorator('gender', {
+                rules: [{required: true}],
+                initialValue: user.gender
+              })(
+                <RadioGroup onChange={() => this.setState({changed: true})}>
+                  <Radio value={Gender.MALE}>男</Radio>
+                  <Radio value={Gender.FEMALE}>女</Radio>
+                </RadioGroup>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="单位">
+              {getFieldDecorator('corporation', {
+                rules: [{required: true, message: '请输入您的工作/学习单位'}],
+                initialValue: user.corporation
+              })(
+                <AutoComplete
+                  dataSource={this.state.corporations}
+                  onSearch={this.handleCorporationChange}
+                  placeholder="您所在的单位"
+                  onChange={() => this.setState({changed: true})}
+                />
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="职称">
+              {getFieldDecorator('title', {
+                rules: [{required: true, message: '请输入您的职称'}],
+                initialValue: user.title
+              })(
+                <Select onChange={() => this.setState({changed: true})}>
+                  {this.state.titles.map((title) =>
+                    <Option key={title} value={title}>
+                      {title}
+                    </Option>
                   )}
-                </FormItem>
-              </Col>
-              <Col span={12}>
-                <FormItem>
-                  {getFieldDecorator('address', {
-                    initialValue: user.location.address
-                  })(
-                    <Input placeholder="详细地址" onChange={() => this.setState({changed: true})}/>
-                  )}
-                </FormItem>
-              </Col>
-            </Row>
-          </FormItem>
-          <FormItem {...tailFormItemLayout}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{width: '100%'}}
-              loading={this.state.changing}
-              disabled={!this.state.changed}
-              onClick={this.submitHandler}
-            >保存
-            </Button>
-          </FormItem>
-        </Form>
-      </Col>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="职务" colon={false}>
+              {getFieldDecorator('job', {
+                initialValue: user.job
+              })(
+                <Input type="text" placeholder="您的职务(可选)" onChange={() => this.setState({changed: true})}/>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="地点">
+              <Row gutter={16}>
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator('city', {
+                      initialValue: !!user.location.province ? [user.location.province, user.location.city] : []
+                    })(
+                      <Cascader options={this.state.cities} placeholder="省/市" onChange={() => this.setState({changed: true})}/>
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem>
+                    {getFieldDecorator('address', {
+                      initialValue: user.location.address
+                    })(
+                      <Input placeholder="详细地址" onChange={() => this.setState({changed: true})}/>
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </FormItem>
+            <FormItem {...tailFormItemLayout}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{width: '100%'}}
+                loading={this.state.changing}
+                disabled={!this.state.changed}
+                onClick={this.submitHandler}
+              >保存
+              </Button>
+            </FormItem>
+          </Form>
+        </div>
+      </div>
     );
   }
 

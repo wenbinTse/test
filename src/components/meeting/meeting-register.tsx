@@ -56,22 +56,9 @@ class MeetingRegisterForm extends React.Component<Props, State> {
       },
     };
 
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 20,
-          offset: 4,
-        },
-      },
-    };
-
     return (
       <Form>
-        <span>会议注册</span>
+        <span style={{fontSize: '48px', fontWeight: 'bolder'}}>会议注册</span>
         <FormItem {...formItemLayout} label="识别号">
           {getFieldDecorator('taxPayerId', {
             rules: [{ required: true, message: '请填写纳税人识别号' }],
@@ -127,9 +114,7 @@ class MeetingRegisterForm extends React.Component<Props, State> {
             <Input placeholder="备注" />
           )}
         </FormItem>
-        <FormItem {...tailFormItemLayout}>
-          <Button htmlType="submit" type="primary" onClick={this.submitHandler} style={{width: '100%'}}>注册</Button>
-        </FormItem>
+        <Button htmlType="submit" type="primary" onClick={this.submitHandler} style={{width: '100%'}}>注册</Button>
       </Form>
     );
   }
