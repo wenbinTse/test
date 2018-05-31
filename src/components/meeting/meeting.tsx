@@ -112,7 +112,7 @@ class MeetingDetail extends React.Component<Props, State> {
           </Row>
         }
         {
-          meeting.guests && meeting.guests.length >= 0 &&
+          meeting.guests && meeting.guests.length > 0 &&
           <Row style={{margin: '16px 0'}}>
             <span className={Styles.middleTitle}>嘉宾</span>
             <Row gutter={12} style={{background: 'white', margin: '8px 0 -6px'}}>
