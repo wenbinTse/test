@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Button, Input, Form, Modal, message } from 'antd';
+import { Table, Button, Input, Form, Modal, message, Row } from 'antd';
 import { User, ResponseCode, UserType } from '../../interface';
 import HttpRequestDelegate from '../../http-request-delegate';
 import Urls from '../../urls';
@@ -39,7 +39,7 @@ class Users extends React.Component<Props, State> {
       (data) => {
         if (data.code === ResponseCode.SUCCESS) {
           this.setState({users: data.list});
-          this.allUsers = data.list;
+          this.allUsers = data.list.concat(); // 深复制
         }
       }
     );
@@ -50,9 +50,9 @@ class Users extends React.Component<Props, State> {
       <div>
         {
           this.props.userType === UserType.MEETING_ADMIN &&
-          <div style={{height: '60px'}}>
+          <Row>
             <AddMeetingManager callback={this.addUser}/>
-          </div>
+          </Row>
         }
         <Search
           placeholder="关键字"
@@ -61,7 +61,7 @@ class Users extends React.Component<Props, State> {
           enterButton={true}
           style={{marginBottom: '16px', marginTop: '8px', maxWidth: '500px'}}
         />
-        <UserTable dataSource={this.state.users}>
+        <UserTable dataSource={this.state.users} rowKey={(record) => record._id}>
           <UserColumn title="id" dataIndex="_id"/>
           <UserColumn title="姓名" dataIndex="name" sorter={(a, b) => this.sorter(a, b, 'name')}/>
           <UserColumn title="邮箱" dataIndex="email" sorter={(a, b) => this.sorter(a, b, 'email')}/>

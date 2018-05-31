@@ -7,6 +7,8 @@ import { Status, ResponseCode, AttendanceStatus, UserType } from '../../shared/i
 import { User } from '../../models/user';
 import { createHashAndSalt } from '../../shared/password';
 import { Meeting } from '../../models/meeting';
+import { FeaturedMeeting } from '../../models/featured-meeting';
+import Session = Express.Session;
 
 const router = Router();
 
@@ -27,7 +29,7 @@ router.post('/addMeetingManager', (req: Request, res: Response) => {
   newUser.save()
     .then((doc: any) => res.json({
       code: ResponseCode.SUCCESS,
-      item: doc
+      item: {_id: doc._id, name: doc.name, email: doc.email}
     }))
     .catch((err: any) => {
       console.error(err);
@@ -51,14 +53,32 @@ router.post('/getUsers', (req: Request, res: Response) => {
     .catch((err: any) => errHandler(err, res));
 });
 
-router.get('/meetings', (req: Request, res: Response) => {
-  Meeting.find({status: {$ne: Status.DELETED}}, 'name startDate endDate owner')
+const fields = 'name startDate endDate owner';
+
+router.get('/meetings', async (req: Request, res: Response) => {
+  let meetings: any[];
+  await Meeting.find({status: Status.ACTIVE}, fields)
     .populate('owner', 'name')
     .exec()
-    .then((docs: any[]) => res.json({
-      code: ResponseCode.SUCCESS,
-      list: docs
-    }))
+    .then((docs: any[]) => meetings = docs)
+    .catch((err: any) => errHandler(err, res));
+  FeaturedMeeting.find()
+    .populate({
+      path: 'meeting',
+      select: fields,
+      populate : {
+        path: 'owner',
+        select: '_id name'
+      }
+    })
+    .exec()
+    .then((docs: any[]) => {
+      res.json({
+        code: ResponseCode.SUCCESS,
+        meetings,
+        featuredMeetings: docs.map((doc: any) => doc.meeting)
+      });
+    })
     .catch((err: any) => errHandler(err, res));
 });
 
@@ -70,6 +90,34 @@ router.get('/deleteUser/:id', checkObjectId, (req: Request, res: Response) => {
     .exec()
     .then(() => res.json({code: ResponseCode.SUCCESS}))
     .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/addFeaturedMeeting/:id', checkObjectId, (req: Request, res: Response) => {
+  const meeting = new FeaturedMeeting({
+    meeting: req.params.id
+  });
+  const name = (req.session as Session).user.name;
+  meeting.save().then((doc: any) => res.json({
+    code: ResponseCode.SUCCESS,
+    item: {
+      _id: doc._id,
+      startDate: doc.startDate,
+      endDate: doc.endDate,
+      owner: {name}
+    }
+  }))
+  .catch((err: any) => errHandler(err, res));
+});
+
+router.get('/deleteFeaturedMeeting/:id', checkObjectId, (req: Request, res: Response) => {
+  FeaturedMeeting.findOneAndRemove({meeting: req.params.id}).exec()
+  .then((doc: any) => {
+    if (doc) {
+      res.json({code: ResponseCode.SUCCESS});
+    } else {
+      res.json({code: ResponseCode.INVALID_INPUT});
+    }
+  }).catch((err: any) => errHandler(err, res));
 });
 
 export = router;
