@@ -115,7 +115,7 @@ class SendEmail extends React.Component<Props, State> {
         if (data.code === ResponseCode.SUCCESS) {
           message.success('发送成功');
         } else if (data.code === ResponseCode.ERROR) {
-          message.warn('邮箱服务器出现了点问题，请稍后再试');
+          message.warn('邮箱服务器出现了点问题或者收件人不存在');
         } else {
           browserHistory.push('/NotFound');
         }

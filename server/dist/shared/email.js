@@ -6,8 +6,8 @@ const moment = require("moment");
 const email = require('nodemailer');
 const sender = email.createTransport({
     host: config_1.default.emailHost,
-    port: 25,
-    secure: false,
+    secureConnection: true,
+    port: 465,
     auth: {
         user: config_1.default.emailUsername,
         pass: config_1.default.emailPassword

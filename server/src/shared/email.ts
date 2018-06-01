@@ -7,8 +7,8 @@ const email = require('nodemailer');
 
 const sender = email.createTransport({
   host: Config.emailHost,
-  port: 25,
-  secure: false,
+  secureConnection: true,
+  port: 465,
   auth: {
     user: Config.emailUsername,
     pass: Config.emailPassword
