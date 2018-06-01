@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const port = 80;
 const devDomain = 'http://localhost:8080';
 const devServer = 'http://localhost:' + port;
-const productDomain = '/'; // replace domain!!!
-const cdnDomain = '/';
+const productDomain = ''; // replace domain!!!
+const cdnDomain = '';
 const devDbUrl = 'mongodb://localhost:27017/bishe';
 const prodDbUrl = 'mongodb://xiewenbin:xiewenbin@dds-2zefda6af14cf5941.mongodb.rds.aliyuncs.com:3717,dds-2zefda6af14cf5942.mongodb.rds.aliyuncs.com:3717/bishe?replicaSet=mgset-5363213';
 const dbUrl = process.env.NODE_ENV !== 'production' ? devDbUrl : prodDbUrl;
