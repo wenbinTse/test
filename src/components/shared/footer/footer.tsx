@@ -14,7 +14,7 @@ class Footer extends React.Component<{}, {}> {
       fontSize: '18px'
     };
     return (
-      <div style={style}><span>清华大学出版社</span></div>
+      <div style={style}><span>TUP Design ©2017 Created by 清华大学出版社</span></div>
     );
   }
 }
