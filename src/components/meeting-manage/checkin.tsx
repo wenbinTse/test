@@ -121,8 +121,6 @@ class Checkin extends React.Component<Props, State> {
       needResult: 1,
       scanType: ['qrCode'],
       success: (res: any) => {
-        console.log(res.resultStr);
-        console.log(Urls.checkIn(meetingId, res.resultStr));
         HttpRequestDelegate.get(
           Urls.checkIn(meetingId, res.resultStr),
           true,
@@ -135,14 +133,14 @@ class Checkin extends React.Component<Props, State> {
             } else if (data.code === ResponseCode.INCOMPLETE_INPUT || data.code === ResponseCode.DUPLICATE_KEY) {
               message.warning(data.message);
             } else {
-              message.error('用户二维码错误');
+              message.error('未注册此会议');
             }
           }
         );
       },
       // tslint:disable-next-line:only-arrow-functions
       fail: function(res: any) {
-        message.error(res);
+        message.error('异常');
         console.log(res);
       }
     });
